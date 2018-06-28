@@ -18,7 +18,5 @@
 		<!-- Specifying Session Context -->
 		<property name="hibernate.current_session_context_class">org.hibernate.context.internal.ThreadLocalSessionContext</property>
 
-		<!-- Mapping With Model Class Containing Annotations -->
-<!-- 		<mapping class="de.kreth.clubinvoice.data.User" /> -->
 	</session-factory>
 </hibernate-configuration>

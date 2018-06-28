@@ -1,7 +1,5 @@
 package de.kreth.clubinvoice;
 
-import java.time.LocalDateTime;
-
 import javax.servlet.annotation.WebServlet;
 
 import org.hibernate.Session;
@@ -13,17 +11,14 @@ import org.hibernate.service.ServiceRegistry;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinService;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.server.VaadinSession;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.PasswordField;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
 
+import de.kreth.clubinvoice.business.Business;
+import de.kreth.clubinvoice.business.UserRegister;
 import de.kreth.clubinvoice.data.User;
+import de.kreth.clubinvoice.ui.InvoiceUi;
+import de.kreth.clubinvoice.ui.UserRegisterUi;
 
 /**
  * This UI is the application entry point. A UI may either represent a browser
@@ -41,62 +36,22 @@ public class InvoiceUI extends UI {
 	 * 
 	 */
 	private static final long serialVersionUID = -507823166251133871L;
-	private TextField loginName;
-	private PasswordField passwordField;
-	private TextField prename;
-	private TextField surname;
-	private Button button;
+
 	private Session sessionObj;
-	private VerticalLayout layout;
 
 	@Override
 	protected void init(VaadinRequest vaadinRequest) {
-		layout = new VerticalLayout();
-
 		sessionObj = buildSessionFactory().openSession();
 
-		loginName = new TextField();
-		loginName.setCaption("Ihr Loginname:");
+		InvoiceUi content = createView(vaadinRequest);
+		content.setContent(this);
 
-		passwordField = new PasswordField();
-		passwordField.setCaption("Ihr Password:");
-
-		prename = new TextField();
-		prename.setCaption("Vorname:");
-
-		surname = new TextField();
-		prename.setCaption("Nachname:");
-
-		button = new Button("Login");
-		button.addClickListener(e -> {
-			storeUserData();
-		});
-
-		layout.addComponents(loginName, prename, surname, passwordField,
-				button);
-
-		VaadinSession session = getSession();
-		VaadinService service = session.getService();
-		System.out.println(session);
-		System.out.println(service);
-
-		setContent(layout);
 	}
 
-	private void storeUserData() {
-		sessionObj.beginTransaction();
-
-		User user = new User();
-		user.setLoginName(loginName.getValue());
-		user.setPrename(prename.getValue());
-		user.setSurname(surname.getValue());
-		user.setPassword(passwordField.getValue());
-		user.setCreatedDate(LocalDateTime.now());
-		user.setChangeDate(LocalDateTime.now());
-
-		sessionObj.save(user);
-		sessionObj.getTransaction().commit();
-		layout.addComponent(new Label("Thanks " + user + " created!"));
+	private InvoiceUi createView(VaadinRequest vaadinRequest) {
+		Business<User> business = new UserRegister(sessionObj);
+		InvoiceUi content = new UserRegisterUi(business);
+		return content;
 	}
 
 	static SessionFactory sessionFactoryObj;
