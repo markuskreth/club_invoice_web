@@ -1,6 +1,6 @@
 package de.kreth.clubinvoice;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.servlet.annotation.WebServlet;
 
@@ -91,8 +91,8 @@ public class InvoiceUI extends UI {
 		user.setPrename(prename.getValue());
 		user.setSurname(surname.getValue());
 		user.setPassword(passwordField.getValue());
-		user.setCreatedDate(new Date());
-		user.setChangeDate(new Date());
+		user.setCreatedDate(LocalDateTime.now());
+		user.setChangeDate(LocalDateTime.now());
 
 		sessionObj.save(user);
 		sessionObj.getTransaction().commit();

@@ -1,6 +1,6 @@
 package de.kreth.clubinvoice.data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,10 +30,10 @@ public class User {
 	private String password;
 
 	@Column(name = "created")
-	private Date createdDate;
+	private LocalDateTime createdDate;
 
 	@Column(name = "updated")
-	private Date changeDate;
+	private LocalDateTime changeDate;
 
 	public int getId() {
 		return id;
@@ -75,19 +75,19 @@ public class User {
 		this.password = password;
 	}
 
-	public Date getCreatedDate() {
+	public LocalDateTime getCreatedDate() {
 		return createdDate;
 	}
 
-	public void setCreatedDate(Date createdDate) {
+	public void setCreatedDate(LocalDateTime createdDate) {
 		this.createdDate = createdDate;
 	}
 
-	public Date getChangeDate() {
+	public LocalDateTime getChangeDate() {
 		return changeDate;
 	}
 
-	public void setChangeDate(Date changeDate) {
+	public void setChangeDate(LocalDateTime changeDate) {
 		this.changeDate = changeDate;
 	}
 
