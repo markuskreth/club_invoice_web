@@ -14,11 +14,11 @@
 		<property name="hibernate.connection.username">markus</property>
 		<property name="hibernate.connection.password">0773</property>
 		<property name="show_sql">true</property>
-
+		
 		<!-- Specifying Session Context -->
 		<property name="hibernate.current_session_context_class">org.hibernate.context.internal.ThreadLocalSessionContext</property>
 
 		<!-- Mapping With Model Class Containing Annotations -->
-		<mapping class="de.kreth.clubinvoice.data.User" />
+<!-- 		<mapping class="de.kreth.clubinvoice.data.User" /> -->
 	</session-factory>
 </hibernate-configuration>

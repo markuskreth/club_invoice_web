@@ -6,9 +6,9 @@ import javax.servlet.annotation.WebServlet;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.service.ServiceRegistryBuilder;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
@@ -92,11 +92,11 @@ public class InvoiceUI extends UI {
 		user.setSurname(surname.getValue());
 		user.setPassword(passwordField.getValue());
 		user.setCreatedDate(new Date());
+		user.setChangeDate(new Date());
 
 		sessionObj.save(user);
-
-		layout.addComponent(new Label("Thanks " + user + " created!"));
 		sessionObj.getTransaction().commit();
+		layout.addComponent(new Label("Thanks " + user + " created!"));
 	}
 
 	static SessionFactory sessionFactoryObj;
@@ -104,13 +104,12 @@ public class InvoiceUI extends UI {
 	private static SessionFactory buildSessionFactory() {
 		// Creating Configuration Instance & Passing Hibernate Configuration
 		// File
-		Configuration configObj = new Configuration();
-		configObj.configure("hibernate.cfg.xml");
+		Configuration configObj = new Configuration()
+				.addAnnotatedClass(User.class).configure("hibernate.cfg.xml");
 
 		// Since Hibernate Version 4.x, ServiceRegistry Is Being Used
-		ServiceRegistry serviceRegistryObj = new ServiceRegistryBuilder()
-				.applySettings(configObj.getProperties())
-				.buildServiceRegistry();
+		ServiceRegistry serviceRegistryObj = new StandardServiceRegistryBuilder()
+				.applySettings(configObj.getProperties()).build();
 
 		// Creating Hibernate SessionFactory Instance
 		sessionFactoryObj = configObj.buildSessionFactory(serviceRegistryObj);

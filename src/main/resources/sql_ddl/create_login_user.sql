@@ -4,7 +4,7 @@ CREATE TABLE `clubinvoice`.`login_user` (
   `prename` VARCHAR(45) NOT NULL,
   `surname` VARCHAR(45) NOT NULL,
   `password` VARCHAR(45) NOT NULL,
-  `created` DATETIME NOT NULL,
-  `updated` DATETIME NOT NULL ,
+  `created` TIMESTAMP NOT NULL,
+  `updated` TIMESTAMP NOT NULL ,
   UNIQUE INDEX `id_UNIQUE` (`id` ASC),
   UNIQUE INDEX `login_UNIQUE` (`login` ASC));
