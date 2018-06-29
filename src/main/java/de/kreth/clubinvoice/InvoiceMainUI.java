@@ -14,11 +14,13 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.UI;
 
-import de.kreth.clubinvoice.business.Business;
+import de.kreth.clubinvoice.business.CookieStore;
+import de.kreth.clubinvoice.business.PropertyStore;
 import de.kreth.clubinvoice.business.UserRegister;
 import de.kreth.clubinvoice.data.User;
 import de.kreth.clubinvoice.ui.InvoiceUi;
-import de.kreth.clubinvoice.ui.UserRegisterUi;
+import de.kreth.clubinvoice.ui.LoginUi;
+import de.kreth.clubinvoice.ui.OverviewUi;
 
 /**
  * This UI is the application entry point. A UI may either represent a browser
@@ -30,27 +32,39 @@ import de.kreth.clubinvoice.ui.UserRegisterUi;
  * initialize non-component functionality.
  */
 @Theme("invoiceTheme")
-public class InvoiceUI extends UI {
+public class InvoiceMainUI extends UI {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -507823166251133871L;
 
 	private Session sessionObj;
 
+	private PropertyStore store;
+
+	private CookieStore cookies;
+
 	@Override
 	protected void init(VaadinRequest vaadinRequest) {
+
 		sessionObj = buildSessionFactory().openSession();
+		this.store = new PropertyStore(vaadinRequest.getWrappedSession());
+		cookies = new CookieStore();
 
 		InvoiceUi content = createView(vaadinRequest);
-		content.setContent(this);
+		content.setContent(this, vaadinRequest);
 
 	}
 
 	private InvoiceUi createView(VaadinRequest vaadinRequest) {
-		Business<User> business = new UserRegister(sessionObj);
-		InvoiceUi content = new UserRegisterUi(business);
+
+		UserRegister business = new UserRegister(sessionObj, store, cookies);
+
+		InvoiceUi content;
+		if (business.isLoggedIn() == false) {
+			content = new LoginUi(business);
+		} else {
+			content = new OverviewUi(store);
+		}
+
 		return content;
 	}
 
@@ -72,7 +86,7 @@ public class InvoiceUI extends UI {
 	}
 
 	@WebServlet(urlPatterns = "/*", name = "InvoiceUIServlet", asyncSupported = true)
-	@VaadinServletConfiguration(ui = InvoiceUI.class, productionMode = false)
+	@VaadinServletConfiguration(ui = InvoiceMainUI.class, productionMode = false)
 	public static class InvoiceUIServlet extends VaadinServlet {
 
 		/**
