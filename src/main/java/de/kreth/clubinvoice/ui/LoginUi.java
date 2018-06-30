@@ -1,5 +1,7 @@
 package de.kreth.clubinvoice.ui;
 
+import java.util.ResourceBundle;
+
 import com.vaadin.server.UserError;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.ui.ContentMode;
@@ -24,21 +26,23 @@ public class LoginUi extends VerticalLayout implements InvoiceUi {
 	private Label separator;
 	private Button linkToRegister;
 	private Label errorMsg;
+	private ResourceBundle resBundle;
 
 	public LoginUi(UserRegister business) {
 		this.business = business;
+		this.resBundle = ResourceBundle.getBundle("/application");
 	}
 
 	@Override
 	public void setContent(UI ui, VaadinRequest vaadinRequest) {
 
 		loginName = new TextField();
-		loginName.setCaption("Ihr Loginname:");
+		loginName.setCaption(resBundle.getString("caption.user.loginname"));
 
 		passwordField = new PasswordField();
-		passwordField.setCaption("Ihr Password:");
+		passwordField.setCaption(resBundle.getString("caption.user.password"));
 
-		loginButton = new Button("Login");
+		loginButton = new Button(resBundle.getString("caption.user.login"));
 		loginButton.addClickListener(e -> {
 			String login = loginName.getValue();
 			String password = passwordField.getValue();
@@ -50,11 +54,12 @@ public class LoginUi extends VerticalLayout implements InvoiceUi {
 						overviewBusiness);
 				overview.setContent(ui, vaadinRequest);
 			} else {
-				UserError err = new UserError(
-						"Login Error! Wrong user or password?");
+				String failMessage = resBundle
+						.getString("message.user.loginfailure");
+				UserError err = new UserError(failMessage);
 				loginName.setComponentError(err);
 				passwordField.setComponentError(err);
-				errorMsg = new Label("Login Error! Wrong user or password?");
+				errorMsg = new Label(failMessage);
 				addComponent(errorMsg);
 			}
 		});

@@ -3,6 +3,7 @@ package de.kreth.clubinvoice.ui;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.Button;
@@ -26,24 +27,26 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 	private final User user;
 	private final OverviewBusiness business;
 	private Grid<Article> gridArticle;
+	private ResourceBundle resBundle;
 
 	public OverviewUi(PropertyStore store, OverviewBusiness business) {
 		super();
 		this.business = business;
 		this.user = (User) store.getAttribute(PropertyStore.LOGGED_IN_USER);
+		resBundle = ResourceBundle.getBundle("/application");
 	}
 
 	@Override
 	public void setContent(UI ui, VaadinRequest vaadinRequest) {
 
-		Label l1 = new Label("Logged in:");
+		Label l1 = new Label(resBundle.getString("label.loggedin"));
 		Label l2 = new Label(user.toString());
 
 		VerticalLayout head = new VerticalLayout();
 		head.addComponents(l1, l2);
 		HorizontalLayout main = new HorizontalLayout();
 
-		Button addArticle = new Button("Add Article");
+		Button addArticle = new Button(resBundle.getString("label.addarticle"));
 		addArticle.addClickListener(ev -> {
 			final ArticleDialog dlg = new ArticleDialog();
 			dlg.addOkClickListener(clickEv -> {
@@ -61,19 +64,20 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 		});
 
 		gridArticle = new Grid<>();
-		gridArticle.setCaption("Articles");
+		gridArticle.setCaption(resBundle.getString("caption.articles"));
 		gridArticle.setStyleName("bordered");
 
 		List<Article> loadArticles = loadArticles();
 
-		gridArticle.addColumn(Article::getTitle).setCaption("Title");
+		gridArticle.addColumn(Article::getTitle)
+				.setCaption(resBundle.getString("caption.article.title"));
 
 		gridArticle.addColumn(Article::getPricePerHour)
 				.setRenderer(
 						new NumberRenderer(NumberFormat.getCurrencyInstance()))
-				.setCaption("Price per Hour");
+				.setCaption(resBundle.getString("caption.article.price"));
 		gridArticle.addColumn(Article::getDescription)
-				.setCaption("Description");
+				.setCaption(resBundle.getString("caption.article.description"));
 
 		gridArticle.setItems(loadArticles);
 
@@ -91,27 +95,8 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 		ui.setContent(this);
 	}
 
-	// private Component createBorderLabel(String text) {
-	// Label label = new Label(text);
-	// label.setStyleName("bordered");
-	// label.setSizeFull();
-	// return label;
-	// }
-
 	List<Article> loadArticles() {
 		List<Article> articles = new ArrayList<>();
-		// Article a = new Article();
-		// a.setTitle("Übungsleiter");
-		// a.setPricePerHour(BigDecimal.valueOf(8.5));
-		// a.setCreatedDate(LocalDateTime.now());
-		// a.setChangeDate(LocalDateTime.now());
-		// articles.add(a);
-		// a = new Article();
-		// a.setTitle("Trainer");
-		// a.setPricePerHour(BigDecimal.valueOf(11));
-		// a.setCreatedDate(LocalDateTime.now());
-		// a.setChangeDate(LocalDateTime.now());
-		// articles.add(a);
 		articles.addAll(business.getArticles());
 		return articles;
 	}

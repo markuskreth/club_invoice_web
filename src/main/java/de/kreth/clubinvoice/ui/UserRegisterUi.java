@@ -1,6 +1,8 @@
 package de.kreth.clubinvoice.ui;
 
+import java.text.MessageFormat;
 import java.time.LocalDateTime;
+import java.util.ResourceBundle;
 
 import com.vaadin.server.UserError;
 import com.vaadin.server.VaadinRequest;
@@ -28,8 +30,11 @@ public class UserRegisterUi extends VerticalLayout implements InvoiceUi {
 
 	private PasswordField passwordFieldVerification;
 
+	private ResourceBundle resBundle;
+
 	public UserRegisterUi(Business<User> business) {
 		this.business = business;
+		this.resBundle = ResourceBundle.getBundle("/application");
 	}
 
 	/*
@@ -41,21 +46,22 @@ public class UserRegisterUi extends VerticalLayout implements InvoiceUi {
 	public void setContent(final UI ui, final VaadinRequest vaadinRequest) {
 
 		loginName = new TextField();
-		loginName.setCaption("Ihr Loginname:");
+		loginName.setCaption(resBundle.getString("caption.user.loginname"));
 
 		passwordField = new PasswordField();
-		passwordField.setCaption("Ihr Password:");
+		passwordField.setCaption(resBundle.getString("caption.user.password"));
 
 		passwordFieldVerification = new PasswordField();
-		passwordFieldVerification.setCaption("Wiederholung Password:");
+		passwordFieldVerification.setCaption(
+				resBundle.getString("caption.user.passwordconfirmation"));
 
 		prename = new TextField();
-		prename.setCaption("Vorname:");
+		prename.setCaption(resBundle.getString("caption.user.prename"));
 
 		surname = new TextField();
-		surname.setCaption("Nachname:");
+		surname.setCaption(resBundle.getString("caption.user.surname"));
 
-		button = new Button("Register");
+		button = new Button(resBundle.getString("label.user.register"));
 		button.addClickListener(e -> {
 			if (inputIsValid()) {
 				storeUserData();
@@ -79,7 +85,8 @@ public class UserRegisterUi extends VerticalLayout implements InvoiceUi {
 
 		boolean isValid = true;
 		if (value.equals(repeat) == false) {
-			UserError err = new UserError("Passwords don't match.");
+			UserError err = new UserError(
+					resBundle.getString("message.user.passwordmissmatch"));
 			passwordField.setComponentError(err);
 			passwordFieldVerification.setComponentError(err);
 			isValid = false;
@@ -99,7 +106,8 @@ public class UserRegisterUi extends VerticalLayout implements InvoiceUi {
 
 		business.save(user);
 
-		addComponent(new Label("Thanks " + user + " created!"));
+		addComponent(new Label(MessageFormat.format(
+				resBundle.getString("message.user.create.success"), user)));
 
 	}
 
