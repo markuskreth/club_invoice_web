@@ -1,7 +1,9 @@
 package de.kreth.clubinvoice.data;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,9 +31,6 @@ public class InvoiceItem {
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "article_id", nullable = false, updatable = false)
 	private Article article;
-
-	@Column(name = "sum_price")
-	private BigDecimal sumPrice;
 
 	@Column(name = "created")
 	private LocalDateTime createdDate;
@@ -71,12 +70,17 @@ public class InvoiceItem {
 		this.article = article;
 	}
 
+	@Column(name = "sum_price")
 	public BigDecimal getSumPrice() {
-		return sumPrice;
-	}
+		if (article == null || start == null || end == null) {
+			return null;
+		}
 
-	public void setSumPrice(BigDecimal sumPrice) {
-		this.sumPrice = sumPrice;
+		return BigDecimal.valueOf(getDurationInMinutes())
+				.setScale(2, RoundingMode.HALF_UP)
+				.divide(BigDecimal.valueOf(60), RoundingMode.HALF_UP)
+				.multiply(article.getPricePerHour())
+				.setScale(2, RoundingMode.HALF_UP);
 	}
 
 	public LocalDateTime getCreatedDate() {
@@ -98,9 +102,8 @@ public class InvoiceItem {
 	@Override
 	public String toString() {
 		return "InvoiceItem [id=" + id + ", start=" + start + ", end=" + end
-				+ ", article=" + article + ", sumPrice=" + sumPrice
-				+ ", createdDate=" + createdDate + ", changeDate=" + changeDate
-				+ "]";
+				+ ", article=" + article + ", createdDate=" + createdDate
+				+ ", changeDate=" + changeDate + "]";
 	}
 
 	@Override
@@ -113,8 +116,6 @@ public class InvoiceItem {
 		result = prime * result + ((end == null) ? 0 : end.hashCode());
 		result = prime * result + id;
 		result = prime * result + ((start == null) ? 0 : start.hashCode());
-		result = prime * result
-				+ ((sumPrice == null) ? 0 : sumPrice.hashCode());
 		return result;
 	}
 
@@ -149,12 +150,14 @@ public class InvoiceItem {
 				return false;
 		} else if (!start.equals(other.start))
 			return false;
-		if (sumPrice == null) {
-			if (other.sumPrice != null)
-				return false;
-		} else if (!sumPrice.equals(other.sumPrice))
-			return false;
 		return true;
+	}
+
+	public long getDurationInMinutes() {
+		if (start == null || end == null) {
+			return -1L;
+		}
+		return start.until(end, ChronoUnit.MINUTES);
 	}
 
 }

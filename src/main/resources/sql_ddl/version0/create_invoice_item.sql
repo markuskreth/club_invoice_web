@@ -4,6 +4,7 @@ CREATE TABLE `clubinvoice`.`invoice_item` (
   `end` VARCHAR(45) NOT NULL,
   `article_id` INT NOT NULL,
   `sum_price` DECIMAL(3,2) NOT NULL,
+  `rechnung_id` INT NULL
   `created` TIMESTAMP NOT NULL,
   `updated` TIMESTAMP NOT NULL,
   PRIMARY KEY (`id`),
@@ -13,3 +14,4 @@ CREATE TABLE `clubinvoice`.`invoice_item` (
     REFERENCES `clubinvoice`.`article` (`id`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION);
+

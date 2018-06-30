@@ -10,20 +10,20 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import de.kreth.clubinvoice.data.User;
-import de.kreth.clubinvoice.testutils.MockPropertyStore;
 
 class UserRegisterTest extends AbstractTestDatabaseSession {
 
 	private static LocalDateTime now;
-	MockPropertyStore propStore;
 	CookieStore cookies;
 	private UserRegister userBusiness;
 
@@ -34,9 +34,7 @@ class UserRegisterTest extends AbstractTestDatabaseSession {
 
 	@BeforeEach
 	void setUp() throws Exception {
-		propStore = new MockPropertyStore();
 		cookies = mock(CookieStore.class);
-		session = sessionFactory.openSession();
 		userBusiness = new UserRegister(session, propStore, cookies);
 	}
 
@@ -60,6 +58,11 @@ class UserRegisterTest extends AbstractTestDatabaseSession {
 		verify(cookies, times(2)).store(eq(CookieStore.PASSWORD), anyString());
 		List<User> allUsers = userBusiness.loadAll();
 		assertEquals(2, allUsers.size());
+		Set<Integer> userIds = new HashSet<>();
+		for (User u : allUsers) {
+			userIds.add(u.getId());
+		}
+		assertEquals(2, userIds.size());
 	}
 
 	@Test
@@ -88,6 +91,7 @@ class UserRegisterTest extends AbstractTestDatabaseSession {
 		for (int i = 1; i < count + 1; i++) {
 			User u1 = createUserIncrement(i);
 			userBusiness.save(u1);
+			assertTrue(u1.getId() > 0);
 		}
 	}
 
