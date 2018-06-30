@@ -30,4 +30,9 @@ public class PropertyStore {
 		return store.getAttributeNames();
 	}
 
+	@Override
+	public String toString() {
+		return "[" + getClass().getSimpleName() + "] keys="
+				+ store.getAttributeNames();
+	}
 }
