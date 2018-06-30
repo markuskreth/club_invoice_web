@@ -15049,3 +15049,10 @@ div.v-layout.v-horizontal.v-widget {
 	width: 19px;
 	overflow: hidden;
 }
+
+.invoiceTheme .bordered {
+	border-style: solid;
+	border-color: black;
+	border-width: 1px;
+	padding: 5px;
+}

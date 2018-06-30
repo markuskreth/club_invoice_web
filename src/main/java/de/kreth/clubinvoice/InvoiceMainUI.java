@@ -1,5 +1,8 @@
 package de.kreth.clubinvoice;
 
+import java.util.Set;
+
+import javax.persistence.Entity;
 import javax.servlet.annotation.WebServlet;
 
 import org.hibernate.Session;
@@ -7,6 +10,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
+import org.reflections.Reflections;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
@@ -15,9 +19,9 @@ import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.UI;
 
 import de.kreth.clubinvoice.business.CookieStore;
+import de.kreth.clubinvoice.business.OverviewBusiness;
 import de.kreth.clubinvoice.business.PropertyStore;
 import de.kreth.clubinvoice.business.UserRegister;
-import de.kreth.clubinvoice.data.User;
 import de.kreth.clubinvoice.ui.InvoiceUi;
 import de.kreth.clubinvoice.ui.LoginUi;
 import de.kreth.clubinvoice.ui.OverviewUi;
@@ -62,7 +66,9 @@ public class InvoiceMainUI extends UI {
 		if (business.isLoggedIn() == false) {
 			content = new LoginUi(business);
 		} else {
-			content = new OverviewUi(store);
+			OverviewBusiness overViewBusiness = new OverviewBusiness(sessionObj,
+					store);
+			content = new OverviewUi(store, overViewBusiness);
 		}
 
 		return content;
@@ -73,8 +79,16 @@ public class InvoiceMainUI extends UI {
 	private static SessionFactory buildSessionFactory() {
 		// Creating Configuration Instance & Passing Hibernate Configuration
 		// File
+		Reflections refl = new Reflections("de.kreth.clubinvoice");
+
+		Set<Class<?>> entities = refl.getTypesAnnotatedWith(Entity.class);
+
 		Configuration configObj = new Configuration()
-				.addAnnotatedClass(User.class).configure("hibernate.cfg.xml");
+				.configure("hibernate.cfg.xml");
+
+		for (Class<?> entity : entities) {
+			configObj.addAnnotatedClass(entity);
+		}
 
 		// Since Hibernate Version 4.x, ServiceRegistry Is Being Used
 		ServiceRegistry serviceRegistryObj = new StandardServiceRegistryBuilder()

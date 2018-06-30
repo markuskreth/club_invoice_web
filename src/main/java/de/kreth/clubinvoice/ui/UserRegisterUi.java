@@ -12,6 +12,7 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 import de.kreth.clubinvoice.business.Business;
+import de.kreth.clubinvoice.business.OverviewBusiness;
 import de.kreth.clubinvoice.data.User;
 
 public class UserRegisterUi extends VerticalLayout implements InvoiceUi {
@@ -58,7 +59,10 @@ public class UserRegisterUi extends VerticalLayout implements InvoiceUi {
 		button.addClickListener(e -> {
 			if (inputIsValid()) {
 				storeUserData();
-				OverviewUi overview = new OverviewUi(business.getStore());
+				OverviewBusiness overViewBusiness = new OverviewBusiness(
+						business.getSessionObj(), business.getStore());
+				OverviewUi overview = new OverviewUi(business.getStore(),
+						overViewBusiness);
 				overview.setContent(ui, vaadinRequest);
 			}
 		});

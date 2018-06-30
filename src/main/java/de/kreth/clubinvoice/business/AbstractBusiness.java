@@ -1,16 +1,21 @@
 package de.kreth.clubinvoice.business;
 
+import java.util.List;
+
 import org.hibernate.Session;
 
 public abstract class AbstractBusiness<T> implements Business<T> {
 
 	protected final Session sessionObj;
 	protected final PropertyStore propStore;
+	private final Class<T> itemClass;
 
-	public AbstractBusiness(Session sessionObj, PropertyStore propStore) {
+	public AbstractBusiness(Session sessionObj, PropertyStore propStore,
+			Class<T> itemClass) {
 		super();
 		this.sessionObj = sessionObj;
 		this.propStore = propStore;
+		this.itemClass = itemClass;
 	}
 
 	@Override
@@ -19,6 +24,18 @@ public abstract class AbstractBusiness<T> implements Business<T> {
 		sessionObj.save(obj);
 		sessionObj.getTransaction().commit();
 		return true;
+	}
+
+	@Override
+	public List<T> loadAll() {
+		return sessionObj
+				.createQuery("from " + itemClass.getSimpleName(), itemClass)
+				.list();
+	}
+
+	@Override
+	public Session getSessionObj() {
+		return sessionObj;
 	}
 
 	@Override

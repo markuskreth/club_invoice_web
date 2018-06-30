@@ -10,6 +10,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
+import de.kreth.clubinvoice.business.OverviewBusiness;
 import de.kreth.clubinvoice.business.UserRegister;
 
 public class LoginUi extends VerticalLayout implements InvoiceUi {
@@ -42,7 +43,11 @@ public class LoginUi extends VerticalLayout implements InvoiceUi {
 			String login = loginName.getValue();
 			String password = passwordField.getValue();
 			if (business.login(login, password)) {
-				OverviewUi overview = new OverviewUi(business.getStore());
+
+				OverviewBusiness overviewBusiness = new OverviewBusiness(
+						business.getSessionObj(), business.getStore());
+				OverviewUi overview = new OverviewUi(business.getStore(),
+						overviewBusiness);
 				overview.setContent(ui, vaadinRequest);
 			} else {
 				UserError err = new UserError(

@@ -10,20 +10,24 @@ import de.kreth.clubinvoice.data.User;
 public class UserRegister extends AbstractBusiness<User> {
 
 	private CookieStore cookies;
+	private Query<User> query_login;
 
 	public UserRegister(Session sessionObj, PropertyStore propStore,
 			CookieStore cookies) {
-		super(sessionObj, propStore);
+		super(sessionObj, propStore, User.class);
 		this.cookies = cookies;
+
+		query_login = sessionObj.createQuery(
+				"from User where login = :login and password = :password",
+				User.class);
 	}
 
 	public boolean login(String login, String password) {
-		Query<User> query = sessionObj.createQuery(
-				"from User where login = :login and password = :password",
-				User.class);
-		query.setParameter("login", login);
-		query.setParameter("password", password);
-		List<User> result = query.list();
+
+		query_login.setParameter("login", login);
+		query_login.setParameter("password", password);
+
+		List<User> result = query_login.list();
 
 		if (result.isEmpty()) {
 			return false;

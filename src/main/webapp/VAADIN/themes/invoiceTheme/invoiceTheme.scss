@@ -34,5 +34,10 @@
 @mixin invoiceTheme {
   @include valo;
 
-  // Insert your own theme rules here
+	.bordered {
+	    border-style: solid;
+	    border-color: black;
+	    border-width: 1px;
+	    padding: 5px;
+	}
 }
