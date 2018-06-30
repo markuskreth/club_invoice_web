@@ -22,8 +22,6 @@ import de.kreth.clubinvoice.ui.dialogs.ArticleDialog;
 
 public class OverviewUi extends VerticalLayout implements InvoiceUi {
 
-	private static final NumberFormat currencyFormat = NumberFormat
-			.getCurrencyInstance();
 	private static final long serialVersionUID = 318645298331660865L;
 	private final User user;
 	private final OverviewBusiness business;

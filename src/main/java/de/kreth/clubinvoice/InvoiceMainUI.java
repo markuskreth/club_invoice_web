@@ -79,9 +79,8 @@ public class InvoiceMainUI extends UI {
 	private static SessionFactory buildSessionFactory() {
 		// Creating Configuration Instance & Passing Hibernate Configuration
 		// File
-		Reflections refl = new Reflections("de.kreth.clubinvoice");
 
-		Set<Class<?>> entities = refl.getTypesAnnotatedWith(Entity.class);
+		Set<Class<?>> entities = findEntityClasses();
 
 		Configuration configObj = new Configuration()
 				.configure("hibernate.cfg.xml");
@@ -97,6 +96,13 @@ public class InvoiceMainUI extends UI {
 		// Creating Hibernate SessionFactory Instance
 		sessionFactoryObj = configObj.buildSessionFactory(serviceRegistryObj);
 		return sessionFactoryObj;
+	}
+
+	public static Set<Class<?>> findEntityClasses() {
+		Reflections refl = new Reflections("de.kreth.clubinvoice");
+
+		Set<Class<?>> entities = refl.getTypesAnnotatedWith(Entity.class);
+		return entities;
 	}
 
 	@WebServlet(urlPatterns = "/*", name = "InvoiceUIServlet", asyncSupported = true)
