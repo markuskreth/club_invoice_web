@@ -1,6 +1,8 @@
 package de.kreth.clubinvoice.business;
 
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.hibernate.Session;
 
@@ -31,6 +33,11 @@ public abstract class AbstractBusiness<T> implements Business<T> {
 		return sessionObj
 				.createQuery("from " + itemClass.getSimpleName(), itemClass)
 				.list();
+	}
+
+	public List<T> loadAll(Predicate<T> predicate) {
+		return loadAll().stream().filter(predicate)
+				.collect(Collectors.toList());
 	}
 
 	@Override

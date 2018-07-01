@@ -38,6 +38,13 @@ public class InvoiceItem {
 	@Column(name = "updated")
 	private LocalDateTime changeDate;
 
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "invoice_id", nullable = true, updatable = false)
+	private Invoice invoice;
+
+	@Column(name = "sum_price")
+	private BigDecimal sumPrice;
+
 	public int getId() {
 		return id;
 	}
@@ -52,6 +59,7 @@ public class InvoiceItem {
 
 	public void setStart(LocalDateTime start) {
 		this.start = start;
+		getSumPrice();
 	}
 
 	public LocalDateTime getEnd() {
@@ -60,6 +68,7 @@ public class InvoiceItem {
 
 	public void setEnd(LocalDateTime end) {
 		this.end = end;
+		getSumPrice();
 	}
 
 	public Article getArticle() {
@@ -68,19 +77,29 @@ public class InvoiceItem {
 
 	public void setArticle(Article article) {
 		this.article = article;
+		getSumPrice();
 	}
 
-	@Column(name = "sum_price")
 	public BigDecimal getSumPrice() {
 		if (article == null || start == null || end == null) {
+			sumPrice = null;
 			return null;
 		}
 
-		return BigDecimal.valueOf(getDurationInMinutes())
+		sumPrice = BigDecimal.valueOf(getDurationInMinutes())
 				.setScale(2, RoundingMode.HALF_UP)
 				.divide(BigDecimal.valueOf(60), RoundingMode.HALF_UP)
 				.multiply(article.getPricePerHour())
 				.setScale(2, RoundingMode.HALF_UP);
+		return sumPrice;
+	}
+
+	public Invoice getInvoice() {
+		return invoice;
+	}
+
+	public void setInvoice(Invoice invoice) {
+		this.invoice = invoice;
 	}
 
 	public LocalDateTime getCreatedDate() {

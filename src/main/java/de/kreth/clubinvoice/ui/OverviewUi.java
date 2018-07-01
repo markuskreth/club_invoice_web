@@ -1,33 +1,36 @@
 package de.kreth.clubinvoice.ui;
 
-import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Grid;
-import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.renderers.NumberRenderer;
 
 import de.kreth.clubinvoice.business.OverviewBusiness;
 import de.kreth.clubinvoice.business.PropertyStore;
 import de.kreth.clubinvoice.data.Article;
+import de.kreth.clubinvoice.data.Invoice;
+import de.kreth.clubinvoice.data.InvoiceItem;
 import de.kreth.clubinvoice.data.User;
-import de.kreth.clubinvoice.ui.dialogs.ArticleDialog;
+import de.kreth.clubinvoice.ui.components.ArticleDialog;
+import de.kreth.clubinvoice.ui.components.InvoiceGrid;
+import de.kreth.clubinvoice.ui.components.InvoiceItemDialog;
+import de.kreth.clubinvoice.ui.components.InvoiceItemGrid;
 
 public class OverviewUi extends VerticalLayout implements InvoiceUi {
 
 	private static final long serialVersionUID = 318645298331660865L;
 	private final User user;
 	private final OverviewBusiness business;
-	private Grid<Article> gridArticle;
+	private Grid<InvoiceItem> gridItems;
 	private ResourceBundle resBundle;
+	private InvoiceGrid gridInvoices;
 
 	public OverviewUi(PropertyStore store, OverviewBusiness business) {
 		super();
@@ -39,16 +42,61 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 	@Override
 	public void setContent(UI ui, VaadinRequest vaadinRequest) {
 
-		Label l1 = new Label(resBundle.getString("label.loggedin"));
-		Label l2 = new Label(user.toString());
+		HorizontalLayout head = createHeadView(ui);
 
-		VerticalLayout head = new VerticalLayout();
-		head.addComponents(l1, l2);
+		VerticalLayout left = createItemsView(ui);
+
+		VerticalLayout right = createInvoicesView();
+
 		HorizontalLayout main = new HorizontalLayout();
+
+		main.addComponents(left, right);
+
+		addComponents(head, main);
+
+		ui.setContent(this);
+	}
+
+	public VerticalLayout createInvoicesView() {
+		gridInvoices = new InvoiceGrid();
+		gridInvoices.setItems(loadInvoices());
+
+		Button createInvoice = new Button("Create Invoice");
+		createInvoice.addClickListener(ev -> {
+			Notification.show("Create Invoice");
+		});
+		VerticalLayout right = new VerticalLayout();
+		right.addComponents(createInvoice, gridInvoices);
+		return right;
+	}
+
+	public VerticalLayout createItemsView(UI ui) {
+		gridItems = new InvoiceItemGrid<>(resBundle);
+		gridItems.setItems(loadItems());
+
+		Button addItem = new Button("Add Item");
+		addItem.addClickListener(ev -> {
+			final InvoiceItemDialog dlg = new InvoiceItemDialog(resBundle);
+			dlg.addOkClickListener(e -> {
+				business.saveInvoiceItem(dlg.getItem());
+				gridItems.setItems(loadItems());
+			});
+			dlg.setSelectableArticles(business.getArticles(user));
+			ui.addWindow(dlg);
+		});
+		VerticalLayout left = new VerticalLayout();
+		left.addComponents(addItem, gridItems);
+		return left;
+	}
+
+	public HorizontalLayout createHeadView(UI ui) {
+		Label l1 = new Label(resBundle.getString("label.loggedin"));
+		Label l2 = new Label(
+				String.format("%s %s", user.getPrename(), user.getSurname()));
 
 		Button addArticle = new Button(resBundle.getString("label.addarticle"));
 		addArticle.addClickListener(ev -> {
-			final ArticleDialog dlg = new ArticleDialog();
+			final ArticleDialog dlg = new ArticleDialog(resBundle);
 			dlg.addOkClickListener(clickEv -> {
 				Article a = new Article();
 				a.setTitle(dlg.getTitle());
@@ -58,46 +106,26 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 
 				business.createArticle(a);
 
-				gridArticle.setItems(loadArticles());
 			});
 			ui.addWindow(dlg);
 		});
 
-		gridArticle = new Grid<>();
-		gridArticle.setCaption(resBundle.getString("caption.articles"));
-		gridArticle.setStyleName("bordered");
+		VerticalLayout userId = new VerticalLayout();
+		userId.addComponents(l1, l2);
+		HorizontalLayout head = new HorizontalLayout();
+		head.addComponents(userId, addArticle);
+		return head;
+	}
 
-		List<Article> loadArticles = loadArticles();
+	private List<InvoiceItem> loadItems() {
+		return business.getInvoiceItems(user);
+	}
 
-		gridArticle.addColumn(Article::getTitle)
-				.setCaption(resBundle.getString("caption.article.title"));
-
-		gridArticle.addColumn(Article::getPricePerHour)
-				.setRenderer(
-						new NumberRenderer(NumberFormat.getCurrencyInstance()))
-				.setCaption(resBundle.getString("caption.article.price"));
-		gridArticle.addColumn(Article::getDescription)
-				.setCaption(resBundle.getString("caption.article.description"));
-
-		gridArticle.setItems(loadArticles);
-
-		VerticalLayout left = new VerticalLayout();
-		left.addComponents(addArticle, gridArticle);
-
-		GridLayout right = new GridLayout(3, 1);
-		right.setCaption("Right Grid");
-		right.setStyleName("bordered");
-
-		main.addComponents(left, right);
-
-		addComponents(head, main);
-
-		ui.setContent(this);
+	private List<Invoice> loadInvoices() {
+		return business.getInvoices(user);
 	}
 
 	List<Article> loadArticles() {
-		List<Article> articles = new ArrayList<>();
-		articles.addAll(business.getArticles());
-		return articles;
+		return business.getArticles(user);
 	}
 }

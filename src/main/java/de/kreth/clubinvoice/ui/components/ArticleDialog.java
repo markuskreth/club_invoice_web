@@ -1,6 +1,7 @@
-package de.kreth.clubinvoice.ui.dialogs;
+package de.kreth.clubinvoice.ui.components;
 
 import java.math.BigDecimal;
+import java.util.ResourceBundle;
 
 import com.vaadin.shared.Registration;
 import com.vaadin.ui.Button;
@@ -21,19 +22,21 @@ public class ArticleDialog extends Window {
 	private Button okButton;
 	private Button cancelButton;
 
-	public ArticleDialog() {
+	public ArticleDialog(ResourceBundle resBundle) {
 		title = new TextField();
-		title.setCaption("Artikel");
+		title.setCaption(resBundle.getString("caption.article"));
 		pricePerHour = new TextField();
-		pricePerHour.setCaption("Price");
+		pricePerHour.setCaption(resBundle.getString("caption.article.price"));
 		description = new TextField();
-		description.setCaption("Description");
-		okButton = new Button("OK");
+		description
+				.setCaption(resBundle.getString("caption.article.description"));
+		okButton = new Button(resBundle.getString("label.ok"));
 		okButton.addClickListener(ev -> {
 			close();
 		});
 
-		cancelButton = new Button("Cancel", ev -> close());
+		cancelButton = new Button(resBundle.getString("label.cancel"),
+				ev -> close());
 
 		HorizontalLayout contentValues = new HorizontalLayout();
 		contentValues.addComponents(title, pricePerHour, description);
