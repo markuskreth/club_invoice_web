@@ -118,6 +118,13 @@ public class InvoiceItem {
 		this.changeDate = changeDate;
 	}
 
+	public long getDurationInMinutes() {
+		if (start == null || end == null) {
+			return -1L;
+		}
+		return start.until(end, ChronoUnit.MINUTES);
+	}
+
 	@Override
 	public String toString() {
 		return "InvoiceItem [id=" + id + ", start=" + start + ", end=" + end
@@ -170,13 +177,6 @@ public class InvoiceItem {
 		} else if (!start.equals(other.start))
 			return false;
 		return true;
-	}
-
-	public long getDurationInMinutes() {
-		if (start == null || end == null) {
-			return -1L;
-		}
-		return start.until(end, ChronoUnit.MINUTES);
 	}
 
 }

@@ -1,5 +1,6 @@
 package de.kreth.clubinvoice.ui.components;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -13,11 +14,12 @@ import java.util.function.Supplier;
 import com.vaadin.data.Binder;
 import com.vaadin.data.Binder.Binding;
 import com.vaadin.data.Binder.BindingBuilder;
-import com.vaadin.shared.Registration;
+import com.vaadin.server.UserError;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -41,8 +43,12 @@ public class InvoiceItemDialog extends Window {
 	private Binder<InvoiceItem> dateBinder;
 
 	private Button okButton;
+	private List<ClickListener> okListeners;
+
+	private ResourceBundle resBundle;
 
 	public InvoiceItemDialog(ResourceBundle resBundle) {
+		this.resBundle = resBundle;
 		item = new InvoiceItem();
 		item.setStart(LocalDate.now().atStartOfDay());
 		item.setEnd(LocalDate.now().atStartOfDay());
@@ -64,8 +70,17 @@ public class InvoiceItemDialog extends Window {
 
 		bindItemFields();
 		okButton = new Button(resBundle.getString("label.ok"));
-		okButton.addClickListener(ev -> {
+		okListeners = new ArrayList<>();
+		okListeners.add(ev -> {
 			close();
+		});
+
+		okButton.addClickListener(ev -> {
+			if (isValid()) {
+				for (ClickListener clLi : okListeners) {
+					clLi.buttonClick(ev);
+				}
+			}
 		});
 
 		Button cancelButton = new Button(resBundle.getString("label.cancel"),
@@ -79,6 +94,40 @@ public class InvoiceItemDialog extends Window {
 				endTimeField, buttons);
 		setContent(content);
 		center();
+	}
+
+	private boolean isValid() {
+		dateBinder.writeBeanIfValid(item);
+		if (item.getArticle() == null || item.getStart() == null
+				|| item.getEnd() == null) {
+			Notification.show(
+					resBundle.getString(
+							"message.invoiceitem.allfieldsmustbeset"),
+					Notification.Type.ERROR_MESSAGE);
+			return false;
+		}
+		if (item.getStart().toLocalDate()
+				.equals(item.getEnd().toLocalDate()) == false) {
+			// should never happen!
+			Notification.show("Error: update start and end to fix.",
+					Notification.Type.ERROR_MESSAGE);
+			return false;
+		}
+		if (item.getStart().isAfter(item.getEnd())) {
+			UserError componentError = new UserError(
+					resBundle.getString("message.invoiceitem.startbeforeend"));
+			startTimeField.setComponentError(componentError);
+			endTimeField.setComponentError(componentError);
+			return false;
+		}
+		BigDecimal sumPrice = item.getSumPrice();
+		if (sumPrice == null || sumPrice.doubleValue() <= 0) {
+			Notification.show(
+					resBundle.getString(
+							"message.invoiceitem.allfieldsmustbeset"),
+					Notification.Type.ERROR_MESSAGE);
+		}
+		return true;
 	}
 
 	public void bindItemFields() {
@@ -116,8 +165,8 @@ public class InvoiceItemDialog extends Window {
 
 	}
 
-	public Registration addOkClickListener(ClickListener listener) {
-		return okButton.addClickListener(listener);
+	public void addOkClickListener(ClickListener listener) {
+		okListeners.add(listener);
 	}
 
 	public void setSelectableArticles(List<Article> selectableArticles) {
@@ -128,7 +177,6 @@ public class InvoiceItemDialog extends Window {
 	}
 
 	public InvoiceItem getItem() {
-		dateBinder.writeBeanIfValid(item);
 		return item;
 	}
 
