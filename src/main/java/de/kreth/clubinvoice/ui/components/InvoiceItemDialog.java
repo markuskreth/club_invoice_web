@@ -121,7 +121,8 @@ public class InvoiceItemDialog extends Window {
 			return false;
 		}
 		BigDecimal sumPrice = item.getSumPrice();
-		if (sumPrice == null || sumPrice.doubleValue() <= 0) {
+		if (sumPrice == null
+				|| sumPrice.doubleValue() <= 0) {
 			Notification.show(
 					resBundle.getString(
 							"message.invoiceitem.allfieldsmustbeset"),

@@ -9,6 +9,7 @@ import com.vaadin.ui.Grid;
 import com.vaadin.ui.renderers.LocalDateTimeRenderer;
 import com.vaadin.ui.renderers.NumberRenderer;
 
+import de.kreth.clubinvoice.data.Article;
 import de.kreth.clubinvoice.data.InvoiceItem;
 
 public class InvoiceItemGrid<T extends InvoiceItem> extends Grid<T> {
@@ -17,20 +18,21 @@ public class InvoiceItemGrid<T extends InvoiceItem> extends Grid<T> {
 
 	public InvoiceItemGrid(ResourceBundle resBundle) {
 		setCaption(resBundle.getString("caption.invoiceitems"));
-		setStyleName("bordered");
 
+		addColumn(InvoiceItem::getArticle, Article::getTitle)
+				.setCaption(resBundle.getString("caption.article"));
 		addColumn(InvoiceItem::getStart)
 				.setCaption(resBundle.getString("caption.invoiceitem.date"))
 				.setRenderer(new LocalDateTimeRenderer(
-						DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)));
+						DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)));
 		addColumn(InvoiceItem::getStart)
 				.setCaption(resBundle.getString("caption.invoiceitem.start"))
 				.setRenderer(new LocalDateTimeRenderer(
-						DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)));
+						DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)));
 		addColumn(InvoiceItem::getEnd)
 				.setCaption(resBundle.getString("caption.invoiceitem.end"))
 				.setRenderer(new LocalDateTimeRenderer(
-						DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)));
+						DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)));
 
 		addColumn(InvoiceItem::getSumPrice)
 				.setCaption(resBundle.getString("caption.invoiceitem.sumprice"))
