@@ -31,7 +31,8 @@ public class OverviewBusiness {
 
 	public List<InvoiceItem> getInvoiceItems(User user) {
 		return itemBusiness
-				.loadAll(i -> i.getArticle().getUserId() == user.getId());
+				.loadAll(i -> i.getArticle().getUserId() == user.getId()
+						&& i.getInvoice() == null);
 	}
 
 	public List<Invoice> getInvoices(User user) {
