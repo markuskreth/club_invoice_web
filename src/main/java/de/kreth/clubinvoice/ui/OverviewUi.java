@@ -1,19 +1,25 @@
 package de.kreth.clubinvoice.ui;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Grid;
+import com.vaadin.ui.Grid.SelectionMode;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
 
+import de.kreth.clubinvoice.business.CookieStore;
 import de.kreth.clubinvoice.business.OverviewBusiness;
 import de.kreth.clubinvoice.business.PropertyStore;
+import de.kreth.clubinvoice.business.UserRegister;
 import de.kreth.clubinvoice.data.Article;
 import de.kreth.clubinvoice.data.Invoice;
 import de.kreth.clubinvoice.data.InvoiceItem;
@@ -28,13 +34,15 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 	private static final long serialVersionUID = 318645298331660865L;
 	private final User user;
 	private final OverviewBusiness business;
+	private final ResourceBundle resBundle;
+	private final PropertyStore store;
 	private Grid<InvoiceItem> gridItems;
-	private ResourceBundle resBundle;
 	private InvoiceGrid gridInvoices;
 
 	public OverviewUi(PropertyStore store, OverviewBusiness business) {
 		super();
 		this.business = business;
+		this.store = store;
 		this.user = (User) store.getAttribute(PropertyStore.LOGGED_IN_USER);
 		resBundle = ResourceBundle.getBundle("/application");
 	}
@@ -70,15 +78,28 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 		return right;
 	}
 
-	public VerticalLayout createItemsView(UI ui) {
+	public VerticalLayout createItemsView(final UI ui) {
 		gridItems = new InvoiceItemGrid<>(resBundle);
+		gridItems.setSelectionMode(SelectionMode.MULTI);
 		gridItems.setItems(loadItems());
+		gridItems.addItemClickListener(ev -> {
+
+			final InvoiceItemDialog dlg = new InvoiceItemDialog(resBundle);
+			dlg.setItem(ev.getItem());
+			dlg.addOkClickListener(e -> {
+				business.save(dlg.getItem());
+				gridItems.setItems(loadItems());
+			});
+			dlg.setSelectableArticles(business.getArticles(user));
+			ui.addWindow(dlg);
+
+		});
 
 		Button addItem = new Button("Add Item");
 		addItem.addClickListener(ev -> {
 			final InvoiceItemDialog dlg = new InvoiceItemDialog(resBundle);
 			dlg.addOkClickListener(e -> {
-				business.saveInvoiceItem(dlg.getItem());
+				business.save(dlg.getItem());
 				gridItems.setItems(loadItems());
 			});
 			dlg.setSelectableArticles(business.getArticles(user));
@@ -89,7 +110,7 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 		return left;
 	}
 
-	public HorizontalLayout createHeadView(UI ui) {
+	public HorizontalLayout createHeadView(final UI ui) {
 		Label l1 = new Label(resBundle.getString("label.loggedin"));
 		Label l2 = new Label(
 				String.format("%s %s", user.getPrename(), user.getSurname()));
@@ -110,11 +131,37 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 			ui.addWindow(dlg);
 		});
 
+		Button logoutButton = new Button(resBundle.getString("label.logout"));
+		logoutButton.addClickListener(ev -> {
+			logout(ui);
+		});
+
 		VerticalLayout userId = new VerticalLayout();
 		userId.addComponents(l1, l2);
 		HorizontalLayout head = new HorizontalLayout();
-		head.addComponents(userId, addArticle);
+		head.setWidth(80, Unit.PERCENTAGE);
+		head.addComponents(userId, addArticle, logoutButton);
+		head.setComponentAlignment(userId, Alignment.MIDDLE_LEFT);
+		head.setComponentAlignment(addArticle, Alignment.MIDDLE_RIGHT);
+		head.setComponentAlignment(logoutButton, Alignment.MIDDLE_RIGHT);
 		return head;
+	}
+
+	private void logout(UI ui) {
+
+		store.removeAttribute(PropertyStore.LOGGED_IN_USER);
+		CookieStore cs = new CookieStore();
+		cs.remove(CookieStore.PASSWORD);
+		cs.remove(CookieStore.USER_NAME);
+
+		UserRegister business = new UserRegister(
+				OverviewUi.this.business.getSessionObj(), store, cs);
+
+		LoginUi content = new LoginUi(business);
+		Window w = new Window();
+		w.setContent(content);
+		w.setModal(true);
+		ui.addWindow(w);
 	}
 
 	private List<InvoiceItem> loadItems() {

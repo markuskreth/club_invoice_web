@@ -12,21 +12,32 @@ public class CookieStore {
 	private final Encryptor enc = new Encryptor();
 
 	public synchronized String getValue(String key) {
-		Cookie[] cookies = VaadinService.getCurrentRequest().getCookies();
-		for (Cookie c : cookies) {
-			if (key.equals(c.getName())) {
-				if (key.equals(PASSWORD)) {
-					try {
-						return decrypt(c.getValue());
-					} catch (Exception e) {
-						throw new RuntimeException(e);
-					}
-				} else {
-					return c.getValue();
+
+		Cookie c = findCookie(key);
+		if (c != null) {
+			if (key.equals(PASSWORD)) {
+				try {
+					return decrypt(c.getValue());
+				} catch (Exception e) {
+					throw new RuntimeException(e);
 				}
+			} else {
+				return c.getValue();
 			}
 		}
 		return null;
+	}
+
+	private Cookie findCookie(String key) {
+
+		Cookie[] cookies = VaadinService.getCurrentRequest().getCookies();
+		for (Cookie c : cookies) {
+			if (key.equals(c.getName())) {
+				return c;
+			}
+		}
+		return null;
+
 	}
 
 	public synchronized void store(String key, String value) {
@@ -42,6 +53,15 @@ public class CookieStore {
 		cookie.setMaxAge(Integer.MAX_VALUE);
 		cookie.setPath(VaadinService.getCurrentRequest().getContextPath());
 		VaadinService.getCurrentResponse().addCookie(cookie);
+	}
+
+	public synchronized void remove(String key) {
+		Cookie c = findCookie(key);
+		if (c != null) {
+			c.setValue("");
+			c.setMaxAge(0);
+			VaadinService.getCurrentResponse().addCookie(c);
+		}
 	}
 
 	String encrypt(String strClearText) throws Exception {
