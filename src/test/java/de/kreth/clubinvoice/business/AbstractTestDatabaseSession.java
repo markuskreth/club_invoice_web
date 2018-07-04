@@ -2,6 +2,7 @@ package de.kreth.clubinvoice.business;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.Month;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -11,11 +12,13 @@ import org.junit.jupiter.api.BeforeEach;
 
 import de.kreth.clubinvoice.InvoiceMainUI;
 import de.kreth.clubinvoice.data.Article;
+import de.kreth.clubinvoice.data.User;
 import de.kreth.clubinvoice.testutils.MockPropertyStore;
 
 class AbstractTestDatabaseSession {
 
 	protected static SessionFactory sessionFactory;
+	protected User testUser;
 	protected Session session = null;
 	protected MockPropertyStore propStore;
 
@@ -42,7 +45,22 @@ class AbstractTestDatabaseSession {
 
 		session = sessionFactory.openSession();
 
+		createTestUserInDb();
+
 		propStore = new MockPropertyStore();
+	}
+
+	void createTestUserInDb() {
+		testUser = new User();
+		testUser.setLoginName("test");
+		testUser.setPrename("Test");
+		testUser.setSurname("Test");
+		testUser.setPassword("test");
+		testUser.setChangeDate(LocalDateTime.of(2017, Month.JANUARY, 1, 0, 0));
+		testUser.setCreatedDate(LocalDateTime.of(2017, Month.JANUARY, 1, 0, 0));
+		session.beginTransaction();
+		session.save(testUser);
+		session.getTransaction().commit();
 	}
 
 	protected static SessionFactory createFileDatabaseSession(String filePath) {

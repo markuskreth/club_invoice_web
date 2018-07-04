@@ -3,6 +3,7 @@ package de.kreth.clubinvoice.business;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
@@ -10,6 +11,8 @@ import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
@@ -56,9 +59,20 @@ class InvoiceBusinessTest extends AbstractTestDatabaseSession {
 		inv.setInvoiceDate(LocalDateTime.of(2017, Month.DECEMBER, 1, 0, 0));
 		inv.setInvoiceId("Invoice Decemper 2017");
 		inv.setItems(invoiceItems);
+		inv.setUser(testUser);
 		assertTrue(business.save(inv));
 		for (InvoiceItem i : inv.getItems()) {
-			assertNotNull(i.getInvoice());
+			assertEquals(inv, i.getInvoice());
+		}
+
+		List<InvoiceItem> items = session
+				.createQuery("from " + InvoiceItem.class.getSimpleName(),
+						InvoiceItem.class)
+				.list();
+		assertFalse(items.isEmpty());
+
+		for (InvoiceItem i : items) {
+			assertEquals(inv, i.getInvoice());
 		}
 	}
 
@@ -78,12 +92,45 @@ class InvoiceBusinessTest extends AbstractTestDatabaseSession {
 
 	}
 
+	@Test
+	void testInvoiceNoCreationFirst() {
+		String pattern = "Invoice-{0}";
+		String firstNo = business.createNextInvoiceId(Collections.emptyList(),
+				pattern);
+		assertEquals("Invoice-1", firstNo);
+	}
+
+	@Test
+	void testInvoiceNoCreationSecond() {
+		String pattern = "Invoice-{0}";
+		Invoice first = new Invoice();
+		first.setInvoiceId("Invoice-1");
+		String nextNo = business.createNextInvoiceId(Arrays.asList(first),
+				pattern);
+		assertEquals("Invoice-2", nextNo);
+		Invoice onehunderedFifth = new Invoice();
+		onehunderedFifth.setInvoiceId("Invoice-105");
+
+		nextNo = business.createNextInvoiceId(
+				Arrays.asList(onehunderedFifth, first), pattern);
+		assertEquals("Invoice-106", nextNo);
+
+	}
+
+	/**
+	 * For creation of Database Schema
+	 * 
+	 * @param args
+	 * @throws Exception
+	 */
 	public static void main(String[] args) throws Exception {
 		SessionFactory factory = InvoiceBusinessTest
 				.createFileDatabaseSession("./testdatabase");
 		InvoiceBusinessTest invBusi = new InvoiceBusinessTest();
-
 		invBusi.session = factory.openSession();
+
+		invBusi.createTestUserInDb();
+
 		invBusi.propStore = new MockPropertyStore();
 		invBusi.setUp();
 		invBusi.testSave();

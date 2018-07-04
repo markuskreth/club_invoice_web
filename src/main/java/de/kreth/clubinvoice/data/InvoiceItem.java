@@ -39,7 +39,7 @@ public class InvoiceItem {
 	private LocalDateTime changeDate;
 
 	@ManyToOne(optional = true)
-	@JoinColumn(name = "invoice_id", nullable = true, updatable = false)
+	@JoinColumn(name = "invoice_id", nullable = true, updatable = true)
 	private Invoice invoice;
 
 	@Column(name = "sum_price")

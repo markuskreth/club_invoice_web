@@ -49,6 +49,8 @@ class UserRegisterTest extends AbstractTestDatabaseSession {
 
 	@Test
 	void testSaveUserAndLoadAll() {
+
+		assertEquals(1, userBusiness.loadAll().size());
 		insertUsers(2);
 		Map<String, Object> values = propStore.getValues();
 		assertEquals(1, values.size());
@@ -57,12 +59,12 @@ class UserRegisterTest extends AbstractTestDatabaseSession {
 		verify(cookies, times(2)).store(eq(CookieStore.USER_NAME), anyString());
 		verify(cookies, times(2)).store(eq(CookieStore.PASSWORD), anyString());
 		List<User> allUsers = userBusiness.loadAll();
-		assertEquals(2, allUsers.size());
+		assertEquals(3, allUsers.size());
 		Set<Integer> userIds = new HashSet<>();
 		for (User u : allUsers) {
 			userIds.add(u.getId());
 		}
-		assertEquals(2, userIds.size());
+		assertEquals(3, userIds.size());
 	}
 
 	@Test

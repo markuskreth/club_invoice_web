@@ -1,5 +1,9 @@
 package de.kreth.clubinvoice.business;
 
+import java.text.MessageFormat;
+import java.util.List;
+import java.util.Optional;
+
 import org.hibernate.Session;
 
 import de.kreth.clubinvoice.data.Invoice;
@@ -15,14 +19,34 @@ public class InvoiceBusiness extends AbstractBusiness<Invoice> {
 	public boolean save(Invoice obj) {
 
 		sessionObj.beginTransaction();
-		sessionObj.save(obj);
 		for (InvoiceItem i : obj.getItems()) {
 			i.setInvoice(obj);
-			sessionObj.save(i);
+			// sessionObj.saveOrUpdate(i);
 		}
+		sessionObj.save(obj);
 
 		sessionObj.getTransaction().commit();
 		return true;
+	}
+
+	public String createNextInvoiceId(List<Invoice> invoices, String pattern) {
+
+		Optional<Invoice> latest = invoices.stream().max((o1, o2) -> {
+			return o1.getInvoiceId().compareTo(o2.getInvoiceId());
+		});
+
+		int lastInvoiceId = 0;
+
+		if (latest.isPresent()) {
+			String old = latest.get().getInvoiceId();
+			int start = pattern.indexOf("{0}");
+			lastInvoiceId = Integer.parseInt(old.substring(start));
+		}
+
+		lastInvoiceId++;
+
+		String invoiceNo = MessageFormat.format(pattern, lastInvoiceId);
+		return invoiceNo;
 	}
 
 }

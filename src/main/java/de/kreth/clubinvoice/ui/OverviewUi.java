@@ -71,7 +71,16 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 
 		Button createInvoice = new Button("Create Invoice");
 		createInvoice.addClickListener(ev -> {
-			Notification.show("Create Invoice");
+
+			String invoiceNo = business.createNextInvoiceId(user,
+					resBundle.getString("caption.invoice.pattern"));
+			Set<InvoiceItem> selectedItems = gridItems.getSelectedItems();
+			Invoice inv = new Invoice();
+			inv.setInvoiceId(invoiceNo);
+			inv.setInvoiceDate(LocalDateTime.now());
+			inv.setItems(selectedItems);
+			inv.setUser(user);
+			business.save(inv);
 		});
 		VerticalLayout right = new VerticalLayout();
 		right.addComponents(createInvoice, gridInvoices);

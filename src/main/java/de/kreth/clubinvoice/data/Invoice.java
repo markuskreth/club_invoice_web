@@ -2,12 +2,15 @@ package de.kreth.clubinvoice.data;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -23,10 +26,11 @@ public class Invoice {
 	private String invoiceId;
 	private LocalDateTime invoiceDate;
 
-	@OneToMany
+	@OneToMany(mappedBy = "invoice")
 	private List<InvoiceItem> items;
 
 	@ManyToOne
+	@JoinColumn(name = "user_id", nullable = false, updatable = false)
 	private User user;
 
 	public int getId() {
@@ -57,8 +61,8 @@ public class Invoice {
 		return items;
 	}
 
-	public void setItems(List<InvoiceItem> items) {
-		this.items = items;
+	public void setItems(Collection<InvoiceItem> items) {
+		this.items = new ArrayList<>(items);
 	}
 
 	public User getUser() {
@@ -76,4 +80,11 @@ public class Invoice {
 		return items.stream().map(i -> i.getSumPrice()).reduce(BigDecimal.ZERO,
 				BigDecimal::add);
 	}
+
+	@Override
+	public String toString() {
+		return "Invoice [invoiceId=" + invoiceId + ", itemscount="
+				+ items.size() + ", sum=" + getSum() + "]";
+	}
+
 }

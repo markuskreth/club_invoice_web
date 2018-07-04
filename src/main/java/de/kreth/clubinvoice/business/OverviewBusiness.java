@@ -38,8 +38,20 @@ public class OverviewBusiness {
 		return invoiceBusiness.loadAll(i -> i.getUser().equals(user));
 	}
 
-	public void saveInvoiceItem(InvoiceItem item) {
+	public void save(InvoiceItem item) {
 		itemBusiness.save(item);
+	}
+
+	public void save(Invoice inv) {
+		invoiceBusiness.save(inv);
+	}
+
+	public Session getSessionObj() {
+		return itemBusiness.getSessionObj();
+	}
+
+	public String createNextInvoiceId(User user, String pattern) {
+		return invoiceBusiness.createNextInvoiceId(getInvoices(user), pattern);
 	}
 
 }
