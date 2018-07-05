@@ -25,6 +25,7 @@ import de.kreth.clubinvoice.data.Invoice;
 import de.kreth.clubinvoice.data.InvoiceItem;
 import de.kreth.clubinvoice.data.User;
 import de.kreth.clubinvoice.ui.components.ArticleDialog;
+import de.kreth.clubinvoice.ui.components.InvoiceDialog;
 import de.kreth.clubinvoice.ui.components.InvoiceGrid;
 import de.kreth.clubinvoice.ui.components.InvoiceItemDialog;
 import de.kreth.clubinvoice.ui.components.InvoiceItemGrid;
@@ -54,7 +55,7 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 
 		VerticalLayout left = createItemsView(ui);
 
-		VerticalLayout right = createInvoicesView();
+		VerticalLayout right = createInvoicesView(ui);
 
 		HorizontalLayout main = new HorizontalLayout();
 
@@ -65,9 +66,16 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 		ui.setContent(this);
 	}
 
-	public VerticalLayout createInvoicesView() {
+	public VerticalLayout createInvoicesView(final UI ui) {
 		gridInvoices = new InvoiceGrid();
 		gridInvoices.setItems(loadInvoices());
+		gridInvoices.addItemClickListener(itemEv -> {
+
+			InvoiceDialog dlg = new InvoiceDialog(resBundle);
+			dlg.setInvoice(itemEv.getItem());
+			dlg.setOkVisible(false);
+			ui.addWindow(dlg);
+		});
 
 		Button createInvoice = new Button("Create Invoice");
 		createInvoice.addClickListener(ev -> {
@@ -75,12 +83,20 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 			String invoiceNo = business.createNextInvoiceId(user,
 					resBundle.getString("caption.invoice.pattern"));
 			Set<InvoiceItem> selectedItems = gridItems.getSelectedItems();
-			Invoice inv = new Invoice();
+			final Invoice inv = new Invoice();
 			inv.setInvoiceId(invoiceNo);
 			inv.setInvoiceDate(LocalDateTime.now());
 			inv.setItems(selectedItems);
 			inv.setUser(user);
-			business.save(inv);
+			InvoiceDialog dlg = new InvoiceDialog(resBundle);
+			dlg.setInvoice(inv);
+			dlg.addOkClickListener(okEv -> {
+				business.save(inv);
+				gridItems.setItems(loadItems());
+				gridInvoices.setItems(loadInvoices());
+			});
+			ui.addWindow(dlg);
+
 		});
 		VerticalLayout right = new VerticalLayout();
 		right.addComponents(createInvoice, gridInvoices);

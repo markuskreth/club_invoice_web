@@ -1,11 +1,8 @@
 package de.kreth.clubinvoice.ui.components;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 import com.vaadin.shared.Registration;
 import com.vaadin.ui.Button;
@@ -15,7 +12,6 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
-import de.kreth.clubinvoice.data.Article;
 import de.kreth.clubinvoice.data.Invoice;
 import de.kreth.clubinvoice.data.InvoiceItem;
 
@@ -24,19 +20,19 @@ public class InvoiceDialog extends Window {
 	private static final long serialVersionUID = -8997281625128779760L;
 	private TextField invoiceNo;
 	private TextField invoiceDate;
-	private InvoiceItemGrid<SelectableInvoiceItem> itemGrid;
+	private InvoiceItemGrid<InvoiceItem> itemGrid;
 	private Button okButton;
-	private Invoice invoice;
-	private List<SelectableInvoiceItem> items;
 
 	public InvoiceDialog(ResourceBundle resBundle) {
 		invoiceNo = new TextField();
 		invoiceNo.setCaption(resBundle.getString("caption.invoice.invoiceno"));
+		invoiceNo.setReadOnly(true);
 		invoiceDate = new TextField();
 		invoiceDate
 				.setCaption(resBundle.getString("caption.invoice.invoicedate"));
+		invoiceDate.setReadOnly(true);
+
 		itemGrid = new InvoiceItemGrid<>(resBundle);
-		itemGrid.addColumn(SelectableInvoiceItem::isSelected).setCaption("");
 
 		okButton = new Button(resBundle.getString("label.ok"), ev -> close());
 		Button cancel = new Button(resBundle.getString("label.cancel"),
@@ -47,102 +43,25 @@ public class InvoiceDialog extends Window {
 		VerticalLayout vLayout = new VerticalLayout();
 		vLayout.addComponents(invoiceNo, invoiceDate, itemGrid, btnLayout);
 		setContent(vLayout);
-		invoice = new Invoice();
-		items = new ArrayList<>();
+		Invoice invoice = new Invoice();
+		invoice.setInvoiceId("");
+		invoice.setInvoiceDate(LocalDateTime.now());
+		invoice.setItems(Collections.emptyList());
+		setInvoice(invoice);
 	}
 
 	public Registration addOkClickListener(ClickListener listener) {
 		return okButton.addClickListener(listener);
 	}
 
-	public void setItems(List<InvoiceItem> items) {
-		this.items = items.stream().map(i -> new SelectableInvoiceItem(i))
-				.collect(Collectors.toList());
+	public void setInvoice(Invoice invoice) {
+		invoiceNo.setValue(invoice.getInvoiceId());
+		invoiceDate.setValue(invoice.getInvoiceDate().toString());
+		itemGrid.setItems(invoice.getItems());
 	}
 
-	class SelectableInvoiceItem extends InvoiceItem {
-		private boolean selected;
-		private final InvoiceItem original;
-
-		public SelectableInvoiceItem(InvoiceItem original) {
-			this.original = original;
-		}
-
-		public boolean isSelected() {
-			return selected;
-		}
-
-		public void setSelected(boolean selected) {
-			this.selected = selected;
-		}
-
-		public int getId() {
-			return original.getId();
-		}
-
-		public void setId(int id) {
-			original.setId(id);
-		}
-
-		public LocalDateTime getStart() {
-			return original.getStart();
-		}
-
-		public void setStart(LocalDateTime start) {
-			original.setStart(start);
-		}
-
-		public LocalDateTime getEnd() {
-			return original.getEnd();
-		}
-
-		public void setEnd(LocalDateTime end) {
-			original.setEnd(end);
-		}
-
-		public Article getArticle() {
-			return original.getArticle();
-		}
-
-		public void setArticle(Article article) {
-			original.setArticle(article);
-		}
-
-		public BigDecimal getSumPrice() {
-			return original.getSumPrice();
-		}
-
-		public Invoice getInvoice() {
-			return original.getInvoice();
-		}
-
-		public void setInvoice(Invoice invoice) {
-			original.setInvoice(invoice);
-		}
-
-		public LocalDateTime getCreatedDate() {
-			return original.getCreatedDate();
-		}
-
-		public void setCreatedDate(LocalDateTime createdDate) {
-			original.setCreatedDate(createdDate);
-		}
-
-		public LocalDateTime getChangeDate() {
-			return original.getChangeDate();
-		}
-
-		public void setChangeDate(LocalDateTime changeDate) {
-			original.setChangeDate(changeDate);
-		}
-
-		public String toString() {
-			return original.toString();
-		}
-
-		public long getDurationInMinutes() {
-			return original.getDurationInMinutes();
-		}
-
+	public void setOkVisible(boolean visible) {
+		okButton.setVisible(visible);
 	}
+
 }
