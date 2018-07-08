@@ -67,7 +67,7 @@ public class InvoiceMainUI extends UI {
 			content = new LoginUi(business);
 		} else {
 			OverviewBusiness overViewBusiness = new OverviewBusiness(sessionObj,
-					store);
+					store, cookies);
 			content = new OverviewUi(store, overViewBusiness);
 		}
 

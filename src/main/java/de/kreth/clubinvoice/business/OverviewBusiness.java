@@ -14,11 +14,14 @@ public class OverviewBusiness {
 	private final ArticleBusiness articleBusiness;
 	private InvoiceItemBusiness itemBusiness;
 	private InvoiceBusiness invoiceBusiness;
+	private UserRegister userBusiness;
 
-	public OverviewBusiness(Session sessionObj, PropertyStore propStore) {
+	public OverviewBusiness(Session sessionObj, PropertyStore propStore,
+			CookieStore cookieStore) {
 		articleBusiness = new ArticleBusiness(sessionObj, propStore);
 		itemBusiness = new InvoiceItemBusiness(sessionObj, propStore);
 		invoiceBusiness = new InvoiceBusiness(sessionObj, propStore);
+		userBusiness = new UserRegister(sessionObj, propStore, cookieStore);
 	}
 
 	public void createArticle(Article a) {
@@ -53,6 +56,10 @@ public class OverviewBusiness {
 
 	public String createNextInvoiceId(User user, String pattern) {
 		return invoiceBusiness.createNextInvoiceId(getInvoices(user), pattern);
+	}
+
+	public void save(User user) {
+		userBusiness.save(user);
 	}
 
 }

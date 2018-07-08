@@ -2,11 +2,14 @@ package de.kreth.clubinvoice.data;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -34,6 +37,9 @@ public class User {
 
 	@Column(name = "updated")
 	private LocalDateTime changeDate;
+
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+	private UserBank bank;
 
 	public int getId() {
 		return id;
@@ -73,6 +79,22 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public UserBank getBank() {
+		return bank;
+	}
+
+	public void setBank(UserBank bank) {
+		this.bank = bank;
+		if (bank.getUser() == null) {
+			bank.setUser(this);
+		} else {
+			if (bank.getUser().equals(this)) {
+				throw new IllegalArgumentException(
+						"Bank already set, but other than this.");
+			}
+		}
 	}
 
 	public LocalDateTime getCreatedDate() {

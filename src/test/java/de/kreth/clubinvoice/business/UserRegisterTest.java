@@ -5,38 +5,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import de.kreth.clubinvoice.data.User;
 
-class UserRegisterTest extends AbstractTestDatabaseSession {
-
-	private static LocalDateTime now;
-	CookieStore cookies;
-	private UserRegister userBusiness;
-
-	@BeforeAll
-	static void createNow() {
-		now = LocalDateTime.now();
-	}
-
-	@BeforeEach
-	void setUp() throws Exception {
-		cookies = mock(CookieStore.class);
-		userBusiness = new UserRegister(session, propStore, cookies);
-	}
+class UserRegisterTest extends UserTestBase {
 
 	@Test
 	void testLogin() {
@@ -87,25 +68,6 @@ class UserRegisterTest extends AbstractTestDatabaseSession {
 
 		assertTrue(userBusiness.login(user.getLoginName(), user.getPassword()));
 		assertTrue(userBusiness.isLoggedIn());
-	}
-
-	public void insertUsers(final int count) {
-		for (int i = 1; i < count + 1; i++) {
-			User u1 = createUserIncrement(i);
-			userBusiness.save(u1);
-			assertTrue(u1.getId() > 0);
-		}
-	}
-
-	public User createUserIncrement(int i) {
-		User u1 = new User();
-		u1.setLoginName("test_" + i);
-		u1.setPrename("Test_" + i);
-		u1.setSurname("Test_" + i);
-		u1.setPassword("test_" + i);
-		u1.setChangeDate(now);
-		u1.setCreatedDate(now);
-		return u1;
 	}
 
 }

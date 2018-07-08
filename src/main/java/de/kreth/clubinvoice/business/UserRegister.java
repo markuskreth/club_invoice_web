@@ -64,4 +64,8 @@ public class UserRegister extends AbstractBusiness<User> {
 
 		return user != null;
 	}
+
+	public CookieStore getCookieStore() {
+		return cookies;
+	}
 }

@@ -49,7 +49,8 @@ public class LoginUi extends VerticalLayout implements InvoiceUi {
 			if (business.login(login, password)) {
 
 				OverviewBusiness overviewBusiness = new OverviewBusiness(
-						business.getSessionObj(), business.getStore());
+						business.getSessionObj(), business.getStore(),
+						business.getCookieStore());
 				OverviewUi overview = new OverviewUi(business.getStore(),
 						overviewBusiness);
 				overview.setContent(ui, vaadinRequest);

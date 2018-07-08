@@ -15,14 +15,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import de.kreth.clubinvoice.data.Article;
 import de.kreth.clubinvoice.data.Invoice;
 import de.kreth.clubinvoice.data.InvoiceItem;
-import de.kreth.clubinvoice.testutils.MockPropertyStore;
 
 class InvoiceBusinessTest extends AbstractTestDatabaseSession {
 
@@ -117,24 +115,4 @@ class InvoiceBusinessTest extends AbstractTestDatabaseSession {
 
 	}
 
-	/**
-	 * For creation of Database Schema
-	 * 
-	 * @param args
-	 * @throws Exception
-	 */
-	public static void main(String[] args) throws Exception {
-		SessionFactory factory = InvoiceBusinessTest
-				.createFileDatabaseSession("./testdatabase");
-		InvoiceBusinessTest invBusi = new InvoiceBusinessTest();
-		invBusi.session = factory.openSession();
-
-		invBusi.createTestUserInDb();
-
-		invBusi.propStore = new MockPropertyStore();
-		invBusi.setUp();
-		invBusi.testSave();
-		invBusi.session.close();
-		factory.close();
-	}
 }

@@ -13,8 +13,8 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
-import de.kreth.clubinvoice.business.Business;
 import de.kreth.clubinvoice.business.OverviewBusiness;
+import de.kreth.clubinvoice.business.UserRegister;
 import de.kreth.clubinvoice.data.User;
 
 public class UserRegisterUi extends VerticalLayout implements InvoiceUi {
@@ -26,13 +26,13 @@ public class UserRegisterUi extends VerticalLayout implements InvoiceUi {
 	private TextField prename;
 	private TextField surname;
 	private Button button;
-	private final Business<User> business;
+	private final UserRegister business;
 
 	private PasswordField passwordFieldVerification;
 
 	private ResourceBundle resBundle;
 
-	public UserRegisterUi(Business<User> business) {
+	public UserRegisterUi(UserRegister business) {
 		this.business = business;
 		this.resBundle = ResourceBundle.getBundle("/application");
 	}
@@ -66,7 +66,8 @@ public class UserRegisterUi extends VerticalLayout implements InvoiceUi {
 			if (inputIsValid()) {
 				storeUserData();
 				OverviewBusiness overViewBusiness = new OverviewBusiness(
-						business.getSessionObj(), business.getStore());
+						business.getSessionObj(), business.getStore(),
+						business.getCookieStore());
 				OverviewUi overview = new OverviewUi(business.getStore(),
 						overViewBusiness);
 				overview.setContent(ui, vaadinRequest);

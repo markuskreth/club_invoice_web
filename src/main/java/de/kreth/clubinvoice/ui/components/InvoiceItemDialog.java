@@ -63,6 +63,7 @@ public class InvoiceItemDialog extends Window {
 		endTimeField = new TextField();
 		endTimeField.setCaption(resBundle.getString("caption.invoiceitem.end"));
 		articleBox = new ComboBox<>();
+		articleBox.setCaption(resBundle.getString("caption.articles"));
 		articleBox.setItemCaptionGenerator(Article::getTitle);
 		articleBox.addSelectionListener(ev -> {
 			item.setArticle(ev.getSelectedItem().orElse(item.getArticle()));
@@ -121,8 +122,7 @@ public class InvoiceItemDialog extends Window {
 			return false;
 		}
 		BigDecimal sumPrice = item.getSumPrice();
-		if (sumPrice == null
-				|| sumPrice.doubleValue() <= 0) {
+		if (sumPrice == null || sumPrice.doubleValue() <= 0) {
 			Notification.show(
 					resBundle.getString(
 							"message.invoiceitem.allfieldsmustbeset"),

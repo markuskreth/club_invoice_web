@@ -29,6 +29,7 @@ import de.kreth.clubinvoice.ui.components.InvoiceDialog;
 import de.kreth.clubinvoice.ui.components.InvoiceGrid;
 import de.kreth.clubinvoice.ui.components.InvoiceItemDialog;
 import de.kreth.clubinvoice.ui.components.InvoiceItemGrid;
+import de.kreth.clubinvoice.ui.components.UserDetailsDialog;
 
 public class OverviewUi extends VerticalLayout implements InvoiceUi {
 
@@ -54,20 +55,26 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 		HorizontalLayout head = createHeadView(ui);
 
 		VerticalLayout left = createItemsView(ui);
+		left.setSizeFull();
 
 		VerticalLayout right = createInvoicesView(ui);
+		right.setSizeFull();
 
 		HorizontalLayout main = new HorizontalLayout();
-
+		main.setWidth(80, Unit.PERCENTAGE);
 		main.addComponents(left, right);
 
 		addComponents(head, main);
 
 		ui.setContent(this);
+		if (user.getBank() == null) {
+
+		}
 	}
 
 	public VerticalLayout createInvoicesView(final UI ui) {
-		gridInvoices = new InvoiceGrid();
+		gridInvoices = new InvoiceGrid(resBundle);
+		gridInvoices.setSizeFull();
 		gridInvoices.setItems(loadInvoices());
 		gridInvoices.addItemClickListener(itemEv -> {
 
@@ -76,8 +83,10 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 			dlg.setOkVisible(false);
 			ui.addWindow(dlg);
 		});
+		gridInvoices.setStyleName("bordered");
 
-		Button createInvoice = new Button("Create Invoice");
+		Button createInvoice = new Button(
+				resBundle.getString("caption.invoice.create"));
 		createInvoice.addClickListener(ev -> {
 
 			String invoiceNo = business.createNextInvoiceId(user,
@@ -99,12 +108,14 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 
 		});
 		VerticalLayout right = new VerticalLayout();
+		right.setStyleName("bordered");
 		right.addComponents(createInvoice, gridInvoices);
 		return right;
 	}
 
 	public VerticalLayout createItemsView(final UI ui) {
 		gridItems = new InvoiceItemGrid<>(resBundle);
+		gridItems.setSizeFull();
 		gridItems.setSelectionMode(SelectionMode.MULTI);
 		gridItems.setItems(loadItems());
 		gridItems.addItemClickListener(ev -> {
@@ -119,8 +130,10 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 			ui.addWindow(dlg);
 
 		});
+		gridItems.setStyleName("bordered");
 
-		Button addItem = new Button("Add Item");
+		Button addItem = new Button(
+				resBundle.getString("caption.invoiceitem.add"));
 		addItem.addClickListener(ev -> {
 			final InvoiceItemDialog dlg = new InvoiceItemDialog(resBundle);
 			dlg.addOkClickListener(e -> {
@@ -132,6 +145,7 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 		});
 		VerticalLayout left = new VerticalLayout();
 		left.addComponents(addItem, gridItems);
+		left.setStyleName("bordered");
 		return left;
 	}
 
@@ -161,11 +175,23 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 			logout(ui);
 		});
 
+		Button userDetail = new Button("Benutzer Details", ev -> {
+			UserDetailsDialog dlg = new UserDetailsDialog(resBundle);
+			dlg.setModal(true);
+			dlg.setUser(user);
+			dlg.addOkClickListener(evOkClicked -> {
+				business.save(dlg.getUser());
+			});
+
+			dlg.center();
+			ui.addWindow(dlg);
+		});
+
 		VerticalLayout userId = new VerticalLayout();
 		userId.addComponents(l1, l2);
 		HorizontalLayout head = new HorizontalLayout();
 		head.setWidth(80, Unit.PERCENTAGE);
-		head.addComponents(userId, addArticle, logoutButton);
+		head.addComponents(userId, addArticle, userDetail, logoutButton);
 		head.setComponentAlignment(userId, Alignment.MIDDLE_LEFT);
 		head.setComponentAlignment(addArticle, Alignment.MIDDLE_RIGHT);
 		head.setComponentAlignment(logoutButton, Alignment.MIDDLE_RIGHT);
