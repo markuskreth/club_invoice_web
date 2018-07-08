@@ -1,4 +1,4 @@
-CREATE TABLE `clubinvoice`.`invoice_item` (
+CREATE TABLE `clubinvoice`.`INVOICE_ITEM` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `start` DATETIME NOT NULL,
   `end` VARCHAR(45) NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE `clubinvoice`.`invoice_item` (
   INDEX `fk_invoice_item_1_idx` (`article_id` ASC),
   CONSTRAINT `fk_invoice_item_1`
     FOREIGN KEY (`article_id`)
-    REFERENCES `clubinvoice`.`article` (`id`)
+    REFERENCES `clubinvoice`.`ARTICLE` (`id`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION);
 

@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="mtv_gross_buchholz" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ba0e72ff-086d-4045-a69c-ff65b323c201">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Invoice2"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="380"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="606"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="INVOICE_NO" class="java.lang.String">
+		<fieldDescription><![CDATA[Invoice No]]></fieldDescription>
+	</field>
+	<field name="INVOICE_DATE" class="java.time.LocalDateTime">
+		<fieldDescription><![CDATA[Invoice date]]></fieldDescription>
+	</field>
+	<field name="INVOICE_SUM" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Invoice sum]]></fieldDescription>
+	</field>
+	<field name="USER_PRENAME" class="java.lang.String">
+		<fieldDescription><![CDATA[User Prename]]></fieldDescription>
+	</field>
+	<field name="USER_SURNAME" class="java.lang.String">
+		<fieldDescription><![CDATA[User Surname]]></fieldDescription>
+	</field>
+	<field name="ARTICLE_TITLE" class="java.lang.String">
+		<fieldDescription><![CDATA[Article Title]]></fieldDescription>
+	</field>
+	<field name="ARTICLE_DESCRIPTION" class="java.lang.String">
+		<fieldDescription><![CDATA[Article Description]]></fieldDescription>
+	</field>
+	<field name="ARTICLE_PRICE_PER_HOUR" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Article Price per Hour]]></fieldDescription>
+	</field>
+	<field name="ITEM_START" class="java.time.LocalDateTime">
+		<fieldDescription><![CDATA[Item Start]]></fieldDescription>
+	</field>
+	<field name="ITEM_END" class="java.time.LocalDateTime">
+		<fieldDescription><![CDATA[Item End]]></fieldDescription>
+	</field>
+	<field name="ITEM_DURATION_MINUTES" class="java.lang.Long">
+		<fieldDescription><![CDATA[Item Duration in Minutes]]></fieldDescription>
+	</field>
+	<field name="ITEM_SUM" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[Item Sum]]></fieldDescription>
+	</field>
+	<field name="USER_ADRESS1" class="java.lang.String"/>
+	<field name="USER_ADRESS2" class="java.lang.String"/>
+	<field name="USER_ZIPCODE" class="java.lang.String"/>
+	<field name="USER_CITY" class="java.lang.String"/>
+	<field name="BANK_NAME" class="java.lang.String"/>
+	<field name="BANK_BIC" class="java.lang.String"/>
+	<field name="BANK_IBAN" class="java.lang.String"/>
+	<variable name="ITEM_SUM1" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{ITEM_SUM}]]></variableExpression>
+	</variable>
+	<variable name="ITEM_SUM2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{ITEM_SUM}]]></variableExpression>
+	</variable>
+	<group name="ARTICLE_TITLE">
+		<groupExpression><![CDATA[$F{ARTICLE_TITLE}]]></groupExpression>
+	</group>
+	<group name="ARTICLE_DESCRIPTION">
+		<groupExpression><![CDATA[$F{ARTICLE_DESCRIPTION}]]></groupExpression>
+	</group>
+	<group name="ARTICLE_PRICE_PER_HOUR">
+		<groupExpression><![CDATA[$F{ARTICLE_PRICE_PER_HOUR}]]></groupExpression>
+	</group>
+	<group name="ITEM_START">
+		<groupExpression><![CDATA[$F{ITEM_START}]]></groupExpression>
+	</group>
+	<group name="ITEM_END">
+		<groupExpression><![CDATA[$F{ITEM_END}]]></groupExpression>
+	</group>
+	<group name="ITEM_DURATION_MINUTES">
+		<groupExpression><![CDATA[$F{ITEM_DURATION_MINUTES}]]></groupExpression>
+	</group>
+	<group name="ITEM_SUM">
+		<groupExpression><![CDATA[$F{ITEM_SUM}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="89" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="25" width="556" height="20" uuid="38e32426-ceb9-40ee-af7a-ab84b566d96b"/>
+				<textElement textAlignment="Center">
+					<font fontName="Bitstream Charter" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[MTV Groß-Buchholz von 1898 e.V.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="37" width="556" height="15" uuid="88043ee4-db2c-43ca-96f2-fa078918d134">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Rotekreuzstraße 25 - 30627 Hannover]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="54" width="556" height="21" uuid="762705d5-be9c-476f-b2ff-dc07cab925f9"/>
+				<textElement textAlignment="Center">
+					<font size="16" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Monatsabrechnung Übungsleitervergütung
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="376" y="0" width="103" height="10" uuid="7927de72-6eab-475d-821b-5267f0fea03e">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Lfd Nr. Rechnungsbuch:
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="376" y="12" width="103" height="10" uuid="85798559-a680-4640-a1c4-2283b1304317"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Datum Rechnungsbuch:
+]]></text>
+			</staticText>
+			<line>
+				<reportElement x="474" y="8" width="81" height="1" uuid="b5037544-4ab0-4b5c-a92d-4191bba0a0b1">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="474" y="20" width="81" height="1" uuid="788013ff-1f4a-4420-b4b6-3dd9e405eea2">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+			</line>
+			<staticText>
+				<reportElement x="0" y="70" width="550" height="10" uuid="6e3eed4f-1c4d-4383-a358-c58f73d4d103">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<text><![CDATA[zur Vorlage bei der Landeshauptstadt Hannover]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="76" width="550" height="10" uuid="195e05ca-09bb-4890-8444-6cba59da2388">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<text><![CDATA[zur Inanspruchnahme eines städtischen Zuschusses zu den Personalkosten von Sportübungsleitern]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="219" splitType="Stretch">
+			<line>
+				<reportElement x="3" y="79" width="550" height="1" uuid="0da2201f-3619-4a24-977a-eccb4f05b6f9">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+			</line>
+			<staticText>
+				<reportElement x="30" y="36" width="230" height="12" uuid="db1896f4-7c34-4f30-91da-ca8155c4528c">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Vor- u. Zuname des Übungsleiters/ der Übungsleiterin]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="30" y="22" width="230" height="13" uuid="8363dd3c-d88b-4f6c-ba0b-4ef4b974f43e"/>
+				<box>
+					<pen lineWidth="0.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{USER_PRENAME}+$F{USER_SURNAME}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="321" y="35" width="230" height="12" uuid="c1efbd82-4ef0-48fd-92cd-902880a56ab1">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Anschrift]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="321" y="22" width="230" height="13" uuid="3c457055-6dc3-47ed-8cff-3ff8ffec0a53"/>
+				<box>
+					<pen lineWidth="0.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{USER_ADRESS1} + ", " + $F{USER_ZIPCODE} + " " + $F{USER_CITY}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="8" y="127" width="170" height="15" uuid="90c35b76-5cae-483a-a831-a8b5e635eda3">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<box topPadding="1">
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Bankverbindung]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="8" y="107" width="170" height="20" uuid="0966a793-6dd3-4438-8482-1702dfe5b1e9">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{BANK_NAME}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="193" y="127" width="170" height="15" uuid="c5ad223c-9226-4b57-9126-d177d16e461e">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<box topPadding="1">
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[IBAN]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="193" y="107" width="170" height="20" uuid="1065c5a7-69b5-4f45-86a0-011a6901df70">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{BANK_IBAN}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="382" y="127" width="170" height="15" uuid="95383888-5270-4792-8427-906608b60200">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<box topPadding="1">
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[BIC]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="382" y="107" width="170" height="20" uuid="81c06fa2-8a43-43c0-9cfb-99ae5ba347ab">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{BANK_BIC}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="65" y="161" width="289" height="15" uuid="87ccf811-b309-4bc1-a3e9-96249fa1b372">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Abrechnung für Monat: ]]></text>
+			</staticText>
+			<textField pattern="MMMM yyyy">
+				<reportElement x="200" y="157" width="154" height="15" uuid="94289187-33c3-4d31-9d8f-aad1f6f3a809">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ITEM_START}.format( java.time.format.DateTimeFormatter.ofPattern("MMMM uuuu") )]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="120" y="171" width="210" height="15" uuid="0cf5ebb2-49f1-4e41-8ab9-ea99cc0226c1">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Die Vergütung je Stunde beträgt: ]]></text>
+			</staticText>
+			<textField pattern="####0.00 EUR">
+				<reportElement x="290" y="171" width="64" height="15" uuid="db6a26fc-6e5a-4907-8a99-5da571c58328">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ARTICLE_PRICE_PER_HOUR}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="50" width="556" height="20" uuid="15d2af95-d725-45ed-a831-0d24bb6d0bcd"/>
+				<textElement textAlignment="Center">
+					<font fontName="Bitstream Charter" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[MTV Groß-Buchholz von 1898 e.V.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="64" width="556" height="15" uuid="fd9ce5b1-285b-490a-ba7e-e5c62d8e6ef6">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Rotekreuzstraße 25 - 30627 Hannover]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="91" width="556" height="21" uuid="1f970562-1c03-41e3-b620-d8aa59854919"/>
+				<textElement textAlignment="Center">
+					<font size="16" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Monatsabrechnung Übungsleitervergütung
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="376" y="0" width="103" height="10" uuid="0aa6d945-cd92-4379-84ff-94fbff324671">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Lfd Nr. Rechnungsbuch:
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="376" y="12" width="103" height="10" uuid="e5988ed8-f942-4c26-af9c-849384c4f40a"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Datum Rechnungsbuch:
+]]></text>
+			</staticText>
+			<line>
+				<reportElement x="474" y="8" width="81" height="1" uuid="cdff27f8-4347-4567-859b-120427d44708">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="474" y="20" width="81" height="1" uuid="fee07b0c-d2f6-4221-aa03-effc9b990329">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+			</line>
+			<staticText>
+				<reportElement x="0" y="142" width="550" height="10" uuid="23a7c891-f0a5-4a3b-85ba-ca94eb2d7d59">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<text><![CDATA[zur Vorlage bei der Landeshauptstadt Hannover]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="149" width="550" height="10" uuid="ccc5ccee-0ad8-4354-a920-38d97d539e20">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<text><![CDATA[zur Inanspruchnahme eines städtischen Zuschusses zu den Personalkosten von Sportübungsleitern]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="31" splitType="Stretch">
+			<staticText>
+				<reportElement x="10" y="1" width="100" height="30" uuid="d68365ff-e935-417b-a209-9c9f33245c96">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="eaf86ceb-69c8-4806-932c-d5175e9318c1"/>
+				</reportElement>
+				<text><![CDATA[ARTICLE_TITLE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="110" y="0" width="100" height="30" uuid="a4b7f758-ac69-4638-8cb8-ef586cbabbe6">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="aefb51e0-3482-4d43-8586-b00fd9c4bed1"/>
+				</reportElement>
+				<text><![CDATA[ITEM_START]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="210" y="0" width="100" height="30" uuid="ddc1ec32-6d07-4e00-a7ce-5c86b814dfec">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d61cd2ce-beaa-4a89-b660-f95abf03ca29"/>
+				</reportElement>
+				<text><![CDATA[ITEM_START]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="310" y="1" width="100" height="30" uuid="403a8987-b1f3-4f87-870d-22927b4bf3ce">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="88542f64-984c-42f2-8b01-7bab81f36fc0"/>
+				</reportElement>
+				<text><![CDATA[ITEM_END]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="410" y="1" width="100" height="30" uuid="28555860-eb98-42b1-8c83-b6448cfc2a94">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1c7835af-a8af-4c26-8ccb-26be8172ce29"/>
+				</reportElement>
+				<text><![CDATA[ITEM_SUM]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="31" splitType="Stretch">
+			<textField>
+				<reportElement x="10" y="0" width="100" height="30" uuid="90bf26c4-6756-4e8f-ac2d-29c5886b73a1">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="eaf86ceb-69c8-4806-932c-d5175e9318c1"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{ARTICLE_TITLE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="110" y="0" width="100" height="30" uuid="4750ef82-cbe7-454b-942e-b70954e8a3b2">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="aefb51e0-3482-4d43-8586-b00fd9c4bed1"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{ITEM_START}.format( java.time.format.DateTimeFormatter.ofPattern("dd.MM.uuuu") )]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="210" y="0" width="100" height="30" uuid="c204f2f3-cf50-48bb-8461-0ecc56a45f57">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d61cd2ce-beaa-4a89-b660-f95abf03ca29"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{ITEM_START}.format( java.time.format.DateTimeFormatter.ofPattern("mm:HH") )]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="310" y="0" width="100" height="30" uuid="7a3deefc-01b8-49bb-ad53-a2064db8be1a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="88542f64-984c-42f2-8b01-7bab81f36fc0"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{ITEM_END}.format( java.time.format.DateTimeFormatter.ofPattern("mm:HH") )]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="410" y="0" width="100" height="30" uuid="ec2a503b-4264-4ed4-903a-86d60c3a2e12">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1c7835af-a8af-4c26-8ccb-26be8172ce29"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{ITEM_SUM}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="31" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="100" height="30" uuid="d101a890-1805-4b04-ad85-108bfc2e5ad3"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch">
+			<textField>
+				<reportElement x="455" y="10" width="100" height="30" uuid="440525a7-d9fd-4378-82ac-ab2d433baf05"/>
+				<textFieldExpression><![CDATA[$F{INVOICE_SUM}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="217" y="11" width="100" height="30" uuid="87a7dc2b-c130-4c50-b424-4889b732a000"/>
+				<textFieldExpression><![CDATA[$V{ITEM_SUM1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="323" y="12" width="100" height="30" uuid="9acb181f-0e33-4911-a1d1-5170799f0845"/>
+				<textFieldExpression><![CDATA[$V{ITEM_SUM2}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

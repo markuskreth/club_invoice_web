@@ -3,34 +3,19 @@ package de.kreth.clubinvoice.data;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "banking_connection")
+@Table(name = "BANKING_CONNECTION")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "owner_type", discriminatorType = DiscriminatorType.STRING)
-public class BankingConnection {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+public class BankingConnection extends BaseEntity {
 
 	private String bankName;
 	private String iban;
 	private String bic;
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
 
 	public String getBankName() {
 		return bankName;

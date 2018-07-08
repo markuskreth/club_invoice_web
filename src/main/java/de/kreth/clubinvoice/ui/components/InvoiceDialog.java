@@ -2,6 +2,7 @@ package de.kreth.clubinvoice.ui.components;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
 import com.vaadin.shared.Registration;
@@ -14,14 +15,23 @@ import com.vaadin.ui.Window;
 
 import de.kreth.clubinvoice.data.Invoice;
 import de.kreth.clubinvoice.data.InvoiceItem;
+import de.kreth.clubinvoice.report.InvoiceReportSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class InvoiceDialog extends Window {
 
 	private static final long serialVersionUID = -8997281625128779760L;
+	private static final String MTV_JRXML = "/reports/mtv_gross_buchholz.jrxml";
 	private TextField invoiceNo;
 	private TextField invoiceDate;
 	private InvoiceItemGrid<InvoiceItem> itemGrid;
 	private Button okButton;
+	private Invoice invoice;
 
 	public InvoiceDialog(ResourceBundle resBundle) {
 		invoiceNo = new TextField();
@@ -37,8 +47,9 @@ public class InvoiceDialog extends Window {
 		okButton = new Button(resBundle.getString("label.ok"), ev -> close());
 		Button cancel = new Button(resBundle.getString("label.cancel"),
 				ev -> close());
+		Button previewButton = new Button("Preview", ev -> showPdf());
 		HorizontalLayout btnLayout = new HorizontalLayout();
-		btnLayout.addComponents(okButton, cancel);
+		btnLayout.addComponents(okButton, cancel, previewButton);
 
 		VerticalLayout vLayout = new VerticalLayout();
 		vLayout.addComponents(invoiceNo, invoiceDate, itemGrid, btnLayout);
@@ -50,11 +61,28 @@ public class InvoiceDialog extends Window {
 		setInvoice(invoice);
 	}
 
+	private void showPdf() {
+
+		InvoiceReportSource source = new InvoiceReportSource();
+		source.setInvoice(invoice);
+
+		try {
+			JasperReport report = JasperCompileManager
+					.compileReport(getClass().getResourceAsStream(MTV_JRXML));
+			JasperPrint print = JasperFillManager.fillReport(report,
+					new HashMap<>(), source);
+			JasperViewer.viewReport(print, false);
+		} catch (JRException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public Registration addOkClickListener(ClickListener listener) {
 		return okButton.addClickListener(listener);
 	}
 
 	public void setInvoice(Invoice invoice) {
+		this.invoice = invoice;
 		invoiceNo.setValue(invoice.getInvoiceId());
 		invoiceDate.setValue(invoice.getInvoiceDate().toString());
 		itemGrid.setItems(invoice.getItems());

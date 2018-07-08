@@ -67,8 +67,8 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 		addComponents(head, main);
 
 		ui.setContent(this);
-		if (user.getBank() == null) {
-
+		if (user.getBank() == null || user.getAdress() == null) {
+			showUserDetailDialog(ui);
 		}
 	}
 
@@ -176,15 +176,7 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 		});
 
 		Button userDetail = new Button("Benutzer Details", ev -> {
-			UserDetailsDialog dlg = new UserDetailsDialog(resBundle);
-			dlg.setModal(true);
-			dlg.setUser(user);
-			dlg.addOkClickListener(evOkClicked -> {
-				business.save(dlg.getUser());
-			});
-
-			dlg.center();
-			ui.addWindow(dlg);
+			showUserDetailDialog(ui);
 		});
 
 		VerticalLayout userId = new VerticalLayout();
@@ -196,6 +188,18 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 		head.setComponentAlignment(addArticle, Alignment.MIDDLE_RIGHT);
 		head.setComponentAlignment(logoutButton, Alignment.MIDDLE_RIGHT);
 		return head;
+	}
+
+	private void showUserDetailDialog(UI ui) {
+		UserDetailsDialog dlg = new UserDetailsDialog(resBundle);
+		dlg.setModal(true);
+		dlg.setUser(user);
+		dlg.addOkClickListener(evOkClicked -> {
+			business.save(dlg.getUser());
+		});
+
+		dlg.center();
+		ui.addWindow(dlg);
 	}
 
 	private void logout(UI ui) {

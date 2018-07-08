@@ -7,21 +7,14 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "invoice")
-public class Invoice {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+@Table(name = "INVOICE")
+public class Invoice extends BaseEntity {
 
 	private String invoiceId;
 	private LocalDateTime invoiceDate;
@@ -32,14 +25,6 @@ public class Invoice {
 	@ManyToOne
 	@JoinColumn(name = "user_id", nullable = false, updatable = false)
 	private User user;
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
 
 	public String getInvoiceId() {
 		return invoiceId;

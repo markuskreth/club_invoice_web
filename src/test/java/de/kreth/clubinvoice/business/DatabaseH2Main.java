@@ -9,7 +9,7 @@ public class DatabaseH2Main {
 	public static void main(String[] args) throws Exception {
 
 		SessionFactory factory = InvoiceBusinessTest
-				.createFileDatabaseSession("./testdatabase");
+				.createFileDatabaseSession("./testdatabase/database");
 
 		System.out.println("Test database created.");
 		InvoiceBusinessTest invBusi = new InvoiceBusinessTest();

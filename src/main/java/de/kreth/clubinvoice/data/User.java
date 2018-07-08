@@ -1,53 +1,30 @@
 package de.kreth.clubinvoice.data;
 
-import java.time.LocalDateTime;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "login_user")
-public class User {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+@Table(name = "LOGIN_USER")
+public class User extends BaseEntity {
 
 	@Column(name = "login")
 	private String loginName;
 
-	@Column
 	private String prename;
 
-	@Column
 	private String surname;
 
-	@Column
 	private String password;
-
-	@Column(name = "created")
-	private LocalDateTime createdDate;
-
-	@Column(name = "updated")
-	private LocalDateTime changeDate;
 
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
 	private UserBank bank;
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+	private UserAdress adress;
 
 	public String getLoginName() {
 		return loginName;
@@ -97,25 +74,17 @@ public class User {
 		}
 	}
 
-	public LocalDateTime getCreatedDate() {
-		return createdDate;
+	public UserAdress getAdress() {
+		return adress;
 	}
 
-	public void setCreatedDate(LocalDateTime createdDate) {
-		this.createdDate = createdDate;
-	}
-
-	public LocalDateTime getChangeDate() {
-		return changeDate;
-	}
-
-	public void setChangeDate(LocalDateTime changeDate) {
-		this.changeDate = changeDate;
+	public void setAdress(UserAdress adress) {
+		this.adress = adress;
 	}
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", loginName=" + loginName + ", prename="
+		return "User [id=" + getId() + ", loginName=" + loginName + ", prename="
 				+ prename + ", surname=" + surname + "]";
 	}
 
@@ -123,9 +92,6 @@ public class User {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((createdDate == null) ? 0 : createdDate.hashCode());
-		result = prime * result + id;
 		result = prime * result
 				+ ((loginName == null) ? 0 : loginName.hashCode());
 		result = prime * result
@@ -144,13 +110,6 @@ public class User {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		if (createdDate == null) {
-			if (other.createdDate != null)
-				return false;
-		} else if (!createdDate.equals(other.createdDate))
-			return false;
-		if (id != other.id)
-			return false;
 		if (loginName == null) {
 			if (other.loginName != null)
 				return false;

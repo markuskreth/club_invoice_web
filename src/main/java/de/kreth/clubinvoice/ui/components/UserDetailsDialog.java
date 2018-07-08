@@ -4,9 +4,6 @@ import java.util.ResourceBundle;
 
 import com.vaadin.data.Binder;
 import com.vaadin.data.BinderValidationStatus;
-import com.vaadin.data.ValidationResult;
-import com.vaadin.data.Validator;
-import com.vaadin.data.ValueContext;
 import com.vaadin.data.ValueProvider;
 import com.vaadin.server.Setter;
 import com.vaadin.shared.Registration;
@@ -20,6 +17,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
 import de.kreth.clubinvoice.data.User;
+import de.kreth.clubinvoice.data.UserAdress;
 import de.kreth.clubinvoice.data.UserBank;
 
 public class UserDetailsDialog extends Window {
@@ -33,6 +31,11 @@ public class UserDetailsDialog extends Window {
 	private TextField bankName;
 	private TextField iban;
 	private TextField bic;
+
+	private TextField adress1;
+	private TextField adress2;
+	private TextField zipCode;
+	private TextField city;
 
 	private Button okButton;
 
@@ -71,10 +74,35 @@ public class UserDetailsDialog extends Window {
 		beanBinder.forField(bic).bind(new BankBicProvider(),
 				new BankBicSetter());
 
+		adress1 = new TextField();
+		adress1.setCaption("Adress");
+		beanBinder.forField(adress1).asRequired("Adress cannot be empty")
+				.bind(new Adress1Provider(), new Adress1Setter());
+
+		adress2 = new TextField();
+		adress2.setCaption("Adress");
+		beanBinder.forField(adress2).bind(new Adress2Provider(),
+				new Adress2Setter());
+
+		zipCode = new TextField();
+		zipCode.setCaption("Zip code");
+		beanBinder.forField(zipCode).asRequired("Zipcode cannot be empty")
+				.bind(new ZipCodeProvider(), new ZipCodeSetter());
+
+		city = new TextField();
+		city.setCaption("City");
+		beanBinder.forField(city).asRequired("City cannot be empty")
+				.bind(new CityProvider(), new CitySetter());
+
 		VerticalLayout layout = new VerticalLayout();
 		layout.addComponents(loginName, prename, surname);
 		layout.addComponent(new Label("<hr />", ContentMode.HTML));
 		layout.addComponents(bankName, iban, bic);
+		layout.addComponent(new Label("<hr />", ContentMode.HTML));
+		HorizontalLayout cityLayout = new HorizontalLayout();
+		cityLayout.addComponents(zipCode, city);
+
+		layout.addComponents(adress1, adress2, cityLayout);
 
 		okButton = new Button(resBundle.getString("label.ok"), ev -> {
 			BinderValidationStatus<User> validation = beanBinder.validate();
@@ -103,18 +131,6 @@ public class UserDetailsDialog extends Window {
 
 	public User getUser() {
 		return beanBinder.getBean();
-	}
-
-	class UserDetailValidator implements Validator<User> {
-
-		private static final long serialVersionUID = 3579978389383152777L;
-
-		@Override
-		public ValidationResult apply(User value, ValueContext context) {
-
-			return null;
-		}
-
 	}
 
 	class BankNameProvider implements ValueProvider<User, String> {
@@ -192,6 +208,106 @@ public class UserDetailsDialog extends Window {
 
 	}
 
+	class Adress1Provider implements ValueProvider<User, String> {
+
+		private static final long serialVersionUID = -7980150151044551352L;
+
+		@Override
+		public String apply(User source) {
+			if (source.getAdress() == null) {
+				return "";
+			}
+			return source.getAdress().getAdress1();
+		}
+	}
+
+	class Adress1Setter implements Setter<User, String> {
+
+		private static final long serialVersionUID = -7893980345474552470L;
+
+		@Override
+		public void accept(User bean, String fieldvalue) {
+			UserAdress adress = getUserAdressFromUser(bean);
+			adress.setAdress1(fieldvalue);
+		}
+
+	}
+
+	class Adress2Provider implements ValueProvider<User, String> {
+
+		private static final long serialVersionUID = -7980150151044551352L;
+
+		@Override
+		public String apply(User source) {
+			if (source.getAdress() == null) {
+				return "";
+			}
+			return source.getAdress().getAdress2();
+		}
+	}
+
+	class Adress2Setter implements Setter<User, String> {
+
+		private static final long serialVersionUID = -7893980345474552470L;
+
+		@Override
+		public void accept(User bean, String fieldvalue) {
+			UserAdress adress = getUserAdressFromUser(bean);
+			adress.setAdress2(fieldvalue);
+		}
+
+	}
+
+	class ZipCodeProvider implements ValueProvider<User, String> {
+
+		private static final long serialVersionUID = -7980150151044551352L;
+
+		@Override
+		public String apply(User source) {
+			if (source.getAdress() == null) {
+				return "";
+			}
+			return source.getAdress().getZip();
+		}
+	}
+
+	class ZipCodeSetter implements Setter<User, String> {
+
+		private static final long serialVersionUID = -7893980345474552470L;
+
+		@Override
+		public void accept(User bean, String fieldvalue) {
+			UserAdress adress = getUserAdressFromUser(bean);
+			adress.setZip(fieldvalue);
+		}
+
+	}
+
+	class CityProvider implements ValueProvider<User, String> {
+
+		private static final long serialVersionUID = -7980150151044551352L;
+
+		@Override
+		public String apply(User source) {
+			if (source.getAdress() == null) {
+				return "";
+			}
+			return source.getAdress().getCity();
+		}
+	}
+
+	class CitySetter implements Setter<User, String> {
+
+		private static final long serialVersionUID = -7893980345474552470L;
+
+		@Override
+		public void accept(User bean, String fieldvalue) {
+			UserAdress adress = getUserAdressFromUser(bean);
+			adress.setCity(fieldvalue);
+		}
+
+	}
+
 	UserBank getBankFromUser(User u) {
 
 		UserBank bank = u.getBank();
@@ -200,5 +316,14 @@ public class UserDetailsDialog extends Window {
 			u.setBank(bank);
 		}
 		return bank;
+	}
+
+	public UserAdress getUserAdressFromUser(User bean) {
+		UserAdress adr = bean.getAdress();
+		if (adr == null) {
+			adr = new UserAdress();
+			bean.setAdress(adr);
+		}
+		return adr;
 	}
 }

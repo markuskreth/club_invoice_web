@@ -1,4 +1,4 @@
-CREATE TABLE `clubinvoice`.`login_user` (
+CREATE TABLE `clubinvoice`.`LOGIN_USER` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
   `login` VARCHAR(45) NOT NULL,
   `prename` VARCHAR(45) NOT NULL,

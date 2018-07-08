@@ -1,4 +1,4 @@
-CREATE TABLE `clubinvoice`.`article` (
+CREATE TABLE `clubinvoice`.`ARTICLE` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `price` DOUBLE NOT NULL,
   `title` VARCHAR(50) NOT NULL,

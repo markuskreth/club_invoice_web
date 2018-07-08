@@ -1,8 +1,10 @@
-CREATE TABLE `clubinvoice`.`banking_connection`(
+CREATE TABLE `clubinvoice`.`BANKING_CONNECTION`(
     ID INT PRIMARY KEY AUTO_INCREMENT,
     OWNER_TYPE VARCHAR(31) NOT NULL,
     BANKNAME VARCHAR(255),
     BIC VARCHAR(255),
     IBAN VARCHAR(255),
+    `created` TIMESTAMP NOT NULL,
+    `updated` TIMESTAMP NOT NULL,
   	UNIQUE INDEX `banking_connection_UNIQUE` (`ID`, `OWNER_TYPE`, `IBAN` ASC)
 );
