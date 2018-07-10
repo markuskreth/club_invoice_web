@@ -79,6 +79,7 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 		gridInvoices.addItemClickListener(itemEv -> {
 
 			InvoiceDialog dlg = new InvoiceDialog(resBundle);
+			dlg.center();
 			dlg.setInvoice(itemEv.getItem());
 			dlg.setOkVisible(false);
 			ui.addWindow(dlg);
@@ -98,6 +99,7 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 			inv.setItems(selectedItems);
 			inv.setUser(user);
 			InvoiceDialog dlg = new InvoiceDialog(resBundle);
+			dlg.center();
 			dlg.setInvoice(inv);
 			dlg.addOkClickListener(okEv -> {
 				business.save(inv);

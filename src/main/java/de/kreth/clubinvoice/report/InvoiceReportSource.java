@@ -54,7 +54,7 @@ public class InvoiceReportSource implements JRDataSource, JRDataSourceProvider {
 			return false;
 		}
 		currentItem = itemIterator.next();
-		return itemIterator.hasNext();
+		return true;
 	}
 
 	@Override
