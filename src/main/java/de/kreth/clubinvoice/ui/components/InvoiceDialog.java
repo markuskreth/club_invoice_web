@@ -1,6 +1,8 @@
 package de.kreth.clubinvoice.ui.components;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.ResourceBundle;
@@ -84,7 +86,8 @@ public class InvoiceDialog extends Window {
 	public void setInvoice(Invoice invoice) {
 		this.invoice = invoice;
 		invoiceNo.setValue(invoice.getInvoiceId());
-		invoiceDate.setValue(invoice.getInvoiceDate().toString());
+		invoiceDate.setValue(invoice.getInvoiceDate()
+				.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)));
 		itemGrid.setItems(invoice.getItems());
 	}
 
