@@ -32,6 +32,7 @@ public class InvoiceReportSource implements JRDataSource, JRDataSourceProvider {
 	public static final String FIELD_ARTICLE_PRICE_PER_HOUR = "ARTICLE_PRICE_PER_HOUR";
 	public static final String FIELD_ITEM_START = "ITEM_START";
 	public static final String FIELD_ITEM_END = "ITEM_END";
+	public static final String FIELD_ITEM_PARTICIPANTS = "FIELD_ITEM_PARTICIPANTS";
 	public static final String FIELD_ITEM_DURATION_MINUTES = "ITEM_DURATION_MINUTES";
 	public static final String FIELD_ITEM_SUM = "ITEM_SUM";
 
@@ -106,6 +107,8 @@ public class InvoiceReportSource implements JRDataSource, JRDataSourceProvider {
 					return currentItem.getDurationInMinutes();
 				case FIELD_ITEM_SUM :
 					return currentItem.getSumPrice();
+				case FIELD_ITEM_PARTICIPANTS :
+					return currentItem.getParticipants();
 
 				default :
 					break;
@@ -161,6 +164,8 @@ public class InvoiceReportSource implements JRDataSource, JRDataSourceProvider {
 						LocalDateTime.class),
 				new InternalField(FIELD_ITEM_DURATION_MINUTES,
 						"Item Duration in Minutes", Long.class),
+				new InternalField(FIELD_ITEM_PARTICIPANTS, "Item Participants",
+						String.class),
 				new InternalField(FIELD_ITEM_SUM, "Item Sum",
 						BigDecimal.class)};
 		return fields;

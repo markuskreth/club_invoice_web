@@ -1,8 +1,6 @@
 package de.kreth.clubinvoice.ui.components;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.ResourceBundle;
@@ -10,6 +8,7 @@ import java.util.ResourceBundle;
 import com.vaadin.shared.Registration;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.DateTimeField;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
@@ -30,7 +29,7 @@ public class InvoiceDialog extends Window {
 	private static final long serialVersionUID = -8997281625128779760L;
 	private static final String MTV_JRXML = "/reports/mtv_gross_buchholz.jrxml";
 	private TextField invoiceNo;
-	private TextField invoiceDate;
+	private DateTimeField invoiceDate;
 	private InvoiceItemGrid<InvoiceItem> itemGrid;
 	private Button okButton;
 	private Invoice invoice;
@@ -39,14 +38,16 @@ public class InvoiceDialog extends Window {
 		invoiceNo = new TextField();
 		invoiceNo.setCaption(resBundle.getString("caption.invoice.invoiceno"));
 		invoiceNo.setReadOnly(true);
-		invoiceDate = new TextField();
+
+		invoiceDate = new DateTimeField();
 		invoiceDate
 				.setCaption(resBundle.getString("caption.invoice.invoicedate"));
 		invoiceDate.setReadOnly(true);
 
 		itemGrid = new InvoiceItemGrid<>(resBundle);
 
-		okButton = new Button(resBundle.getString("label.ok"), ev -> close());
+		okButton = new Button(resBundle.getString("label.store"),
+				ev -> close());
 		Button cancel = new Button(resBundle.getString("label.cancel"),
 				ev -> close());
 		Button previewButton = new Button("Preview", ev -> showPdf());
@@ -86,8 +87,7 @@ public class InvoiceDialog extends Window {
 	public void setInvoice(Invoice invoice) {
 		this.invoice = invoice;
 		invoiceNo.setValue(invoice.getInvoiceId());
-		invoiceDate.setValue(invoice.getInvoiceDate()
-				.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)));
+		invoiceDate.setValue(invoice.getInvoiceDate());
 		itemGrid.setItems(invoice.getItems());
 	}
 

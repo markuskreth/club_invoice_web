@@ -50,6 +50,7 @@
 	<field name="BANK_NAME" class="java.lang.String"/>
 	<field name="BANK_BIC" class="java.lang.String"/>
 	<field name="BANK_IBAN" class="java.lang.String"/>
+	<field name="FIELD_ITEM_PARTICIPANTS" class="java.lang.String"/>
 	<variable name="ITEM_SUM1" class="java.lang.Integer" calculation="Count">
 		<variableExpression><![CDATA[$F{ITEM_SUM}]]></variableExpression>
 	</variable>
@@ -410,12 +411,27 @@ des Unterrichts]]></text>
 				</textElement>
 				<text><![CDATA[Ort]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="329" y="0" width="112" height="24" uuid="0bb3541b-0a40-40c6-8727-726dfc6082c3">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7141045b-35fa-4d89-bd0a-5dff9fe6e263"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Teilnehmerzahl]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="12" splitType="Stretch">
+		<band height="15" splitType="Stretch">
 			<textField>
-				<reportElement x="4" y="0" width="66" height="12" uuid="4750ef82-cbe7-454b-942e-b70954e8a3b2">
+				<reportElement x="4" y="0" width="66" height="15" uuid="4750ef82-cbe7-454b-942e-b70954e8a3b2">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="aefb51e0-3482-4d43-8586-b00fd9c4bed1"/>
 				</reportElement>
 				<box>
@@ -424,11 +440,11 @@ des Unterrichts]]></text>
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{ITEM_START}.format( java.time.format.DateTimeFormatter.ofPattern("dd.MM.uuuu") )]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="70" y="0" width="80" height="12" uuid="c204f2f3-cf50-48bb-8461-0ecc56a45f57">
+				<reportElement x="70" y="0" width="80" height="15" uuid="c204f2f3-cf50-48bb-8461-0ecc56a45f57">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d61cd2ce-beaa-4a89-b660-f95abf03ca29"/>
 				</reportElement>
 				<box>
@@ -437,11 +453,11 @@ des Unterrichts]]></text>
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{ITEM_START}.format( java.time.format.DateTimeFormatter.ofPattern("HH:mm") ) + " - " + $F{ITEM_END}.format( java.time.format.DateTimeFormatter.ofPattern("HH:mm") )]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00¤;#,##0.00- ¤">
-				<reportElement x="495" y="0" width="60" height="12" uuid="ec2a503b-4264-4ed4-903a-86d60c3a2e12">
+				<reportElement x="495" y="0" width="60" height="15" uuid="ec2a503b-4264-4ed4-903a-86d60c3a2e12">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1c7835af-a8af-4c26-8ccb-26be8172ce29"/>
 				</reportElement>
 				<box>
@@ -450,11 +466,11 @@ des Unterrichts]]></text>
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{ITEM_SUM}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.0##;(#,##0.0##-)">
-				<reportElement x="442" y="0" width="53" height="12" uuid="2e105e00-0a68-4a95-a6a5-c416584db2da">
+				<reportElement x="442" y="0" width="53" height="15" uuid="2e105e00-0a68-4a95-a6a5-c416584db2da">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ffb2463c-981a-4639-a49a-a237aebf96ad"/>
 				</reportElement>
 				<box>
@@ -463,35 +479,48 @@ des Unterrichts]]></text>
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$V{DURATION_PER_ITEM}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="151" y="0" width="90" height="12" uuid="7593911e-405a-49c4-89bc-4da3a4c53e7c"/>
+				<reportElement x="151" y="0" width="90" height="15" uuid="7593911e-405a-49c4-89bc-4da3a4c53e7c"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="false"/>
 				</textElement>
 				<text><![CDATA[Trampolinturnen]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="241" y="0" width="88" height="12" uuid="13055bef-6718-4c0d-8060-dfb1f307654e"/>
+				<reportElement x="241" y="0" width="88" height="15" uuid="13055bef-6718-4c0d-8060-dfb1f307654e"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="false"/>
 				</textElement>
 				<text><![CDATA[IGS Roderbruch]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="329" y="0" width="113" height="15" uuid="f92bf1eb-4dc0-4c56-b478-1559caa3d7e6">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7141045b-35fa-4d89-bd0a-5dff9fe6e263"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{FIELD_ITEM_PARTICIPANTS}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>

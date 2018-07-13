@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -14,10 +15,13 @@ import java.util.function.Supplier;
 import com.vaadin.data.Binder;
 import com.vaadin.data.Binder.Binding;
 import com.vaadin.data.Binder.BindingBuilder;
+import com.vaadin.data.ValueProvider;
+import com.vaadin.server.Setter;
 import com.vaadin.server.UserError;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.DateField;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
@@ -38,9 +42,10 @@ public class InvoiceItemDialog extends Window {
 	private ComboBox<Article> articleBox;
 	private TextField endTimeField;
 	private TextField startTimeField;
-	private TextField dateField;
+	private DateField dateField;
+	private TextField participants;
 
-	private Binder<InvoiceItem> dateBinder;
+	private Binder<InvoiceItem> binder;
 
 	private Button okButton;
 	private List<ClickListener> okListeners;
@@ -55,13 +60,20 @@ public class InvoiceItemDialog extends Window {
 
 		selectableArticles = new ArrayList<>();
 
-		dateField = new TextField();
+		dateField = new DateField();
+		dateField.setLocale(Locale.getDefault());
 		dateField.setCaption(resBundle.getString("caption.invoiceitem.date"));
 		startTimeField = new TextField();
+		startTimeField.setRequiredIndicatorVisible(true);
 		startTimeField
 				.setCaption(resBundle.getString("caption.invoiceitem.start"));
 		endTimeField = new TextField();
+		endTimeField.setRequiredIndicatorVisible(true);
 		endTimeField.setCaption(resBundle.getString("caption.invoiceitem.end"));
+		participants = new TextField();
+		participants.setCaption(
+				resBundle.getString("caption.invoiceitem.participants"));
+
 		articleBox = new ComboBox<>();
 		articleBox.setCaption(resBundle.getString("caption.articles"));
 		articleBox.setItemCaptionGenerator(Article::getTitle);
@@ -70,6 +82,7 @@ public class InvoiceItemDialog extends Window {
 		});
 
 		bindItemFields();
+
 		okButton = new Button(resBundle.getString("label.ok"));
 		okListeners = new ArrayList<>();
 		okListeners.add(ev -> {
@@ -92,13 +105,13 @@ public class InvoiceItemDialog extends Window {
 
 		VerticalLayout content = new VerticalLayout();
 		content.addComponents(articleBox, dateField, startTimeField,
-				endTimeField, buttons);
+				endTimeField, participants, buttons);
 		setContent(content);
 		center();
 	}
 
 	private boolean isValid() {
-		dateBinder.writeBeanIfValid(item);
+		binder.writeBeanIfValid(item);
 		if (item.getArticle() == null || item.getStart() == null
 				|| item.getEnd() == null) {
 			Notification.show(
@@ -133,13 +146,42 @@ public class InvoiceItemDialog extends Window {
 
 	public void bindItemFields() {
 
-		dateBinder = new Binder<>();
+		binder = new Binder<>();
 
-		createBinding(dateField, item::getStart, item::setStart,
-				DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM));
+		ValueProvider<InvoiceItem, LocalDate> getter = new ValueProvider<InvoiceItem, LocalDate>() {
 
-		createBinding(dateField, item::getStart, item::setEnd,
-				DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM));
+			private static final long serialVersionUID = -7354502111873472077L;
+
+			@Override
+			public LocalDate apply(InvoiceItem source) {
+				return source.getStart().toLocalDate();
+			}
+		};
+		Setter<InvoiceItem, LocalDate> setter = new Setter<InvoiceItem, LocalDate>() {
+
+			private static final long serialVersionUID = 4253885526871538754L;
+
+			@Override
+			public void accept(InvoiceItem bean, LocalDate fieldvalue) {
+
+				LocalDateTime value = updateValue(fieldvalue, bean.getStart());
+				bean.setStart(value);
+				value = updateValue(fieldvalue, bean.getEnd());
+				bean.setEnd(value);
+			}
+
+			private LocalDateTime updateValue(LocalDate fieldvalue,
+					LocalDateTime value) {
+				if (value == null) {
+					value = fieldvalue.atStartOfDay();
+				} else {
+					value = fieldvalue.atTime(value.toLocalTime());
+				}
+				return value;
+			}
+		};
+
+		binder.forField(dateField).asRequired().bind(getter, setter);
 
 		createBinding(startTimeField, item::getStart, item::setStart,
 				DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT));
@@ -147,9 +189,13 @@ public class InvoiceItemDialog extends Window {
 		createBinding(endTimeField, item::getEnd, item::setEnd,
 				DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT));
 
-		dateBinder.forField(articleBox).bind(InvoiceItem::getArticle,
+		binder.forField(articleBox).bind(InvoiceItem::getArticle,
 				InvoiceItem::setArticle);
-		dateBinder.readBean(item);
+
+		binder.forField(participants).bind(InvoiceItem::getParticipants,
+				InvoiceItem::setParticipants);
+
+		binder.readBean(item);
 	}
 
 	private Binding<InvoiceItem, String> createBinding(TextField field,
@@ -159,13 +205,12 @@ public class InvoiceItemDialog extends Window {
 		DateTimeBinder<InvoiceItem> dateBinding = new DateTimeBinder<>(getter,
 				setter, formatter);
 
-		BindingBuilder<InvoiceItem, String> bindBuilder = dateBinder
+		BindingBuilder<InvoiceItem, String> bindBuilder = binder
 				.forField(field);
 		return bindBuilder.bind(dateBinding.getValueProvider(),
 				dateBinding.getSetter());
 
 	}
-
 	public void addOkClickListener(ClickListener listener) {
 		okListeners.add(listener);
 	}
@@ -183,8 +228,8 @@ public class InvoiceItemDialog extends Window {
 
 	public void setItem(InvoiceItem item) {
 		this.item = item;
-		dateBinder.setBean(item);
-		dateBinder.readBean(item);
+		binder.setBean(item);
+		binder.readBean(item);
 
 	}
 
