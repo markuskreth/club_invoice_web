@@ -3,6 +3,7 @@ CREATE TABLE `clubinvoice`.`INVOICE_ITEM` (
   `start` DATETIME NOT NULL,
   `end` VARCHAR(45) NOT NULL,
   `article_id` INT NOT NULL,
+  `participants` VARCHAR(15) NULL DEFAULT NULL,
   `sum_price` DECIMAL(7,2) NOT NULL,
   `rechnung_id` INT NULL,
   `invoice_id` INT NULL DEFAULT NULL,

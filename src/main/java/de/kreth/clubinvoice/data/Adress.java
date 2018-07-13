@@ -1,5 +1,6 @@
 package de.kreth.clubinvoice.data;
 
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
@@ -14,9 +15,13 @@ import javax.persistence.Table;
 public class Adress extends BaseEntity {
 
 	private static final long serialVersionUID = 8331249424121577387L;
+	@Column(nullable = false, length = 255)
 	private String adress1;
+	@Column(nullable = true, length = 255)
 	private String adress2;
+	@Column(nullable = true, length = 45)
 	private String zip;
+	@Column(nullable = true, length = 155)
 	private String city;
 
 	public String getAdress1() {

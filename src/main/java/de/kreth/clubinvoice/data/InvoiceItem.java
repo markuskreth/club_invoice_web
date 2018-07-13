@@ -19,8 +19,8 @@ public class InvoiceItem extends BaseEntity {
 
 	private LocalDateTime start;
 	private LocalDateTime end;
-	private String extension1;
-	private String extension2;
+	@Column(nullable = true, length = 15)
+	private String participants;
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "article_id", nullable = false, updatable = false)
@@ -51,20 +51,12 @@ public class InvoiceItem extends BaseEntity {
 		getSumPrice();
 	}
 
-	public String getExtension1() {
-		return extension1;
+	public String getParticipants() {
+		return participants;
 	}
 
-	public void setExtension1(String extension1) {
-		this.extension1 = extension1;
-	}
-
-	public String getExtension2() {
-		return extension2;
-	}
-
-	public void setExtension2(String extension2) {
-		this.extension2 = extension2;
+	public void setParticipants(String participants) {
+		this.participants = participants;
 	}
 
 	public Article getArticle() {

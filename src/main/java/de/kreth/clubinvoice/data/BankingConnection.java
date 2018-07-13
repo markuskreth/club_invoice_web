@@ -1,5 +1,6 @@
 package de.kreth.clubinvoice.data;
 
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
@@ -14,8 +15,11 @@ import javax.persistence.Table;
 public class BankingConnection extends BaseEntity {
 
 	private static final long serialVersionUID = -6168631092559375156L;
+	@Column(nullable = false, length = 150)
 	private String bankName;
+	@Column(nullable = false, length = 150)
 	private String iban;
+	@Column(nullable = true, length = 150)
 	private String bic;
 
 	public String getBankName() {

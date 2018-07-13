@@ -13,13 +13,13 @@ public class User extends BaseEntity {
 
 	private static final long serialVersionUID = 8756244776503934540L;
 
-	@Column(name = "login")
+	@Column(name = "login", nullable = true, length = 45)
 	private String loginName;
-
+	@Column(nullable = true, length = 45)
 	private String prename;
-
+	@Column(nullable = true, length = 45)
 	private String surname;
-
+	@Column(nullable = true, length = 45)
 	private String password;
 
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)

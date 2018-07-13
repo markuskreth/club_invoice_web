@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -17,13 +19,15 @@ import javax.persistence.Table;
 public class Invoice extends BaseEntity {
 
 	private static final long serialVersionUID = 736651954892271409L;
+
+	@Column(name = "invoiceid", nullable = false, length = 150)
 	private String invoiceId;
 	private LocalDateTime invoiceDate;
 
 	@OneToMany(mappedBy = "invoice")
 	private List<InvoiceItem> items;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.REFRESH)
 	@JoinColumn(name = "user_id", nullable = false, updatable = false)
 	private User user;
 

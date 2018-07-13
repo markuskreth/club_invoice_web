@@ -13,7 +13,9 @@ public class Article extends BaseEntity {
 	private static final long serialVersionUID = 6777704420363536698L;
 	@Column(name = "price")
 	private BigDecimal pricePerHour;
+	@Column(nullable = false, length = 50)
 	private String title;
+	@Column(nullable = true, length = 255)
 	private String description;
 
 	@Column(name = "user_id")

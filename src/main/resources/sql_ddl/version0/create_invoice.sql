@@ -2,7 +2,7 @@ CREATE TABLE `clubinvoice`.`INVOICE` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `invoicedate` DATETIME NOT NULL,
   `invoiceid` VARCHAR(150) NOT NULL,
-  `user_id` VARCHAR(45) NULL,
+  `user_id` INT NOT NULL,
   `created` TIMESTAMP NOT NULL,
   `updated` TIMESTAMP NOT NULL,
   PRIMARY KEY (`id`),
