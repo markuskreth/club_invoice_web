@@ -13,6 +13,7 @@ import javax.persistence.Table;
 @DiscriminatorColumn(name = "owner_type", discriminatorType = DiscriminatorType.STRING)
 public class BankingConnection extends BaseEntity {
 
+	private static final long serialVersionUID = -6168631092559375156L;
 	private String bankName;
 	private String iban;
 	private String bic;

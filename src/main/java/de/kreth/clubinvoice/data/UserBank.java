@@ -8,6 +8,7 @@ import javax.persistence.PrimaryKeyJoinColumn;
 @Entity
 public class UserBank extends BankingConnection {
 
+	private static final long serialVersionUID = -7356424394007978241L;
 	@OneToOne(fetch = FetchType.LAZY)
 	@PrimaryKeyJoinColumn
 	private User user;

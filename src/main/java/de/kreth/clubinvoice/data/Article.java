@@ -10,6 +10,7 @@ import javax.persistence.Table;
 @Table(name = "ARTICLE")
 public class Article extends BaseEntity {
 
+	private static final long serialVersionUID = 6777704420363536698L;
 	@Column(name = "price")
 	private BigDecimal pricePerHour;
 	private String title;

@@ -13,6 +13,7 @@ import javax.persistence.Table;
 @DiscriminatorColumn(name = "adress_type", discriminatorType = DiscriminatorType.STRING)
 public class Adress extends BaseEntity {
 
+	private static final long serialVersionUID = 8331249424121577387L;
 	private String adress1;
 	private String adress2;
 	private String zip;

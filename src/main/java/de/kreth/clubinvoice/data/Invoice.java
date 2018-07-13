@@ -16,6 +16,7 @@ import javax.persistence.Table;
 @Table(name = "INVOICE")
 public class Invoice extends BaseEntity {
 
+	private static final long serialVersionUID = 736651954892271409L;
 	private String invoiceId;
 	private LocalDateTime invoiceDate;
 

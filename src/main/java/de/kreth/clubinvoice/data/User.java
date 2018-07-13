@@ -11,6 +11,8 @@ import javax.persistence.Table;
 @Table(name = "LOGIN_USER")
 public class User extends BaseEntity {
 
+	private static final long serialVersionUID = 8756244776503934540L;
+
 	@Column(name = "login")
 	private String loginName;
 

@@ -15,9 +15,12 @@ import javax.persistence.Table;
 @Table(name = "INVOICE_ITEM")
 public class InvoiceItem extends BaseEntity {
 
-	private LocalDateTime start;
+	private static final long serialVersionUID = 3142997452876778041L;
 
+	private LocalDateTime start;
 	private LocalDateTime end;
+	private String extension1;
+	private String extension2;
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "article_id", nullable = false, updatable = false)
@@ -46,6 +49,22 @@ public class InvoiceItem extends BaseEntity {
 	public void setEnd(LocalDateTime end) {
 		this.end = end;
 		getSumPrice();
+	}
+
+	public String getExtension1() {
+		return extension1;
+	}
+
+	public void setExtension1(String extension1) {
+		this.extension1 = extension1;
+	}
+
+	public String getExtension2() {
+		return extension2;
+	}
+
+	public void setExtension2(String extension2) {
+		this.extension2 = extension2;
 	}
 
 	public Article getArticle() {
