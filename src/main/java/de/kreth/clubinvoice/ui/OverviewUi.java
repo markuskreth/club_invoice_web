@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -34,6 +37,9 @@ import de.kreth.clubinvoice.ui.components.UserDetailsDialog;
 public class OverviewUi extends VerticalLayout implements InvoiceUi {
 
 	private static final long serialVersionUID = 318645298331660865L;
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(OverviewUi.class);
+
 	private final User user;
 	private final OverviewBusiness business;
 	private final ResourceBundle resBundle;
@@ -206,6 +212,7 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 
 	private void logout(UI ui) {
 
+		LOGGER.debug("Logging out.");
 		store.removeAttribute(PropertyStore.LOGGED_IN_USER);
 		CookieStore cs = new CookieStore();
 		cs.remove(CookieStore.PASSWORD);

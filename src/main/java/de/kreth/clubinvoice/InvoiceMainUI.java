@@ -11,6 +11,8 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import org.reflections.Reflections;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
@@ -39,6 +41,8 @@ import de.kreth.clubinvoice.ui.OverviewUi;
 public class InvoiceMainUI extends UI {
 
 	private static final long serialVersionUID = -507823166251133871L;
+	private static final Logger LOGGER = LoggerFactory
+			.getLogger(InvoiceMainUI.class);
 
 	private Session sessionObj;
 
@@ -49,12 +53,20 @@ public class InvoiceMainUI extends UI {
 	@Override
 	protected void init(VaadinRequest vaadinRequest) {
 
-		sessionObj = buildSessionFactory().openSession();
+		LOGGER.trace("Starting Vaadin webapp");
+		try {
+			sessionObj = buildSessionFactory().openSession();
+		} catch (RuntimeException e) {
+			LOGGER.error("Error initializing database.", e);
+			throw e;
+		}
+
 		this.store = new PropertyStore(vaadinRequest.getWrappedSession());
 		cookies = new CookieStore();
 
 		InvoiceUi content = createView(vaadinRequest);
 		content.setContent(this, vaadinRequest);
+		LOGGER.trace("Startet with UI Class : {}", content.getClass());
 
 	}
 
@@ -82,6 +94,8 @@ public class InvoiceMainUI extends UI {
 
 		Set<Class<?>> entities = findEntityClasses();
 
+		LOGGER.debug("Found these Entities: {}", entities);
+
 		Configuration configObj = new Configuration()
 				.configure("hibernate.cfg.xml");
 
@@ -92,6 +106,8 @@ public class InvoiceMainUI extends UI {
 		// Since Hibernate Version 4.x, ServiceRegistry Is Being Used
 		ServiceRegistry serviceRegistryObj = new StandardServiceRegistryBuilder()
 				.applySettings(configObj.getProperties()).build();
+
+		LOGGER.trace("Loaded Hibernate config file");
 
 		// Creating Hibernate SessionFactory Instance
 		sessionFactoryObj = configObj.buildSessionFactory(serviceRegistryObj);

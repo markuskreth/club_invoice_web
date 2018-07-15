@@ -5,8 +5,12 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.hibernate.Session;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class AbstractBusiness<T> implements Business<T> {
+
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 
 	protected final Session sessionObj;
 	protected final PropertyStore propStore;
@@ -25,19 +29,26 @@ public abstract class AbstractBusiness<T> implements Business<T> {
 		sessionObj.beginTransaction();
 		sessionObj.save(obj);
 		sessionObj.getTransaction().commit();
+		logger.debug("Stored {}", obj);
 		return true;
 	}
 
 	@Override
 	public List<T> loadAll() {
-		return sessionObj
+		List<T> list = sessionObj
 				.createQuery("from " + itemClass.getSimpleName(), itemClass)
 				.list();
+		logger.trace("Loaded {} of {}", list.size(), itemClass.getSimpleName());
+		return list;
 	}
 
 	public List<T> loadAll(Predicate<T> predicate) {
-		return loadAll().stream().filter(predicate)
+		List<T> loadAll = loadAll();
+		List<T> result = loadAll.stream().filter(predicate)
 				.collect(Collectors.toList());
+		logger.trace("Filtered {} of {} total {}", result.size(),
+				loadAll.size(), itemClass.getSimpleName());
+		return result;
 	}
 
 	@Override
