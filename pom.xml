@@ -177,6 +177,9 @@
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<gwtSdkFirstInClasspath>true</gwtSdkFirstInClasspath> 
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
