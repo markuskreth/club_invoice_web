@@ -136,19 +136,22 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 				business.save(dlg.getItem());
 				gridItems.setItems(loadItems());
 			});
-			dlg.addDeleteClickListener(e -> {
-				InvoiceItem item = dlg.getItem();
+			if (ev.getItem().getInvoice() != null) {
 
-				MessageBox.createQuestion().asModal(true)
-						.withCaption("Really delete?")
-						.withMessage("Delete " + item + "?")
-						.withCancelButton(ButtonOption.closeOnClick(true))
-						.withOkButton(() -> {
-							business.delete(item);
-							gridItems.setItems(loadItems());
-						}, ButtonOption.focus()).open();
+				dlg.addDeleteClickListener(e -> {
+					InvoiceItem item = dlg.getItem();
 
-			});
+					MessageBox.createQuestion().asModal(true)
+							.withCaption("Really delete?")
+							.withMessage("Delete " + item + "?")
+							.withCancelButton(ButtonOption.closeOnClick(true))
+							.withOkButton(() -> {
+								business.delete(item);
+								gridItems.setItems(loadItems());
+							}, ButtonOption.focus()).open();
+
+				});
+			}
 
 			dlg.setSelectableArticles(business.getArticles(user));
 			ui.addWindow(dlg);
