@@ -17,6 +17,9 @@ import de.kreth.clubinvoice.business.UserRegister;
 
 public class LoginUi extends VerticalLayout implements InvoiceUi {
 
+	private static final String CAPTION_USER_LOGIN = "caption.user.login";
+	private static final String CAPTION_USER_PASSWORD = "caption.user.password";
+	private static final String CAPTION_USER_LOGINNAME2 = "caption.user.loginname";
 	private static final long serialVersionUID = 7795197656597564420L;
 	private final UserRegister business;
 
@@ -37,12 +40,12 @@ public class LoginUi extends VerticalLayout implements InvoiceUi {
 	public void setContent(UI ui, VaadinRequest vaadinRequest) {
 
 		loginName = new TextField();
-		loginName.setCaption(resBundle.getString("caption.user.loginname"));
+		loginName.setCaption(resBundle.getString(CAPTION_USER_LOGINNAME2));
 
 		passwordField = new PasswordField();
-		passwordField.setCaption(resBundle.getString("caption.user.password"));
+		passwordField.setCaption(resBundle.getString(CAPTION_USER_PASSWORD));
 
-		loginButton = new Button(resBundle.getString("caption.user.login"));
+		loginButton = new Button(resBundle.getString(CAPTION_USER_LOGIN));
 		loginButton.addClickListener(e -> {
 			String login = loginName.getValue();
 			String password = passwordField.getValue();

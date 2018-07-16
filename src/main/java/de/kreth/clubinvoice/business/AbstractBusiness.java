@@ -11,10 +11,10 @@ import org.slf4j.LoggerFactory;
 public abstract class AbstractBusiness<T> implements Business<T> {
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
+	private final Class<T> itemClass;
 
 	protected final Session sessionObj;
 	protected final PropertyStore propStore;
-	private final Class<T> itemClass;
 
 	public AbstractBusiness(Session sessionObj, PropertyStore propStore,
 			Class<T> itemClass) {
@@ -30,6 +30,15 @@ public abstract class AbstractBusiness<T> implements Business<T> {
 		sessionObj.save(obj);
 		sessionObj.getTransaction().commit();
 		logger.debug("Stored {}", obj);
+		return true;
+	}
+
+	@Override
+	public boolean delete(T obj) {
+		sessionObj.beginTransaction();
+		sessionObj.delete(obj);
+		sessionObj.getTransaction().commit();
+		logger.info("Stored {}", obj);
 		return true;
 	}
 

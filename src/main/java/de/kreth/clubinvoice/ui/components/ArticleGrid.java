@@ -1,5 +1,10 @@
 package de.kreth.clubinvoice.ui.components;
 
+import static de.kreth.clubinvoice.ui.Constants.CAPTION_ARTICLES;
+import static de.kreth.clubinvoice.ui.Constants.CAPTION_ARTICLE_DESCRIPTION;
+import static de.kreth.clubinvoice.ui.Constants.CAPTION_ARTICLE_PRICE;
+import static de.kreth.clubinvoice.ui.Constants.CAPTION_ARTICLE_TITLE;
+
 import java.text.NumberFormat;
 import java.util.ResourceBundle;
 
@@ -14,18 +19,18 @@ public class ArticleGrid extends Grid<Article> {
 
 	public ArticleGrid(ResourceBundle resBundle) {
 
-		setCaption(resBundle.getString("caption.articles"));
+		setCaption(resBundle.getString(CAPTION_ARTICLES));
 		setStyleName("bordered");
 
 		addColumn(Article::getTitle)
-				.setCaption(resBundle.getString("caption.article.title"));
+				.setCaption(resBundle.getString(CAPTION_ARTICLE_TITLE));
 
 		addColumn(Article::getPricePerHour)
 				.setRenderer(
 						new NumberRenderer(NumberFormat.getCurrencyInstance()))
-				.setCaption(resBundle.getString("caption.article.price"));
+				.setCaption(resBundle.getString(CAPTION_ARTICLE_PRICE));
 		addColumn(Article::getDescription)
-				.setCaption(resBundle.getString("caption.article.description"));
+				.setCaption(resBundle.getString(CAPTION_ARTICLE_DESCRIPTION));
 
 	}
 

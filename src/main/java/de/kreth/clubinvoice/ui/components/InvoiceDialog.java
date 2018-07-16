@@ -1,5 +1,10 @@
 package de.kreth.clubinvoice.ui.components;
 
+import static de.kreth.clubinvoice.ui.Constants.CAPTION_INVOICE_INVOICEDATE;
+import static de.kreth.clubinvoice.ui.Constants.CAPTION_INVOICE_INVOICENO;
+import static de.kreth.clubinvoice.ui.Constants.LABEL_CANCEL;
+import static de.kreth.clubinvoice.ui.Constants.LABEL_STORE;
+
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashMap;
@@ -36,19 +41,18 @@ public class InvoiceDialog extends Window {
 
 	public InvoiceDialog(ResourceBundle resBundle) {
 		invoiceNo = new TextField();
-		invoiceNo.setCaption(resBundle.getString("caption.invoice.invoiceno"));
+		invoiceNo.setCaption(resBundle.getString(CAPTION_INVOICE_INVOICENO));
 		invoiceNo.setReadOnly(true);
 
 		invoiceDate = new DateTimeField();
 		invoiceDate
-				.setCaption(resBundle.getString("caption.invoice.invoicedate"));
+				.setCaption(resBundle.getString(CAPTION_INVOICE_INVOICEDATE));
 		invoiceDate.setReadOnly(true);
 
 		itemGrid = new InvoiceItemGrid<>(resBundle);
 
-		okButton = new Button(resBundle.getString("label.store"),
-				ev -> close());
-		Button cancel = new Button(resBundle.getString("label.cancel"),
+		okButton = new Button(resBundle.getString(LABEL_STORE), ev -> close());
+		Button cancel = new Button(resBundle.getString(LABEL_CANCEL),
 				ev -> close());
 		Button previewButton = new Button("Preview", ev -> showPdf());
 		HorizontalLayout btnLayout = new HorizontalLayout();

@@ -46,6 +46,10 @@ public class OverviewBusiness {
 		itemBusiness.save(item);
 	}
 
+	public void delete(InvoiceItem item) {
+		itemBusiness.delete(item);
+	}
+
 	public void save(Invoice inv) {
 		invoiceBusiness.save(inv);
 	}

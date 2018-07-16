@@ -46,22 +46,22 @@ public class UserRegisterUi extends VerticalLayout implements InvoiceUi {
 	public void setContent(final UI ui, final VaadinRequest vaadinRequest) {
 
 		loginName = new TextField();
-		loginName.setCaption(resBundle.getString("caption.user.loginname"));
+		loginName.setCaption(resBundle.getString(CAPTION_USER_LOGINNAME));
 
 		passwordField = new PasswordField();
-		passwordField.setCaption(resBundle.getString("caption.user.password"));
+		passwordField.setCaption(resBundle.getString(CAPTION_USER_PASSWORD));
 
 		passwordFieldVerification = new PasswordField();
 		passwordFieldVerification.setCaption(
-				resBundle.getString("caption.user.passwordconfirmation"));
+				resBundle.getString(CAPTION_USER_PASSWORDCONFIRMATION));
 
 		prename = new TextField();
-		prename.setCaption(resBundle.getString("caption.user.prename"));
+		prename.setCaption(resBundle.getString(CAPTION_USER_PRENAME2));
 
 		surname = new TextField();
-		surname.setCaption(resBundle.getString("caption.user.surname"));
+		surname.setCaption(resBundle.getString(CAPTION_USER_SURNAME));
 
-		button = new Button(resBundle.getString("label.user.register"));
+		button = new Button(resBundle.getString(LABEL_USER_REGISTER));
 		button.addClickListener(e -> {
 			if (inputIsValid()) {
 				storeUserData();
@@ -87,7 +87,7 @@ public class UserRegisterUi extends VerticalLayout implements InvoiceUi {
 		boolean isValid = true;
 		if (value.equals(repeat) == false) {
 			UserError err = new UserError(
-					resBundle.getString("message.user.passwordmissmatch"));
+					resBundle.getString(MESSAGE_USER_PASSWORDMISSMATCH));
 			passwordField.setComponentError(err);
 			passwordFieldVerification.setComponentError(err);
 			isValid = false;
@@ -108,7 +108,7 @@ public class UserRegisterUi extends VerticalLayout implements InvoiceUi {
 		business.save(user);
 
 		addComponent(new Label(MessageFormat.format(
-				resBundle.getString("message.user.create.success"), user)));
+				resBundle.getString(MESSAGE_USER_CREATE_SUCCESS), user)));
 
 	}
 

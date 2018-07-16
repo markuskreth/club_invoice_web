@@ -1,5 +1,16 @@
 package de.kreth.clubinvoice.ui.components;
 
+import static de.kreth.clubinvoice.ui.Constants.CAPTION_ARTICLES;
+import static de.kreth.clubinvoice.ui.Constants.CAPTION_INVOICEITEM_DATE;
+import static de.kreth.clubinvoice.ui.Constants.CAPTION_INVOICEITEM_END;
+import static de.kreth.clubinvoice.ui.Constants.CAPTION_INVOICEITEM_PARTICIPANTS;
+import static de.kreth.clubinvoice.ui.Constants.CAPTION_INVOICEITEM_START;
+import static de.kreth.clubinvoice.ui.Constants.LABEL_CANCEL;
+import static de.kreth.clubinvoice.ui.Constants.LABEL_DELETE;
+import static de.kreth.clubinvoice.ui.Constants.LABEL_OK;
+import static de.kreth.clubinvoice.ui.Constants.MESSAGE_INVOICEITEM_ALLFIELDSMUSTBESET;
+import static de.kreth.clubinvoice.ui.Constants.MESSAGE_INVOICEITEM_STARTBEFOREEND;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -52,6 +63,8 @@ public class InvoiceItemDialog extends Window {
 
 	private ResourceBundle resBundle;
 
+	private Button deleteButton;
+
 	public InvoiceItemDialog(ResourceBundle resBundle) {
 		this.resBundle = resBundle;
 		item = new InvoiceItem();
@@ -62,20 +75,20 @@ public class InvoiceItemDialog extends Window {
 
 		dateField = new DateField();
 		dateField.setLocale(Locale.getDefault());
-		dateField.setCaption(resBundle.getString("caption.invoiceitem.date"));
+		dateField.setCaption(resBundle.getString(CAPTION_INVOICEITEM_DATE));
 		startTimeField = new TextField();
 		startTimeField.setRequiredIndicatorVisible(true);
 		startTimeField
-				.setCaption(resBundle.getString("caption.invoiceitem.start"));
+				.setCaption(resBundle.getString(CAPTION_INVOICEITEM_START));
 		endTimeField = new TextField();
 		endTimeField.setRequiredIndicatorVisible(true);
-		endTimeField.setCaption(resBundle.getString("caption.invoiceitem.end"));
+		endTimeField.setCaption(resBundle.getString(CAPTION_INVOICEITEM_END));
 		participants = new TextField();
 		participants.setCaption(
-				resBundle.getString("caption.invoiceitem.participants"));
+				resBundle.getString(CAPTION_INVOICEITEM_PARTICIPANTS));
 
 		articleBox = new ComboBox<>();
-		articleBox.setCaption(resBundle.getString("caption.articles"));
+		articleBox.setCaption(resBundle.getString(CAPTION_ARTICLES));
 		articleBox.setItemCaptionGenerator(Article::getTitle);
 		articleBox.addSelectionListener(ev -> {
 			item.setArticle(ev.getSelectedItem().orElse(item.getArticle()));
@@ -83,11 +96,14 @@ public class InvoiceItemDialog extends Window {
 
 		bindItemFields();
 
-		okButton = new Button(resBundle.getString("label.ok"));
+		okButton = new Button(resBundle.getString(LABEL_OK));
 		okListeners = new ArrayList<>();
 		okListeners.add(ev -> {
 			close();
 		});
+
+		deleteButton = new Button(resBundle.getString(LABEL_DELETE));
+		deleteButton.setVisible(false);
 
 		okButton.addClickListener(ev -> {
 			if (isValid()) {
@@ -97,11 +113,11 @@ public class InvoiceItemDialog extends Window {
 			}
 		});
 
-		Button cancelButton = new Button(resBundle.getString("label.cancel"),
+		Button cancelButton = new Button(resBundle.getString(LABEL_CANCEL),
 				ev -> close());
 
 		HorizontalLayout buttons = new HorizontalLayout();
-		buttons.addComponents(okButton, cancelButton);
+		buttons.addComponents(okButton, deleteButton, cancelButton);
 
 		VerticalLayout content = new VerticalLayout();
 		content.addComponents(articleBox, dateField, startTimeField,
@@ -115,8 +131,7 @@ public class InvoiceItemDialog extends Window {
 		if (item.getArticle() == null || item.getStart() == null
 				|| item.getEnd() == null) {
 			Notification.show(
-					resBundle.getString(
-							"message.invoiceitem.allfieldsmustbeset"),
+					resBundle.getString(MESSAGE_INVOICEITEM_ALLFIELDSMUSTBESET),
 					Notification.Type.ERROR_MESSAGE);
 			return false;
 		}
@@ -129,7 +144,7 @@ public class InvoiceItemDialog extends Window {
 		}
 		if (item.getStart().isAfter(item.getEnd())) {
 			UserError componentError = new UserError(
-					resBundle.getString("message.invoiceitem.startbeforeend"));
+					resBundle.getString(MESSAGE_INVOICEITEM_STARTBEFOREEND));
 			startTimeField.setComponentError(componentError);
 			endTimeField.setComponentError(componentError);
 			return false;
@@ -137,8 +152,7 @@ public class InvoiceItemDialog extends Window {
 		BigDecimal sumPrice = item.getSumPrice();
 		if (sumPrice == null || sumPrice.doubleValue() <= 0) {
 			Notification.show(
-					resBundle.getString(
-							"message.invoiceitem.allfieldsmustbeset"),
+					resBundle.getString(MESSAGE_INVOICEITEM_ALLFIELDSMUSTBESET),
 					Notification.Type.ERROR_MESSAGE);
 		}
 		return true;
@@ -211,8 +225,14 @@ public class InvoiceItemDialog extends Window {
 				dateBinding.getSetter());
 
 	}
+
 	public void addOkClickListener(ClickListener listener) {
 		okListeners.add(listener);
+	}
+
+	public void addDeleteClickListener(ClickListener listener) {
+		deleteButton.addClickListener(listener);
+		deleteButton.setVisible(true);
 	}
 
 	public void setSelectableArticles(List<Article> selectableArticles) {

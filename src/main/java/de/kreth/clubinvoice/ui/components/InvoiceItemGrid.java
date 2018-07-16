@@ -1,5 +1,13 @@
 package de.kreth.clubinvoice.ui.components;
 
+import static de.kreth.clubinvoice.ui.Constants.CAPTION_ARTICLE;
+import static de.kreth.clubinvoice.ui.Constants.CAPTION_INVOICEITEMS;
+import static de.kreth.clubinvoice.ui.Constants.CAPTION_INVOICEITEM_DATE;
+import static de.kreth.clubinvoice.ui.Constants.CAPTION_INVOICEITEM_END;
+import static de.kreth.clubinvoice.ui.Constants.CAPTION_INVOICEITEM_PARTICIPANTS;
+import static de.kreth.clubinvoice.ui.Constants.CAPTION_INVOICEITEM_START;
+import static de.kreth.clubinvoice.ui.Constants.CAPTION_INVOICEITEM_SUMPRICE;
+
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -19,27 +27,28 @@ public class InvoiceItemGrid<T extends InvoiceItem> extends Grid<T> {
 	private static final long serialVersionUID = -8653320112619816426L;
 
 	public InvoiceItemGrid(ResourceBundle resBundle) {
-		setCaption(resBundle.getString("caption.invoiceitems"));
+		setCaption(resBundle.getString(CAPTION_INVOICEITEMS));
 
 		addColumn(InvoiceItem::getArticle, Article::getTitle)
-				.setCaption(resBundle.getString("caption.article"));
+				.setCaption(resBundle.getString(CAPTION_ARTICLE));
+
 		Column<T, LocalDateTime> dateColumn = addColumn(InvoiceItem::getStart)
-				.setCaption(resBundle.getString("caption.invoiceitem.date"))
+				.setCaption(resBundle.getString(CAPTION_INVOICEITEM_DATE))
 				.setRenderer(new LocalDateTimeRenderer(
 						DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)));
 		Column<T, LocalDateTime> startColumn = addColumn(InvoiceItem::getStart)
-				.setCaption(resBundle.getString("caption.invoiceitem.start"))
+				.setCaption(resBundle.getString(CAPTION_INVOICEITEM_START))
 				.setRenderer(new LocalDateTimeRenderer(
 						DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)));
 		addColumn(InvoiceItem::getEnd)
-				.setCaption(resBundle.getString("caption.invoiceitem.end"))
+				.setCaption(resBundle.getString(CAPTION_INVOICEITEM_END))
 				.setRenderer(new LocalDateTimeRenderer(
 						DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)));
 		addColumn(InvoiceItem::getParticipants).setCaption(
-				resBundle.getString("caption.invoiceitem.participants"));
+				resBundle.getString(CAPTION_INVOICEITEM_PARTICIPANTS));
 
 		addColumn(InvoiceItem::getSumPrice)
-				.setCaption(resBundle.getString("caption.invoiceitem.sumprice"))
+				.setCaption(resBundle.getString(CAPTION_INVOICEITEM_SUMPRICE))
 				.setRenderer(
 						new NumberRenderer(NumberFormat.getCurrencyInstance()));
 

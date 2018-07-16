@@ -1,5 +1,10 @@
 package de.kreth.clubinvoice.ui.components;
 
+import static de.kreth.clubinvoice.ui.Constants.CAPTION_USER_LOGINNAME;
+import static de.kreth.clubinvoice.ui.Constants.CAPTION_USER_PRENAME;
+import static de.kreth.clubinvoice.ui.Constants.LABEL_CANCEL;
+import static de.kreth.clubinvoice.ui.Constants.LABEL_OK;
+
 import java.util.ResourceBundle;
 
 import com.vaadin.data.Binder;
@@ -22,6 +27,8 @@ import de.kreth.clubinvoice.data.UserBank;
 
 public class UserDetailsDialog extends Window {
 
+	private static final String CAPTION_USER_SURNAME = "caption.user.surname";
+
 	private static final long serialVersionUID = -6255487997073609068L;
 
 	private TextField loginName;
@@ -43,19 +50,19 @@ public class UserDetailsDialog extends Window {
 
 	public UserDetailsDialog(ResourceBundle resBundle) {
 		loginName = new TextField();
-		loginName.setCaption(resBundle.getString("caption.user.loginname"));
+		loginName.setCaption(resBundle.getString(CAPTION_USER_LOGINNAME));
 
 		loginName.setRequiredIndicatorVisible(true);
 		beanBinder.forField(loginName).asRequired("UserName cannot be empty.")
 				.bind(User::getLoginName, User::setLoginName);
 
 		prename = new TextField();
-		prename.setCaption(resBundle.getString("caption.user.prename"));
+		prename.setCaption(resBundle.getString(CAPTION_USER_PRENAME));
 		beanBinder.forField(prename).asRequired("Prename cannot be empty.")
 				.bind(User::getPrename, User::setPrename);
 
 		surname = new TextField();
-		surname.setCaption(resBundle.getString("caption.user.surname"));
+		surname.setCaption(resBundle.getString(CAPTION_USER_SURNAME));
 		beanBinder.forField(surname).asRequired("Surname cannot be empty.")
 				.bind(User::getSurname, User::setSurname);
 
@@ -104,14 +111,14 @@ public class UserDetailsDialog extends Window {
 
 		layout.addComponents(adress1, adress2, cityLayout);
 
-		okButton = new Button(resBundle.getString("label.ok"), ev -> {
+		okButton = new Button(resBundle.getString(LABEL_OK), ev -> {
 			BinderValidationStatus<User> validation = beanBinder.validate();
 			if (validation.isOk()) {
 				close();
 			}
 		});
 
-		Button cancel = new Button(resBundle.getString("label.cancel"),
+		Button cancel = new Button(resBundle.getString(LABEL_CANCEL),
 				ev -> close());
 
 		HorizontalLayout buttons = new HorizontalLayout();

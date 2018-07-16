@@ -17,8 +17,8 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
 
+import de.kreth.clubinvoice.business.ArticleBusiness;
 import de.kreth.clubinvoice.business.CookieStore;
 import de.kreth.clubinvoice.business.OverviewBusiness;
 import de.kreth.clubinvoice.business.PropertyStore;
@@ -33,6 +33,8 @@ import de.kreth.clubinvoice.ui.components.InvoiceGrid;
 import de.kreth.clubinvoice.ui.components.InvoiceItemDialog;
 import de.kreth.clubinvoice.ui.components.InvoiceItemGrid;
 import de.kreth.clubinvoice.ui.components.UserDetailsDialog;
+import de.steinwedel.messagebox.ButtonOption;
+import de.steinwedel.messagebox.MessageBox;
 
 public class OverviewUi extends VerticalLayout implements InvoiceUi {
 
@@ -58,7 +60,7 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 	@Override
 	public void setContent(UI ui, VaadinRequest vaadinRequest) {
 
-		HorizontalLayout head = createHeadView(ui);
+		HorizontalLayout head = createHeadView(ui, vaadinRequest);
 
 		VerticalLayout left = createItemsView(ui);
 		left.setSizeFull();
@@ -93,11 +95,11 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 		gridInvoices.setStyleName("bordered");
 
 		Button createInvoice = new Button(
-				resBundle.getString("caption.invoice.create"));
+				resBundle.getString(CAPTION_INVOICE_CREATE));
 		createInvoice.addClickListener(ev -> {
 
 			String invoiceNo = business.createNextInvoiceId(user,
-					resBundle.getString("caption.invoice.pattern"));
+					resBundle.getString(CAPTION_INVOICE_PATTERN));
 			Set<InvoiceItem> selectedItems = gridItems.getSelectedItems();
 			final Invoice inv = new Invoice();
 			inv.setInvoiceId(invoiceNo);
@@ -134,6 +136,20 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 				business.save(dlg.getItem());
 				gridItems.setItems(loadItems());
 			});
+			dlg.addDeleteClickListener(e -> {
+				InvoiceItem item = dlg.getItem();
+
+				MessageBox.createQuestion().asModal(true)
+						.withCaption("Really delete?")
+						.withMessage("Delete " + item + "?")
+						.withCancelButton(ButtonOption.closeOnClick(true))
+						.withOkButton(() -> {
+							business.delete(item);
+							gridItems.setItems(loadItems());
+						}, ButtonOption.focus()).open();
+
+			});
+
 			dlg.setSelectableArticles(business.getArticles(user));
 			ui.addWindow(dlg);
 
@@ -141,7 +157,7 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 		gridItems.setStyleName("bordered");
 
 		Button addItem = new Button(
-				resBundle.getString("caption.invoiceitem.add"));
+				resBundle.getString(CAPTION_INVOICEITEM_ADD));
 		addItem.addClickListener(ev -> {
 			final InvoiceItemDialog dlg = new InvoiceItemDialog(resBundle);
 			dlg.addOkClickListener(e -> {
@@ -157,35 +173,31 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 		return left;
 	}
 
-	public HorizontalLayout createHeadView(final UI ui) {
-		Label l1 = new Label(resBundle.getString("label.loggedin"));
+	public HorizontalLayout createHeadView(final UI ui,
+			VaadinRequest vaadinRequest) {
+		Label l1 = new Label(resBundle.getString(LABEL_LOGGEDIN));
 		Label l2 = new Label(
 				String.format("%s %s", user.getPrename(), user.getSurname()));
 
-		Button addArticle = new Button(resBundle.getString("label.addarticle"));
+		Button addArticle = new Button(resBundle.getString(CAPTION_ARTICLES));
 		addArticle.addClickListener(ev -> {
 			final ArticleDialog dlg = new ArticleDialog(resBundle);
-			dlg.addOkClickListener(clickEv -> {
-				Article a = new Article();
-				a.setTitle(dlg.getTitle());
-				a.setPricePerHour(dlg.getPricePerHour());
-				a.setDescription(dlg.getDescription());
-				a.setUserId(user.getId());
+			dlg.setUser(user);
+			dlg.setBusiness(
+					new ArticleBusiness(business.getSessionObj(), store));
 
-				business.createArticle(a);
-
-			});
 			ui.addWindow(dlg);
 		});
 
-		Button logoutButton = new Button(resBundle.getString("label.logout"));
+		Button logoutButton = new Button(resBundle.getString(LABEL_LOGOUT));
 		logoutButton.addClickListener(ev -> {
-			logout(ui);
+			logout(ui, vaadinRequest);
 		});
 
-		Button userDetail = new Button("Benutzer Details", ev -> {
-			showUserDetailDialog(ui);
-		});
+		Button userDetail = new Button(
+				resBundle.getString(CAPTION_USER_DETAILS), ev -> {
+					showUserDetailDialog(ui);
+				});
 
 		VerticalLayout userId = new VerticalLayout();
 		userId.addComponents(l1, l2);
@@ -210,7 +222,7 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 		ui.addWindow(dlg);
 	}
 
-	private void logout(UI ui) {
+	private void logout(UI ui, VaadinRequest vaadinRequest) {
 
 		LOGGER.debug("Logging out.");
 		store.removeAttribute(PropertyStore.LOGGED_IN_USER);
@@ -222,10 +234,7 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 				OverviewUi.this.business.getSessionObj(), store, cs);
 
 		LoginUi content = new LoginUi(business);
-		Window w = new Window();
-		w.setContent(content);
-		w.setModal(true);
-		ui.addWindow(w);
+		content.setContent(ui, vaadinRequest);
 	}
 
 	private List<InvoiceItem> loadItems() {
