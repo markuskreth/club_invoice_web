@@ -16,3 +16,5 @@ buildNumber.properties
 *.zargo~
 
 \.directory
+
+*.war

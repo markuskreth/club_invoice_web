@@ -12,9 +12,9 @@ import de.kreth.clubinvoice.data.User;
 public class OverviewBusiness {
 
 	private final ArticleBusiness articleBusiness;
-	private InvoiceItemBusiness itemBusiness;
-	private InvoiceBusiness invoiceBusiness;
-	private UserRegister userBusiness;
+	private final InvoiceItemBusiness itemBusiness;
+	private final InvoiceBusiness invoiceBusiness;
+	private final UserRegister userBusiness;
 
 	public OverviewBusiness(Session sessionObj, PropertyStore propStore,
 			CookieStore cookieStore) {
