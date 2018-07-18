@@ -8,7 +8,7 @@
 	<artifactId>kreth-clubinvoice</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>kreth-clubinvoice</name>
+	<name>clubinvoice</name>
 
 	<prerequisites>
 		<maven>3</maven>
@@ -249,6 +249,17 @@
 				<version>${jetty.plugin.version}</version>
 				<configuration>
 					<scanIntervalSeconds>2</scanIntervalSeconds>
+				</configuration>
+			</plugin>
+		
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<url>http://localhost:8080/manager/text</url>
+					<server>krethtomcat</server>
+					<path>/ClubInvoice##${project.version}</path>
 				</configuration>
 			</plugin>
 		</plugins>
