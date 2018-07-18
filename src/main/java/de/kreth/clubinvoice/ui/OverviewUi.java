@@ -15,14 +15,13 @@ import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.SelectionMode;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 import de.kreth.clubinvoice.business.ArticleBusiness;
-import de.kreth.clubinvoice.business.CookieStore;
 import de.kreth.clubinvoice.business.OverviewBusiness;
 import de.kreth.clubinvoice.business.PropertyStore;
-import de.kreth.clubinvoice.business.UserRegister;
 import de.kreth.clubinvoice.data.Article;
 import de.kreth.clubinvoice.data.Invoice;
 import de.kreth.clubinvoice.data.InvoiceItem;
@@ -76,6 +75,7 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 
 		ui.setContent(this);
 		if (user.getBank() == null || user.getAdress() == null) {
+			LOGGER.info("User data incomplete, showing user detail dialog.");
 			showUserDetailDialog(ui);
 		}
 	}
@@ -86,6 +86,7 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 		gridInvoices.setItems(loadInvoices());
 		gridInvoices.addItemClickListener(itemEv -> {
 
+			LOGGER.debug("Invoice clicked, opening {}", itemEv.getItem());
 			InvoiceDialog dlg = new InvoiceDialog(resBundle);
 			dlg.center();
 			dlg.setInvoice(itemEv.getItem());
@@ -100,7 +101,17 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 
 			String invoiceNo = business.createNextInvoiceId(user,
 					resBundle.getString(CAPTION_INVOICE_PATTERN));
+
+			LOGGER.info("Creating new invoice no: {}", invoiceNo);
+
 			Set<InvoiceItem> selectedItems = gridItems.getSelectedItems();
+			if (selectedItems.isEmpty()) {
+				LOGGER.error("No items selected for invoice.");
+				Notification.show("Unable to create empty Invoice",
+						"Please Select Items for the new invoice. ",
+						Notification.Type.ERROR_MESSAGE);
+				return;
+			}
 			final Invoice inv = new Invoice();
 			inv.setInvoiceId(invoiceNo);
 			inv.setInvoiceDate(LocalDateTime.now());
@@ -110,6 +121,7 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 			dlg.center();
 			dlg.setInvoice(inv);
 			dlg.addOkClickListener(okEv -> {
+				LOGGER.info("Storing invoice {}", inv);
 				business.save(inv);
 				gridItems.setItems(loadItems());
 				gridInvoices.setItems(loadInvoices());
@@ -130,6 +142,7 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 		gridItems.setItems(loadItems());
 		gridItems.addItemClickListener(ev -> {
 
+			LOGGER.debug("Opening item for edit: {}" + ev.getItem());
 			final InvoiceItemDialog dlg = new InvoiceItemDialog(resBundle);
 			dlg.setItem(ev.getItem());
 			dlg.addOkClickListener(e -> {
@@ -140,12 +153,13 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 
 				dlg.addDeleteClickListener(e -> {
 					InvoiceItem item = dlg.getItem();
-
+					LOGGER.warn("Showing delete dialog for {}" + item);
 					MessageBox.createQuestion().asModal(true)
 							.withCaption("Really delete?")
 							.withMessage("Delete " + item + "?")
 							.withCancelButton(ButtonOption.closeOnClick(true))
 							.withOkButton(() -> {
+								LOGGER.warn("Deleting {}", item);
 								business.delete(item);
 								gridItems.setItems(loadItems());
 							}, ButtonOption.focus()).open();
@@ -163,6 +177,7 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 				resBundle.getString(CAPTION_INVOICEITEM_ADD));
 		addItem.addClickListener(ev -> {
 			final InvoiceItemDialog dlg = new InvoiceItemDialog(resBundle);
+			LOGGER.info("Creating new Item.");
 			dlg.addOkClickListener(e -> {
 				business.save(dlg.getItem());
 				gridItems.setItems(loadItems());
@@ -194,6 +209,7 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 
 		Button logoutButton = new Button(resBundle.getString(LABEL_LOGOUT));
 		logoutButton.addClickListener(ev -> {
+			LOGGER.warn("Logging out.");
 			logout(ui, vaadinRequest);
 		});
 
@@ -218,6 +234,7 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 		dlg.setModal(true);
 		dlg.setUser(user);
 		dlg.addOkClickListener(evOkClicked -> {
+			LOGGER.info("Updating User: {}", dlg.getUser());
 			business.save(dlg.getUser());
 		});
 
@@ -227,17 +244,7 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 
 	private void logout(UI ui, VaadinRequest vaadinRequest) {
 
-		LOGGER.debug("Logging out.");
-		store.removeAttribute(PropertyStore.LOGGED_IN_USER);
-		CookieStore cs = new CookieStore();
-		cs.remove(CookieStore.PASSWORD);
-		cs.remove(CookieStore.USER_NAME);
-
-		UserRegister business = new UserRegister(
-				OverviewUi.this.business.getSessionObj(), store, cs);
-
-		LoginUi content = new LoginUi(business);
-		content.setContent(ui, vaadinRequest);
+		ui.getPage().setLocation("logout");
 	}
 
 	private List<InvoiceItem> loadItems() {

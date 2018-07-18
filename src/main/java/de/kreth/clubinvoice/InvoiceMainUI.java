@@ -64,6 +64,16 @@ public class InvoiceMainUI extends UI {
 		this.store = new PropertyStore(vaadinRequest.getWrappedSession());
 		cookies = new CookieStore();
 
+		if (vaadinRequest.getPathInfo() != null
+				&& vaadinRequest.getPathInfo().contains("logout")) {
+
+			LOGGER.debug("Logging out.");
+			store.removeAttribute(PropertyStore.LOGGED_IN_USER);
+			CookieStore cs = new CookieStore();
+			cs.remove(CookieStore.PASSWORD);
+			cs.remove(CookieStore.USER_NAME);
+		}
+
 		InvoiceUi content = createView(vaadinRequest);
 		content.setContent(this, vaadinRequest);
 		LOGGER.trace("Startet with UI Class : {}", content.getClass());
