@@ -29,7 +29,7 @@
 			"cdn" -->
 		<vaadin.widgetset.mode>local</vaadin.widgetset.mode>
 		<timestamp>${maven.build.timestamp}</timestamp>
-		<maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
+		<maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
 	</properties>
 
 	<repositories>
@@ -212,7 +212,7 @@
 					<webResources>
 						<resource>
 							<filtering>true</filtering>
-							<directory>src/packaging/</directory>
+							<directory>src/packaging</directory>
 						</resource>
 					</webResources>
 				</configuration>
