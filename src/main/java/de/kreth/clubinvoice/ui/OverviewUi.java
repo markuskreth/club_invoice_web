@@ -1,5 +1,6 @@
 package de.kreth.clubinvoice.ui;
 
+import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -7,6 +8,7 @@ import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.vaadin.addon.borderlayout.BorderLayout;
 
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.Alignment;
@@ -15,6 +17,7 @@ import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.SelectionMode;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Layout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
@@ -27,15 +30,17 @@ import de.kreth.clubinvoice.data.Invoice;
 import de.kreth.clubinvoice.data.InvoiceItem;
 import de.kreth.clubinvoice.data.User;
 import de.kreth.clubinvoice.ui.components.ArticleDialog;
+import de.kreth.clubinvoice.ui.components.FooterComponent;
 import de.kreth.clubinvoice.ui.components.InvoiceDialog;
 import de.kreth.clubinvoice.ui.components.InvoiceGrid;
 import de.kreth.clubinvoice.ui.components.InvoiceItemDialog;
 import de.kreth.clubinvoice.ui.components.InvoiceItemGrid;
 import de.kreth.clubinvoice.ui.components.UserDetailsDialog;
+import de.kreth.clubinvoice.ui.presentation.DataPresentators;
 import de.steinwedel.messagebox.ButtonOption;
 import de.steinwedel.messagebox.MessageBox;
 
-public class OverviewUi extends VerticalLayout implements InvoiceUi {
+public class OverviewUi extends BorderLayout implements InvoiceUi {
 
 	private static final long serialVersionUID = 318645298331660865L;
 	private static final Logger LOGGER = LoggerFactory
@@ -68,16 +73,27 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 		right.setSizeFull();
 
 		HorizontalLayout main = new HorizontalLayout();
-		main.setWidth(80, Unit.PERCENTAGE);
+		main.setSizeFull();
 		main.addComponents(left, right);
 
-		addComponents(head, main);
+		Layout footer = createFooter();
+
+		addComponent(head, BorderLayout.Constraint.PAGE_START);
+
+		addComponent(main, BorderLayout.Constraint.CENTER);
+
+		addComponent(footer, BorderLayout.Constraint.PAGE_END);
 
 		ui.setContent(this);
+
 		if (user.getBank() == null || user.getAdress() == null) {
 			LOGGER.info("User data incomplete, showing user detail dialog.");
 			showUserDetailDialog(ui);
 		}
+	}
+
+	private Layout createFooter() {
+		return new FooterComponent();
 	}
 
 	public VerticalLayout createInvoicesView(final UI ui) {
@@ -93,7 +109,7 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 			dlg.setOkVisible(false);
 			ui.addWindow(dlg);
 		});
-		gridInvoices.setStyleName("bordered");
+		gridInvoices.setStyleName(STYLE_BORDERED);
 
 		Button createInvoice = new Button(
 				resBundle.getString(CAPTION_INVOICE_CREATE));
@@ -107,8 +123,9 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 			Set<InvoiceItem> selectedItems = gridItems.getSelectedItems();
 			if (selectedItems.isEmpty()) {
 				LOGGER.error("No items selected for invoice.");
-				Notification.show("Unable to create empty Invoice",
-						"Please Select Items for the new invoice. ",
+				Notification.show(
+						resBundle.getString(ERROR_INVOICE_TITLE_NOITEMS),
+						resBundle.getString(ERROR_INVOICE_TEXT_NOITEMS),
 						Notification.Type.ERROR_MESSAGE);
 				return;
 			}
@@ -130,7 +147,7 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 
 		});
 		VerticalLayout right = new VerticalLayout();
-		right.setStyleName("bordered");
+		right.setStyleName(STYLE_BORDERED);
 		right.addComponents(createInvoice, gridInvoices);
 		return right;
 	}
@@ -149,19 +166,23 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 				business.save(dlg.getItem());
 				gridItems.setItems(loadItems());
 			});
-			if (ev.getItem().getInvoice() != null) {
+			if (ev.getItem().getInvoice() == null) {
 
 				dlg.addDeleteClickListener(e -> {
 					InvoiceItem item = dlg.getItem();
 					LOGGER.warn("Showing delete dialog for {}" + item);
 					MessageBox.createQuestion().asModal(true)
-							.withCaption("Really delete?")
-							.withMessage("Delete " + item + "?")
+							.withCaption(
+									resBundle.getString("message.delete.title"))
+							.withMessage(MessageFormat.format(
+									resBundle.getString("message.delete.text"),
+									DataPresentators.toPresentation(item)))
 							.withCancelButton(ButtonOption.closeOnClick(true))
 							.withOkButton(() -> {
 								LOGGER.warn("Deleting {}", item);
 								business.delete(item);
 								gridItems.setItems(loadItems());
+								dlg.close();
 							}, ButtonOption.focus()).open();
 
 				});
@@ -171,7 +192,7 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 			ui.addWindow(dlg);
 
 		});
-		gridItems.setStyleName("bordered");
+		gridItems.setStyleName(STYLE_BORDERED);
 
 		Button addItem = new Button(
 				resBundle.getString(CAPTION_INVOICEITEM_ADD));
@@ -187,7 +208,7 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 		});
 		VerticalLayout left = new VerticalLayout();
 		left.addComponents(addItem, gridItems);
-		left.setStyleName("bordered");
+		left.setStyleName(STYLE_BORDERED);
 		return left;
 	}
 
@@ -243,7 +264,6 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 	}
 
 	private void logout(UI ui, VaadinRequest vaadinRequest) {
-
 		ui.getPage().setLocation("logout");
 	}
 

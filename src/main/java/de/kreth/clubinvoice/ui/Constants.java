@@ -17,6 +17,7 @@ public interface Constants {
 	public static final String CAPTION_INVOICE_INVOICEDATE = "caption.invoice.invoicedate";
 	public static final String CAPTION_INVOICE_INVOICENO = "caption.invoice.invoiceno";
 	public static final String CAPTION_INVOICES = "caption.invoices";
+	public static final String CAPTION_INVOICEITEM_NAME = "caption.invoiceitem.name";
 
 	public static final String CAPTION_ARTICLE_DESCRIPTION = "caption.article.description";
 	public static final String CAPTION_ARTICLE_PRICE = "caption.article.price";
@@ -29,6 +30,8 @@ public interface Constants {
 	public static final String CAPTION_USER_PASSWORDCONFIRMATION = "caption.user.passwordconfirmation";
 	public static final String CAPTION_USER_PASSWORD = "caption.user.password";
 
+	public static final String ERROR_INVOICE_TEXT_NOITEMS = "error.invoice.text.noitems";
+	public static final String ERROR_INVOICE_TITLE_NOITEMS = "error.invoice.title.noitems";
 	public static final String MESSAGE_INVOICEITEM_STARTBEFOREEND = "message.invoiceitem.startbeforeend";
 	public static final String MESSAGE_INVOICEITEM_ALLFIELDSMUSTBESET = "message.invoiceitem.allfieldsmustbeset";
 	public static final String MESSAGE_ARTICLE_PRICEERROR = "message.article.priceerror";
@@ -46,4 +49,5 @@ public interface Constants {
 	public static final String LABEL_ADDARTICLE = "label.addarticle";
 	public static final String LABEL_USER_REGISTER = "label.user.register";
 
+	public static final String STYLE_BORDERED = "bordered";
 }
