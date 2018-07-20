@@ -1,18 +1,13 @@
 package de.kreth.clubinvoice.ui.components;
 
-import java.io.File;
-import java.io.FileReader;
-import java.nio.file.FileVisitOption;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.IOException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Optional;
 import java.util.Properties;
 import java.util.TimeZone;
-import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,37 +25,30 @@ public class FooterComponent extends HorizontalLayout {
 
 	private final static Properties version = new Properties();
 	static {
+		String path = "/../version.properties";
 		try {
-			String fileUrl = FooterComponent.class
-					.getResource("/hibernate.cfg.xml").getFile();
-			File file = new File(fileUrl);
-			File rootDir = file.getParentFile().getParentFile().getParentFile();
-			File propFile = new File(rootDir, "version.properties");
-			if (propFile.exists()) {
-				version.load(new FileReader(propFile));
-			} else {
-				Stream<Path> sources = Files.find(rootDir.toPath(), 3,
-						(path, attr) -> {
-							return path.getFileName().toString()
-									.equals("version.properties");
-						}, new FileVisitOption[0]);
-				Optional<Path> first = sources.findFirst();
-
-				if (first.isPresent() && first.get().toFile().exists()) {
-					version.load(new FileReader(first.get().toFile()));
-				} else {
-					LOGGER.error("Unable to load Resource from "
-							+ propFile.getAbsolutePath() + " or any child of "
-							+ rootDir.getAbsolutePath());
-				}
-				sources.close();
-			}
+			recursivelyLoadPropFromPath(FooterComponent.class, path, 0);
 		} catch (Exception e) {
-			LOGGER.error(
-					"Error loading version properties file: " + e.getMessage());
+			LOGGER.error("Error loading version properties file = " + path
+					+ ", cause: " + e.getMessage());
 		}
 	}
 
+	private static void recursivelyLoadPropFromPath(
+			Class<FooterComponent> thisClass, String path, int level)
+			throws IOException {
+
+		URL resource = thisClass.getResource(path);
+		if (resource != null) {
+			version.load(resource.openStream());
+			LOGGER.info("Successfully loaded version info from " + resource);
+		} else if (level < 4) {
+			recursivelyLoadPropFromPath(thisClass, "/.." + path, level + 1);
+		} else {
+			throw new IOException("File not Found in any subdir of " + path);
+		}
+
+	}
 	public FooterComponent() {
 
 		Label copyright = new Label("&copy; Markus Kreth", ContentMode.HTML);
