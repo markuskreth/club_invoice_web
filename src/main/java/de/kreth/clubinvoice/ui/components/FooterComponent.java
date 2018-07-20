@@ -2,13 +2,17 @@ package de.kreth.clubinvoice.ui.components;
 
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
+import java.nio.file.FileVisitOption;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.TimeZone;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,9 +36,26 @@ public class FooterComponent extends HorizontalLayout {
 			File file = new File(fileUrl);
 			File rootDir = file.getParentFile().getParentFile().getParentFile();
 			File propFile = new File(rootDir, "version.properties");
+			if (propFile.exists()) {
+				version.load(new FileReader(propFile));
+			} else {
+				Stream<Path> sources = Files.find(rootDir.toPath(), 3,
+						(path, attr) -> {
+							return path.getFileName().toString()
+									.equals("version.properties");
+						}, new FileVisitOption[0]);
+				Optional<Path> first = sources.findFirst();
 
-			version.load(new FileReader(propFile));
-		} catch (IOException | NullPointerException e) {
+				if (first.isPresent() && first.get().toFile().exists()) {
+					version.load(new FileReader(first.get().toFile()));
+				} else {
+					LOGGER.error("Unable to load Resource from "
+							+ propFile.getAbsolutePath() + " or any child of "
+							+ rootDir.getAbsolutePath());
+				}
+				sources.close();
+			}
+		} catch (Exception e) {
 			LOGGER.error(
 					"Error loading version properties file: " + e.getMessage());
 		}
