@@ -52,6 +52,8 @@ public class OverviewUi extends BorderLayout implements InvoiceUi {
 	private final PropertyStore store;
 	private Grid<InvoiceItem> gridItems;
 	private InvoiceGrid gridInvoices;
+	private Button createInvoice;
+	private Button addItem;
 
 	public OverviewUi(PropertyStore store, OverviewBusiness business) {
 		super();
@@ -90,6 +92,22 @@ public class OverviewUi extends BorderLayout implements InvoiceUi {
 			LOGGER.info("User data incomplete, showing user detail dialog.");
 			showUserDetailDialog(ui);
 		}
+		checkButtonStates();
+	}
+
+	private void checkButtonStates() {
+		boolean noItems = loadItems().isEmpty();
+		if (noItems) {
+			createInvoice.setEnabled(false);
+		} else {
+			createInvoice.setEnabled(true);
+		}
+		boolean noArticles = business.getArticles(user).isEmpty();
+		if (noArticles) {
+			addItem.setEnabled(false);
+		} else {
+			addItem.setEnabled(true);
+		}
 	}
 
 	private Layout createFooter() {
@@ -111,7 +129,7 @@ public class OverviewUi extends BorderLayout implements InvoiceUi {
 		});
 		gridInvoices.setStyleName(STYLE_BORDERED);
 
-		Button createInvoice = new Button(
+		createInvoice = new Button(
 				resBundle.getString(CAPTION_INVOICE_CREATE));
 		createInvoice.addClickListener(ev -> {
 
@@ -183,6 +201,7 @@ public class OverviewUi extends BorderLayout implements InvoiceUi {
 								business.delete(item);
 								gridItems.setItems(loadItems());
 								dlg.close();
+								checkButtonStates();
 							}, ButtonOption.focus()).open();
 
 				});
@@ -194,7 +213,7 @@ public class OverviewUi extends BorderLayout implements InvoiceUi {
 		});
 		gridItems.setStyleName(STYLE_BORDERED);
 
-		Button addItem = new Button(
+		addItem = new Button(
 				resBundle.getString(CAPTION_INVOICEITEM_ADD));
 		addItem.addClickListener(ev -> {
 			final InvoiceItemDialog dlg = new InvoiceItemDialog(resBundle);
@@ -202,6 +221,7 @@ public class OverviewUi extends BorderLayout implements InvoiceUi {
 			dlg.addOkClickListener(e -> {
 				business.save(dlg.getItem());
 				gridItems.setItems(loadItems());
+				checkButtonStates();
 			});
 			dlg.setSelectableArticles(business.getArticles(user));
 			ui.addWindow(dlg);
@@ -226,6 +246,7 @@ public class OverviewUi extends BorderLayout implements InvoiceUi {
 					new ArticleBusiness(business.getSessionObj(), store));
 
 			ui.addWindow(dlg);
+			dlg.addCloseListener((evt) -> checkButtonStates());
 		});
 
 		Button logoutButton = new Button(resBundle.getString(LABEL_LOGOUT));
