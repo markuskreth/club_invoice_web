@@ -120,15 +120,21 @@ public class ArticleDialog extends Window {
 
 	private void setupBinder(ResourceBundle resBundle) {
 		binder = new Binder<>(Article.class);
-		binder.forField(title).asRequired().bind(Article::getTitle,
-				Article::setTitle);
+		binder.forField(title)
+			.asRequired()
+			.withNullRepresentation("")
+			.bind(Article::getTitle, Article::setTitle);
 		PriceConverter converter = new PriceConverter(BigDecimal.ZERO,
 				resBundle.getString(MESSAGE_ARTICLE_PRICEERROR));
-		binder.forField(pricePerHour).asRequired().withConverter(converter)
-				.bind(Article::getPricePerHour, Article::setPricePerHour);
+		binder.forField(pricePerHour)
+			.asRequired()
+			.withNullRepresentation("")
+			.withConverter(converter)
+			.bind(Article::getPricePerHour, Article::setPricePerHour);
 
-		binder.forField(description).bind(Article::getDescription,
-				Article::setDescription);
+		binder.forField(description)
+			.withNullRepresentation("")
+			.bind(Article::getDescription, Article::setDescription);
 
 		binder.addValueChangeListener(changeEv -> {
 
@@ -186,6 +192,9 @@ public class ArticleDialog extends Window {
 		articleGrid.setItems(loadAll);
 		if (loadAll.isEmpty()) {
 			current = new Article();
+			if (user != null) {
+				current.setUserId(user.getId());
+			}
 		} else {
 			current = loadAll.get(0);
 			articleGrid.select(current);

@@ -29,6 +29,9 @@ public class PriceConverter
 	@Override
 	public Result<BigDecimal> convertToModel(String value,
 			ValueContext context) {
+		if (value == null) {
+			return Result.ok(BigDecimal.ZERO);
+		}
 		try {
 			Number numValue = formatter.parse(value);
 			return Result.ok(BigDecimal.valueOf(numValue.doubleValue()));
@@ -45,6 +48,9 @@ public class PriceConverter
 	@Override
 	public String convertToPresentation(BigDecimal value,
 			ValueContext context) {
+		if (value == null) {
+			return null;
+		}
 		return formatter.format(value.doubleValue());
 	}
 }
