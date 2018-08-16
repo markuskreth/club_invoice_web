@@ -1,12 +1,12 @@
 package de.kreth.clubinvoice.business;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,16 +30,10 @@ public abstract class AbstractBusiness<T extends BaseEntity> implements Business
 
 	@Override
 	public boolean save(T obj) {
-		if (obj.getChangeDate() == null) {
-			obj.setChangeDate(LocalDateTime.now());
-		}
-		if (obj.getCreatedDate() == null) {
-			obj.setCreatedDate(LocalDateTime.now());
-		}
-		sessionObj.beginTransaction();
+		Transaction tx = sessionObj.beginTransaction();
 		Serializable id = sessionObj.save(obj);
 		obj.setId(Integer.parseInt(id.toString()));
-		sessionObj.getTransaction().commit();
+		tx.commit();
 		logger.debug("Stored {}", obj);
 		return true;
 	}

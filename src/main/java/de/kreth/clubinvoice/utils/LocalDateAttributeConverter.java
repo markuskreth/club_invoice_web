@@ -21,16 +21,18 @@ public class LocalDateAttributeConverter
 
 	@Override
 	public Date convertToDatabaseColumn(LocalDate locDate) {
-		Instant instant = locDate.atStartOfDay().toInstant(offset);
 		return (locDate == null
 				? null
-				: Date.from(instant));
+				: Date.from(locDate.atStartOfDay().toInstant(offset)));
 	}
 
 	@Override
 	public LocalDate convertToEntityAttribute(Date sqlDate) {
+		if (sqlDate == null) {
+			return null;
+		}
 		Instant instant = sqlDate.toInstant();
 		LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZONE_ID);
-		return (sqlDate == null ? null : dateTime.toLocalDate());
+		return dateTime.toLocalDate();
 	}
 }

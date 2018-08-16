@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 
 @MappedSuperclass
 public class BaseEntity implements Serializable {
@@ -17,7 +19,7 @@ public class BaseEntity implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@Column(name = "created", nullable=false)
+	@Column(name = "created")
 	private LocalDateTime createdDate;
 	@Column(name = "updated", nullable=false)
 	private LocalDateTime changeDate;
@@ -46,6 +48,15 @@ public class BaseEntity implements Serializable {
 		this.changeDate = changeDate;
 	}
 
+    @PrePersist
+    protected void onCreate() {
+    	changeDate = createdDate = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+    	changeDate = LocalDateTime.now();
+    }
 	@Override
 	public int hashCode() {
 		final int prime = 31;
