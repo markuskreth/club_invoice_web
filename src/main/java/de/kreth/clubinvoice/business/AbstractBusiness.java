@@ -1,5 +1,7 @@
 package de.kreth.clubinvoice.business;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -8,7 +10,9 @@ import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class AbstractBusiness<T> implements Business<T> {
+import de.kreth.clubinvoice.data.BaseEntity;
+
+public abstract class AbstractBusiness<T extends BaseEntity> implements Business<T> {
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	private final Class<T> itemClass;
@@ -26,8 +30,15 @@ public abstract class AbstractBusiness<T> implements Business<T> {
 
 	@Override
 	public boolean save(T obj) {
+		if (obj.getChangeDate() == null) {
+			obj.setChangeDate(LocalDateTime.now());
+		}
+		if (obj.getCreatedDate() == null) {
+			obj.setCreatedDate(LocalDateTime.now());
+		}
 		sessionObj.beginTransaction();
-		sessionObj.save(obj);
+		Serializable id = sessionObj.save(obj);
+		obj.setId(Integer.parseInt(id.toString()));
 		sessionObj.getTransaction().commit();
 		logger.debug("Stored {}", obj);
 		return true;

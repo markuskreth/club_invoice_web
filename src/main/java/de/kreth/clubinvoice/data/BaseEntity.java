@@ -17,9 +17,9 @@ public class BaseEntity implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@Column(name = "created")
+	@Column(name = "created", nullable=false)
 	private LocalDateTime createdDate;
-	@Column(name = "updated")
+	@Column(name = "updated", nullable=false)
 	private LocalDateTime changeDate;
 
 	public int getId() {
