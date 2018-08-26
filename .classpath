@@ -43,5 +43,7 @@
 			<attribute name="test" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry exported="true" kind="con" path="net.sf.jasperreports.JR_CONTAINER"/>
+	<classpathentry exported="true" kind="con" path="com.jaspersoft.server.JRS_CONTAINER"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
