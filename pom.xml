@@ -5,7 +5,7 @@
 	<groupId>de.kreth.clubinvoice</groupId>
 	<artifactId>kreth-clubinvoice</artifactId>
 	<packaging>war</packaging>
-	<version>1.0.7-SNAPSHOT</version>
+	<version>1.0.7</version>
 	<name>clubinvoice</name>
 
 	<prerequisites>
