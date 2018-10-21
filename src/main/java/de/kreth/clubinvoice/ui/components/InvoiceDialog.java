@@ -49,6 +49,8 @@ public class InvoiceDialog extends Window {
 	private Invoice invoice;
 
 	public InvoiceDialog(ResourceBundle resBundle) {
+		setWidth(200, Unit.EM);
+		
 		invoiceNo = new TextField();
 		invoiceNo.setCaption(resBundle.getString(CAPTION_INVOICE_INVOICENO));
 		invoiceNo.setReadOnly(true);
@@ -69,6 +71,8 @@ public class InvoiceDialog extends Window {
 
 		VerticalLayout vLayout = new VerticalLayout();
 		vLayout.addComponents(invoiceNo, invoiceDate, itemGrid, btnLayout);
+		vLayout.setSizeFull();
+		
 		setContent(vLayout);
 		Invoice invoice = new Invoice();
 		invoice.setInvoiceId("");

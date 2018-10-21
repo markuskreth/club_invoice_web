@@ -201,6 +201,15 @@
 			<artifactId>vaadin-slf4j-jdk14</artifactId>
 			<version>1.6.1</version>
 		</dependency>
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-testbench-api</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-testbench-core</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

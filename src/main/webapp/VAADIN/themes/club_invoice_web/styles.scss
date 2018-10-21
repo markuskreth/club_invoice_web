@@ -1,0 +1,9 @@
+@import "addons.scss";
+@import "club_invoice_web.scss";
+
+/* This file prefixes all rules with the theme name to avoid causing conflicts with other themes. */
+/* The actual styles should be defined in club_invoice_web.scss */
+.club_invoice_web {
+  @include addons;
+  @include club_invoice_web;
+}
