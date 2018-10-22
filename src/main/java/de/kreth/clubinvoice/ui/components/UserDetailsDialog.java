@@ -140,7 +140,7 @@ public class UserDetailsDialog extends Window {
 		return beanBinder.getBean();
 	}
 
-	class BankNameProvider implements ValueProvider<User, String> {
+	static class BankNameProvider implements ValueProvider<User, String> {
 
 		private static final long serialVersionUID = -8618332916879793810L;
 
@@ -165,7 +165,7 @@ public class UserDetailsDialog extends Window {
 
 	}
 
-	class BankIbanProvider implements ValueProvider<User, String> {
+	static class BankIbanProvider implements ValueProvider<User, String> {
 
 		private static final long serialVersionUID = 1932625906615935431L;
 
@@ -190,7 +190,7 @@ public class UserDetailsDialog extends Window {
 
 	}
 
-	class BankBicProvider implements ValueProvider<User, String> {
+	static class BankBicProvider implements ValueProvider<User, String> {
 
 		private static final long serialVersionUID = -7980150151044551352L;
 
@@ -215,7 +215,7 @@ public class UserDetailsDialog extends Window {
 
 	}
 
-	class Adress1Provider implements ValueProvider<User, String> {
+	static class Adress1Provider implements ValueProvider<User, String> {
 
 		private static final long serialVersionUID = -7980150151044551352L;
 
@@ -240,7 +240,7 @@ public class UserDetailsDialog extends Window {
 
 	}
 
-	class Adress2Provider implements ValueProvider<User, String> {
+	static class Adress2Provider implements ValueProvider<User, String> {
 
 		private static final long serialVersionUID = -7980150151044551352L;
 
@@ -265,7 +265,7 @@ public class UserDetailsDialog extends Window {
 
 	}
 
-	class ZipCodeProvider implements ValueProvider<User, String> {
+	static class ZipCodeProvider implements ValueProvider<User, String> {
 
 		private static final long serialVersionUID = -7980150151044551352L;
 
@@ -290,7 +290,7 @@ public class UserDetailsDialog extends Window {
 
 	}
 
-	class CityProvider implements ValueProvider<User, String> {
+	static class CityProvider implements ValueProvider<User, String> {
 
 		private static final long serialVersionUID = -7980150151044551352L;
 
