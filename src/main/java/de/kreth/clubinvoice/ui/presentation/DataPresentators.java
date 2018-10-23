@@ -71,7 +71,7 @@ public class DataPresentators {
 	private static <T> DataPresentator<T> instanciate(
 			Class<? extends DataPresentator<T>> presentator)
 			throws ReflectiveOperationException {
-		return presentator.newInstance();
+		return presentator.getDeclaredConstructor().newInstance();
 	}
 
 	@SuppressWarnings("unchecked")

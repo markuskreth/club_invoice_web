@@ -6,8 +6,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Locale;
 
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import de.kreth.clubinvoice.data.Article;
@@ -17,6 +19,19 @@ import de.kreth.clubinvoice.data.UserAdress;
 
 class DataPresentatorsTest {
 
+	private static Locale latest;
+
+	@BeforeAll
+	static void setLocale() {
+		latest = Locale.getDefault();
+		Locale.setDefault(Locale.JAPANESE);
+	}
+	
+	@AfterAll
+	static void resetLocale() {
+		Locale.setDefault(latest);
+	}
+	
 	@Test
 	void testGetPresentorInvoiceItem() throws ReflectiveOperationException {
 		DataPresentator<InvoiceItem> actual = DataPresentators
@@ -48,7 +63,6 @@ class DataPresentatorsTest {
 	}
 
 	@Test
-	@Disabled("Properties not initializable in tests.")
 	void testInvoiceItemPresentator() {
 		Article article = new Article();
 		article.setTitle("Article");

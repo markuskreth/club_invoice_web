@@ -1,6 +1,7 @@
 package de.kreth.clubinvoice.utils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -20,6 +21,12 @@ class LocalDateTimeAttributeConverterTest {
 		converter = new LocalDateTimeAttributeConverter();
 	}
 
+	@Test
+	void testNullValues() {
+		assertNull(converter.convertToDatabaseColumn(null));
+		assertNull(converter.convertToEntityAttribute(null));
+	}
+	
 	@Test
 	void testConvertToDatabaseColumn() {
 		LocalDateTime locDateTime = LocalDateTime.of(2017, Month.JUNE, 27, 21,

@@ -11,7 +11,7 @@ public interface DataPresentator<T> extends Constants {
 
 		public ResourceBundle resBundle;
 		private Resouce() {
-			resBundle = ResourceBundle.getBundle("/application");
+			resBundle = ResourceBundle.getBundle("application");
 		}
 	}
 

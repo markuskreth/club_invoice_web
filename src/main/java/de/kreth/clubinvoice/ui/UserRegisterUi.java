@@ -21,6 +21,8 @@ public class UserRegisterUi extends VerticalLayout implements InvoiceUi {
 
 	private static final long serialVersionUID = -7409842921091527159L;
 
+	public static final String ID_LOGIN_NAME = UserRegisterUi.class.getName() + ".loginText";
+
 	private TextField loginName;
 	private PasswordField passwordField;
 	private TextField prename;
@@ -46,6 +48,7 @@ public class UserRegisterUi extends VerticalLayout implements InvoiceUi {
 	public void setContent(final UI ui, final VaadinRequest vaadinRequest) {
 
 		loginName = new TextField();
+		loginName.setId(ID_LOGIN_NAME);
 		loginName.setCaption(resBundle.getString(CAPTION_USER_LOGINNAME));
 
 		passwordField = new PasswordField();
