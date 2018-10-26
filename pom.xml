@@ -2,8 +2,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
 
+	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.kreth.clubinvoice</groupId>
 	<artifactId>kreth-clubinvoice</artifactId>
 	<packaging>war</packaging>
@@ -30,11 +30,12 @@
 		<vaadin.widgetset.mode>local</vaadin.widgetset.mode>
 		<timestamp>${maven.build.timestamp}</timestamp>
 		<maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
+		
 		<sonar.login>bb362ff4cf8428c336af659ad27445944c6ba4ac</sonar.login>
 		<sonar.jacoco.reportPaths>target/surefire-reports</sonar.jacoco.reportPaths>
 		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
 		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
-		<sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
+		<sonar.jacoco.reportPath>${project.basedir}/target/jacoco.exec</sonar.jacoco.reportPath>
 
 	</properties>
 
@@ -65,7 +66,12 @@
 	</dependencyManagement>
 
 	<dependencies>
-
+		<dependency>
+			<!-- update Hibernate dependency on Javassist to 3.23.1 for Java 11 compatibility -->
+			<groupId>org.javassist</groupId>
+			<artifactId>javassist</artifactId>
+			<version>3.23.1-GA</version>
+		</dependency>
 		<dependency>
 			<groupId>javax.xml.bind</groupId>
 			<artifactId>jaxb-api</artifactId>
@@ -268,7 +274,10 @@
 					</execution>
 				</executions>
 				<configuration>
+					<useSystemClassLoader>true</useSystemClassLoader>
 					<gwtSdkFirstInClasspath>true</gwtSdkFirstInClasspath>
+					<useManifestOnlyJar>false</useManifestOnlyJar>
+					<forkCount>1</forkCount>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -310,22 +319,20 @@
 					<path>/ClubInvoice##${project.version}</path>
 				</configuration>
 			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.22.1</version>
 				<configuration>
-					<!-- <argLine> -->
-					<!-- -javaagent:${sonar.jacoco.jar}=destfile=${sonar.jacoco.reportPath} -->
-					<!-- </argLine> -->
-					<properties>
-<!-- 						<configurationParameters> -->
-<!-- 							junit.jupiter.conditions.deactivate = * -->
-<!-- 							junit.jupiter.extensions.autodetection.enabled = true -->
-<!-- 							junit.jupiter.testinstance.lifecycle.default = per_class -->
-<!-- 							junit.jupiter.execution.parallel.enabled = true -->
-<!-- 						</configurationParameters> -->
-					</properties>
+					<argLine>
+						-javaagent:${sonar.jacoco.jar}=destfile=${sonar.jacoco.reportPath}
+					</argLine>
+					<!-- <test>**/*.java</test> -->
+					<useSystemClassLoader>true</useSystemClassLoader>
+					<gwtSdkFirstInClasspath>true</gwtSdkFirstInClasspath>
+					<useManifestOnlyJar>false</useManifestOnlyJar>
+					<forkCount>1</forkCount>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -354,7 +361,6 @@
 					</execution>
 				</executions>
 			</plugin>
-
 		</plugins>
 	</build>
 
