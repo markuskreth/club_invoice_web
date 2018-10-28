@@ -21,7 +21,7 @@ public class LoginUi extends VerticalLayout implements InvoiceUi {
 	private static final String CAPTION_USER_PASSWORD = "caption.user.password";
 	private static final String CAPTION_USER_LOGINNAME2 = "caption.user.loginname";
 	private static final long serialVersionUID = 7795197656597564420L;
-	private final UserRegister business;
+	private transient final UserRegister business;
 
 	private TextField loginName;
 	private PasswordField passwordField;
@@ -29,7 +29,7 @@ public class LoginUi extends VerticalLayout implements InvoiceUi {
 	private Label separator;
 	private Button linkToRegister;
 	private Label errorMsg;
-	private ResourceBundle resBundle;
+	private transient ResourceBundle resBundle;
 
 	public LoginUi(UserRegister business) {
 		this.business = business;

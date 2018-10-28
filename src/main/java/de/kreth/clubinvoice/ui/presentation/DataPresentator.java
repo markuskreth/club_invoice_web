@@ -9,7 +9,7 @@ public interface DataPresentator<T> extends Constants {
 	public enum Resouce {
 		INSTANCE;
 
-		public ResourceBundle resBundle;
+		public final transient ResourceBundle resBundle;
 		private Resouce() {
 			resBundle = ResourceBundle.getBundle("application");
 		}

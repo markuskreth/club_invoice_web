@@ -1,6 +1,8 @@
 package de.kreth.clubinvoice.business;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -16,6 +18,7 @@ import org.apache.commons.codec.binary.Base64;
 
 public class Encryptor {
 
+	private static final Charset CHARSET = StandardCharsets.UTF_8;
 	private static final String SECRET_KEY_1 = "mARku21kRe?thHan";
 	private static final String SECRET_KEY_2 = "cLUb4rinVoiCE8s8";
 
@@ -27,7 +30,7 @@ public class Encryptor {
 		try {
 			ivParameterSpec = new IvParameterSpec(
 					SECRET_KEY_1.getBytes("UTF-8"));
-			secretKeySpec = new SecretKeySpec(SECRET_KEY_2.getBytes("UTF-8"),
+			secretKeySpec = new SecretKeySpec(SECRET_KEY_2.getBytes(CHARSET),
 					"AES");
 			cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
 		} catch (UnsupportedEncodingException | NoSuchAlgorithmException
@@ -54,7 +57,7 @@ public class Encryptor {
 			InvalidAlgorithmParameterException, InvalidKeyException,
 			BadPaddingException, IllegalBlockSizeException {
 		cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, ivParameterSpec);
-		byte[] encrypted = cipher.doFinal(toBeEncrypt.getBytes());
+		byte[] encrypted = cipher.doFinal(toBeEncrypt.getBytes(CHARSET));
 		return Base64.encodeBase64String(encrypted);
 	}
 
@@ -77,6 +80,6 @@ public class Encryptor {
 			BadPaddingException, IllegalBlockSizeException {
 		cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivParameterSpec);
 		byte[] decryptedBytes = cipher.doFinal(Base64.decodeBase64(encrypted));
-		return new String(decryptedBytes);
+		return new String(decryptedBytes, CHARSET);
 	}
 }

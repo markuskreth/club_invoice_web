@@ -47,9 +47,9 @@ public class OverviewUi extends BorderLayout implements InvoiceUi {
 			.getLogger(OverviewUi.class);
 
 	private final User user;
-	private final OverviewBusiness business;
-	private final ResourceBundle resBundle;
-	private final PropertyStore store;
+	private final transient OverviewBusiness business;
+	private final transient ResourceBundle resBundle;
+	private final transient PropertyStore store;
 	private Grid<InvoiceItem> gridItems;
 	private InvoiceGrid gridInvoices;
 	private Button createInvoice;

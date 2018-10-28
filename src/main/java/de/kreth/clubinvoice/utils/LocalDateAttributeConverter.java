@@ -3,9 +3,7 @@ package de.kreth.clubinvoice.utils;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.Date;
 
 import javax.persistence.AttributeConverter;
@@ -17,13 +15,13 @@ public class LocalDateAttributeConverter
 			AttributeConverter<LocalDate, Date> {
 
 	private static final ZoneId ZONE_ID = ZoneId.systemDefault();
-	private static ZoneOffset offset = OffsetDateTime.now(ZONE_ID).getOffset();
 
 	@Override
 	public Date convertToDatabaseColumn(LocalDate locDate) {
+
 		return (locDate == null
 				? null
-				: Date.from(locDate.atStartOfDay().toInstant(offset)));
+				: Date.from(locDate.atStartOfDay(ZONE_ID).toInstant()));
 	}
 
 	@Override

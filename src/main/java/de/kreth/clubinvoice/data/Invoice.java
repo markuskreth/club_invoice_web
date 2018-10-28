@@ -77,4 +77,47 @@ public class Invoice extends BaseEntity {
 				+ items.size() + ", sum=" + getSum() + "]";
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((invoiceDate == null) ? 0 : invoiceDate.hashCode());
+		result = prime * result + ((invoiceId == null) ? 0 : invoiceId.hashCode());
+		result = prime * result + ((items == null) ? 0 : items.hashCode());
+		result = prime * result + ((user == null) ? 0 : user.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Invoice other = (Invoice) obj;
+		if (invoiceDate == null) {
+			if (other.invoiceDate != null)
+				return false;
+		} else if (!invoiceDate.equals(other.invoiceDate))
+			return false;
+		if (invoiceId == null) {
+			if (other.invoiceId != null)
+				return false;
+		} else if (!invoiceId.equals(other.invoiceId))
+			return false;
+		if (items == null) {
+			if (other.items != null)
+				return false;
+		} else if (!items.equals(other.items))
+			return false;
+		if (user == null) {
+			if (other.user != null)
+				return false;
+		} else if (!user.equals(other.user))
+			return false;
+		return true;
+	}
+
 }

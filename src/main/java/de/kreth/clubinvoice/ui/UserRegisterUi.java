@@ -22,17 +22,17 @@ public class UserRegisterUi extends VerticalLayout implements InvoiceUi {
 	private static final long serialVersionUID = -7409842921091527159L;
 
 	public static final String ID_LOGIN_NAME = UserRegisterUi.class.getName() + ".loginText";
+	private final transient UserRegister business;
+	private final transient ResourceBundle resBundle;
 
 	private TextField loginName;
 	private PasswordField passwordField;
 	private TextField prename;
 	private TextField surname;
 	private Button button;
-	private final UserRegister business;
 
 	private PasswordField passwordFieldVerification;
 
-	private ResourceBundle resBundle;
 
 	public UserRegisterUi(UserRegister business) {
 		this.business = business;
