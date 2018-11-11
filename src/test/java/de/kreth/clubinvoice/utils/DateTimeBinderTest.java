@@ -1,6 +1,6 @@
 package de.kreth.clubinvoice.utils;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -15,12 +15,12 @@ class DateTimeBinderTest {
 
 	private final LocalDateTime dateTime = LocalDateTime.of(2018, 8, 21, 17, 11, 7);
 	private DateTimeObj obj;
-	
+
 	@BeforeEach
 	void initBinder() {
 		obj = new DateTimeObj();
 	}
-	
+
 	@Test
 	void testGetValueProvider() {
 
@@ -41,13 +41,13 @@ class DateTimeBinderTest {
 		assertEquals(dateTime.getHour(), obj.value.getHour());
 		assertEquals(dateTime.getMinute(), obj.value.getMinute());
 	}
-	
+
 	@Test
 	void testGetSetter() {
 		DateTimeFormatter dfFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		obj.value = LocalDateTime.MIN;
 		new DateTimeBinder<>(obj::getValue, obj::setValue, dfFormat).getSetter().accept(obj, "2018-08-21 17:11:07");
-		
+
 		assertEquals(dateTime.withHour(0).withMinute(0).withSecond(0), obj.value);
 	}
 
@@ -61,6 +61,6 @@ class DateTimeBinderTest {
 		public void setValue(LocalDateTime value) {
 			this.value = value;
 		}
-		
+
 	}
 }

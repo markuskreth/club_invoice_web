@@ -1,7 +1,15 @@
 package de.kreth.clubinvoice.ui.components;
 
+import static de.kreth.clubinvoice.ui.Constants.CAPTION_ADRESS_CITY;
+import static de.kreth.clubinvoice.ui.Constants.CAPTION_ADRESS_STREET1;
+import static de.kreth.clubinvoice.ui.Constants.CAPTION_ADRESS_STREET2;
+import static de.kreth.clubinvoice.ui.Constants.CAPTION_ADRESS_ZIPCODE;
+import static de.kreth.clubinvoice.ui.Constants.CAPTION_BANK_BIC;
+import static de.kreth.clubinvoice.ui.Constants.CAPTION_BANK_IBAN;
+import static de.kreth.clubinvoice.ui.Constants.CAPTION_BANK_NAME;
 import static de.kreth.clubinvoice.ui.Constants.CAPTION_USER_LOGINNAME;
 import static de.kreth.clubinvoice.ui.Constants.CAPTION_USER_PRENAME;
+import static de.kreth.clubinvoice.ui.Constants.CAPTION_USER_SURNAME;
 import static de.kreth.clubinvoice.ui.Constants.LABEL_CANCEL;
 import static de.kreth.clubinvoice.ui.Constants.LABEL_OK;
 
@@ -27,8 +35,6 @@ import de.kreth.clubinvoice.data.UserBank;
 
 public class UserDetailsDialog extends Window {
 
-	private static final String CAPTION_USER_SURNAME = "caption.user.surname";
-
 	private static final long serialVersionUID = -6255487997073609068L;
 
 	private TextField loginName;
@@ -53,52 +59,50 @@ public class UserDetailsDialog extends Window {
 		loginName.setCaption(resBundle.getString(CAPTION_USER_LOGINNAME));
 
 		loginName.setRequiredIndicatorVisible(true);
-		beanBinder.forField(loginName).asRequired("UserName cannot be empty.")
+		beanBinder.forField(loginName).asRequired(resBundle.getString("error.userdetails.username_empty"))
 				.bind(User::getLoginName, User::setLoginName);
 
 		prename = new TextField();
 		prename.setCaption(resBundle.getString(CAPTION_USER_PRENAME));
-		beanBinder.forField(prename).asRequired("Prename cannot be empty.")
+		beanBinder.forField(prename).asRequired(resBundle.getString("error.userdetails.prename_empty"))
 				.bind(User::getPrename, User::setPrename);
 
 		surname = new TextField();
 		surname.setCaption(resBundle.getString(CAPTION_USER_SURNAME));
-		beanBinder.forField(surname).asRequired("Surname cannot be empty.")
+		beanBinder.forField(surname).asRequired(resBundle.getString("error.userdetails.surname_empty"))
 				.bind(User::getSurname, User::setSurname);
 
 		bankName = new TextField();
-		bankName.setCaption("BankName");
-		beanBinder.forField(bankName).asRequired("Bankname cannot be empty.")
+		bankName.setCaption(resBundle.getString(CAPTION_BANK_NAME));
+		beanBinder.forField(bankName).asRequired(resBundle.getString("error.userdetails.bankname_empty"))
 				.bind(new BankNameProvider(), new BankNameSetter());
 
 		iban = new TextField();
-		iban.setCaption("IBAN");
-		beanBinder.forField(iban).asRequired("Iban cannot be empty.")
+		iban.setCaption(resBundle.getString(CAPTION_BANK_IBAN));
+		beanBinder.forField(iban).asRequired(resBundle.getString("error.userdetails.iban_empty"))
 				.bind(new BankIbanProvider(), new BankIbanSetter());
 
 		bic = new TextField();
-		bic.setCaption("BIC");
-		beanBinder.forField(bic).bind(new BankBicProvider(),
-				new BankBicSetter());
+		bic.setCaption(resBundle.getString(CAPTION_BANK_BIC));
+		beanBinder.forField(bic).bind(new BankBicProvider(), new BankBicSetter());
 
 		adress1 = new TextField();
-		adress1.setCaption("Adress");
-		beanBinder.forField(adress1).asRequired("Adress cannot be empty")
+		adress1.setCaption(resBundle.getString(CAPTION_ADRESS_STREET1));
+		beanBinder.forField(adress1).asRequired(resBundle.getString("error.userdetails.adress_empty"))
 				.bind(new Adress1Provider(), new Adress1Setter());
 
 		adress2 = new TextField();
-		adress2.setCaption("Adress");
-		beanBinder.forField(adress2).bind(new Adress2Provider(),
-				new Adress2Setter());
+		adress2.setCaption(resBundle.getString(CAPTION_ADRESS_STREET2));
+		beanBinder.forField(adress2).bind(new Adress2Provider(), new Adress2Setter());
 
 		zipCode = new TextField();
-		zipCode.setCaption("Zip code");
-		beanBinder.forField(zipCode).asRequired("Zipcode cannot be empty")
+		zipCode.setCaption(resBundle.getString(CAPTION_ADRESS_ZIPCODE));
+		beanBinder.forField(zipCode).asRequired(resBundle.getString("error.userdetails.zip_empty"))
 				.bind(new ZipCodeProvider(), new ZipCodeSetter());
 
 		city = new TextField();
-		city.setCaption("City");
-		beanBinder.forField(city).asRequired("City cannot be empty")
+		city.setCaption(resBundle.getString(CAPTION_ADRESS_CITY));
+		beanBinder.forField(city).asRequired(resBundle.getString("error.userdetails.city_empty"))
 				.bind(new CityProvider(), new CitySetter());
 
 		VerticalLayout layout = new VerticalLayout();
@@ -118,8 +122,7 @@ public class UserDetailsDialog extends Window {
 			}
 		});
 
-		Button cancel = new Button(resBundle.getString(LABEL_CANCEL),
-				ev -> close());
+		Button cancel = new Button(resBundle.getString(LABEL_CANCEL), ev -> close());
 
 		HorizontalLayout buttons = new HorizontalLayout();
 		buttons.addComponents(okButton, cancel);
@@ -185,7 +188,8 @@ public class UserDetailsDialog extends Window {
 		@Override
 		public void accept(User bean, String fieldvalue) {
 			UserBank bank = getBankFromUser(bean);
-			bank.setIban(fieldvalue);;
+			bank.setIban(fieldvalue);
+			;
 		}
 
 	}

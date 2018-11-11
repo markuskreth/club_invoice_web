@@ -30,6 +30,15 @@ public interface Constants {
 	public static final String CAPTION_USER_PASSWORDCONFIRMATION = "caption.user.passwordconfirmation";
 	public static final String CAPTION_USER_PASSWORD = "caption.user.password";
 
+	public static final String CAPTION_ADRESS_STREET1 = "caption.adress.street1";
+	public static final String CAPTION_ADRESS_STREET2 = "caption.adress.street2";
+	public static final String CAPTION_ADRESS_ZIPCODE = "caption.adress.zipcode";
+	public static final String CAPTION_ADRESS_CITY = "caption.adress.city";
+
+	public static final String CAPTION_BANK_NAME = "caption.bank.name";
+	public static final String CAPTION_BANK_IBAN = "caption.bank.iban";
+	public static final String CAPTION_BANK_BIC = "caption.bank.bic";
+
 	public static final String ERROR_INVOICE_TEXT_NOITEMS = "error.invoice.text.noitems";
 	public static final String ERROR_INVOICE_TITLE_NOITEMS = "error.invoice.title.noitems";
 	public static final String MESSAGE_INVOICEITEM_STARTBEFOREEND = "message.invoiceitem.startbeforeend";

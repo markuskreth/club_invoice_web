@@ -58,8 +58,7 @@ public class ArticleDialog extends Window {
 		pricePerHour.setCaption(resBundle.getString(CAPTION_ARTICLE_PRICE));
 
 		description = new TextField();
-		description
-				.setCaption(resBundle.getString(CAPTION_ARTICLE_DESCRIPTION));
+		description.setCaption(resBundle.getString(CAPTION_ARTICLE_DESCRIPTION));
 		Button addArticle = new Button(resBundle.getString(LABEL_ADDARTICLE));
 		addArticle.addClickListener(ev -> {
 			current = new Article();
@@ -87,19 +86,16 @@ public class ArticleDialog extends Window {
 		});
 		storeButton.setVisible(false);
 
-		Button closeButton = new Button(resBundle.getString(LABEL_CLOSE),
-				ev -> close());
+		Button closeButton = new Button(resBundle.getString(LABEL_CLOSE), ev -> close());
 
-		Button deleteButton = new Button(resBundle.getString(LABEL_DELETE),
-				ev -> {
-					business.delete(current);
-					reloadItems();
-				});
+		Button deleteButton = new Button(resBundle.getString(LABEL_DELETE), ev -> {
+			business.delete(current);
+			reloadItems();
+		});
 		HorizontalLayout contentValues = new HorizontalLayout();
 		contentValues.addComponents(title, pricePerHour, description);
 		HorizontalLayout contentButtons = new HorizontalLayout();
-		contentButtons.addComponents(storeButton, discartButton, addArticle,
-				deleteButton, closeButton);
+		contentButtons.addComponents(storeButton, discartButton, addArticle, deleteButton, closeButton);
 
 		setupArticleGrid(resBundle);
 
@@ -113,28 +109,20 @@ public class ArticleDialog extends Window {
 
 	}
 
-	private void reloadItems() {
-		List<Article> loadAll = business.loadAll();
+	private List<Article> reloadItems() {
+		List<Article> loadAll = business.loadAll(a -> a.getUserId() == user.getId());
 		articleGrid.setItems(loadAll);
+		return loadAll;
 	}
 
 	private void setupBinder(ResourceBundle resBundle) {
 		binder = new Binder<>(Article.class);
-		binder.forField(title)
-			.asRequired()
-			.withNullRepresentation("")
-			.bind(Article::getTitle, Article::setTitle);
-		PriceConverter converter = new PriceConverter(BigDecimal.ZERO,
-				resBundle.getString(MESSAGE_ARTICLE_PRICEERROR));
-		binder.forField(pricePerHour)
-			.asRequired()
-			.withNullRepresentation("")
-			.withConverter(converter)
-			.bind(Article::getPricePerHour, Article::setPricePerHour);
+		binder.forField(title).asRequired().withNullRepresentation("").bind(Article::getTitle, Article::setTitle);
+		PriceConverter converter = new PriceConverter(BigDecimal.ZERO, resBundle.getString(MESSAGE_ARTICLE_PRICEERROR));
+		binder.forField(pricePerHour).asRequired().withNullRepresentation("").withConverter(converter)
+				.bind(Article::getPricePerHour, Article::setPricePerHour);
 
-		binder.forField(description)
-			.withNullRepresentation("")
-			.bind(Article::getDescription, Article::setDescription);
+		binder.forField(description).withNullRepresentation("").bind(Article::getDescription, Article::setDescription);
 
 		binder.addValueChangeListener(changeEv -> {
 
@@ -154,14 +142,12 @@ public class ArticleDialog extends Window {
 		articleGrid = new Grid<>();
 		articleGrid.setCaption(resBundle.getString(CAPTION_ARTICLES));
 
-		articleGrid.addColumn(Article::getTitle)
-				.setCaption(resBundle.getString(CAPTION_ARTICLE_TITLE));
+		articleGrid.addColumn(Article::getTitle).setCaption(resBundle.getString(CAPTION_ARTICLE_TITLE));
 
 		ValueProvider<BigDecimal, String> currencyProvider = new ValueProvider<BigDecimal, String>() {
 
 			private static final long serialVersionUID = -6305095230785149948L;
-			private final NumberFormat formatter = NumberFormat
-					.getCurrencyInstance();
+			private final NumberFormat formatter = NumberFormat.getCurrencyInstance();
 
 			@Override
 			public String apply(BigDecimal source) {
@@ -170,8 +156,7 @@ public class ArticleDialog extends Window {
 		};
 		articleGrid.addColumn(Article::getPricePerHour, currencyProvider)
 				.setCaption(resBundle.getString(CAPTION_ARTICLE_PRICE));
-		articleGrid.addColumn(Article::getDescription)
-				.setCaption(resBundle.getString(CAPTION_ARTICLE_DESCRIPTION));
+		articleGrid.addColumn(Article::getDescription).setCaption(resBundle.getString(CAPTION_ARTICLE_DESCRIPTION));
 
 		articleGrid.addSelectionListener(sel -> {
 			if (binder.hasChanges() == false) {
@@ -188,8 +173,8 @@ public class ArticleDialog extends Window {
 	public void setBusiness(ArticleBusiness articleBusiness) {
 		this.business = articleBusiness;
 
-		List<Article> loadAll = business.loadAll();
-		articleGrid.setItems(loadAll);
+		List<Article> loadAll = reloadItems();
+
 		if (loadAll.isEmpty()) {
 			current = new Article();
 			if (user != null) {

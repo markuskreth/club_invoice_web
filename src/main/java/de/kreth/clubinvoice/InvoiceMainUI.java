@@ -41,8 +41,7 @@ import de.kreth.clubinvoice.ui.OverviewUi;
 public class InvoiceMainUI extends UI {
 
 	private static final long serialVersionUID = -507823166251133871L;
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(InvoiceMainUI.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(InvoiceMainUI.class);
 
 	private Session sessionObj;
 
@@ -64,8 +63,7 @@ public class InvoiceMainUI extends UI {
 		this.store = new PropertyStore(vaadinRequest.getWrappedSession());
 		cookies = new CookieStore();
 
-		if (vaadinRequest.getPathInfo() != null
-				&& vaadinRequest.getPathInfo().contains("logout")) {
+		if (vaadinRequest.getPathInfo() != null && vaadinRequest.getPathInfo().contains("logout")) {
 
 			LOGGER.debug("Logging out.");
 			store.removeAttribute(PropertyStore.LOGGED_IN_USER);
@@ -88,8 +86,7 @@ public class InvoiceMainUI extends UI {
 		if (business.isLoggedIn() == false) {
 			content = new LoginUi(business);
 		} else {
-			OverviewBusiness overViewBusiness = new OverviewBusiness(sessionObj,
-					store, cookies);
+			OverviewBusiness overViewBusiness = new OverviewBusiness(sessionObj, store, cookies);
 			content = new OverviewUi(store, overViewBusiness);
 		}
 
@@ -106,8 +103,7 @@ public class InvoiceMainUI extends UI {
 
 		LOGGER.debug("Found these Entities: {}", entities);
 
-		Configuration configObj = new Configuration()
-				.configure("hibernate.cfg.xml");
+		Configuration configObj = new Configuration().configure("hibernate.cfg.xml");
 
 		for (Class<?> entity : entities) {
 			configObj.addAnnotatedClass(entity);
@@ -135,9 +131,6 @@ public class InvoiceMainUI extends UI {
 	@VaadinServletConfiguration(ui = InvoiceMainUI.class, productionMode = false)
 	public static class InvoiceUIServlet extends VaadinServlet {
 
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = -3191599415794244147L;
 	}
 }
