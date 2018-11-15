@@ -1,11 +1,15 @@
 package de.kreth.clubinvoice.ui.presentation;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,10 +20,22 @@ import de.kreth.clubinvoice.data.User;
 
 class InvoiceItemPresentatorTest {
 
+	private static Locale defaultLocale;
 	private InvoiceItem item;
 	private Article article;
 	private Invoice invoice;
 	private User user;
+
+	@BeforeAll
+	public static void initLocale() {
+		defaultLocale = Locale.getDefault();
+		Locale.setDefault(Locale.GERMANY);
+	}
+
+	@AfterAll
+	public static void resetLocale() {
+		Locale.setDefault(defaultLocale);
+	}
 
 	@BeforeEach
 	void setUp() throws Exception {
@@ -28,16 +44,16 @@ class InvoiceItemPresentatorTest {
 		article.setUserId(2);
 		article.setDescription("description");
 		article.setPricePerHour(BigDecimal.valueOf(8.5));
-		
+
 		user = new User();
 		user.setPrename("prename");
 		user.setSurname("surname");
 		user.setLoginName("loginName");
-		
+
 		invoice = new Invoice();
 		invoice.setUser(user);
 		invoice.setInvoiceId("invoiceId");
-		
+
 		item = new InvoiceItem();
 		item.setId(15);
 		item.setArticle(article);
@@ -52,7 +68,7 @@ class InvoiceItemPresentatorTest {
 	@Test
 	void testInvoiceItemPresentation() {
 		String textPresentation = DataPresentators.toPresentation(item);
-		assertEquals("Invoice Item [Date=2018/10/23, Start=21:13, End=23:13, Article=title]", textPresentation);
+		assertEquals("Rechnungsposition [Datum=23.10.2018, Beginn=21:13, Ende=23:13, Artikel=title]", textPresentation);
 	}
 
 	@Test
@@ -60,7 +76,7 @@ class InvoiceItemPresentatorTest {
 		ResourceBundle bundle = ResourceBundle.getBundle("application");
 		assertNotNull(bundle);
 	}
-	
+
 	@Test
 	void testNullObject() {
 		item = null;
