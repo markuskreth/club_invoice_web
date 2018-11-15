@@ -24,18 +24,17 @@ class DataPresentatorsTest {
 	@BeforeAll
 	static void setLocale() {
 		latest = Locale.getDefault();
-		Locale.setDefault(Locale.JAPANESE);
+		Locale.setDefault(Locale.GERMANY);
 	}
-	
+
 	@AfterAll
 	static void resetLocale() {
 		Locale.setDefault(latest);
 	}
-	
+
 	@Test
 	void testGetPresentorInvoiceItem() throws ReflectiveOperationException {
-		DataPresentator<InvoiceItem> actual = DataPresentators
-				.getPresentor(InvoiceItem.class);
+		DataPresentator<InvoiceItem> actual = DataPresentators.getPresentor(InvoiceItem.class);
 		assertNotNull(actual);
 		assertEquals(InvoiceItemPresentator.class, actual.getClass());
 	}
@@ -47,8 +46,7 @@ class DataPresentatorsTest {
 
 	@Test
 	void testNullObject() {
-		assertEquals("null",
-				DataPresentators.toPresentation((InvoiceItem) null));
+		assertEquals("null", DataPresentators.toPresentation((InvoiceItem) null));
 	}
 
 	@Test
