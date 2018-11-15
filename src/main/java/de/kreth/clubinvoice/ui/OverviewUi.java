@@ -2,6 +2,8 @@ package de.kreth.clubinvoice.ui;
 
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -18,7 +20,6 @@ import com.vaadin.ui.Grid.SelectionMode;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
@@ -43,8 +44,7 @@ import de.steinwedel.messagebox.MessageBox;
 public class OverviewUi extends BorderLayout implements InvoiceUi {
 
 	private static final long serialVersionUID = 318645298331660865L;
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(OverviewUi.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(OverviewUi.class);
 
 	private final User user;
 	private final transient OverviewBusiness business;
@@ -129,23 +129,26 @@ public class OverviewUi extends BorderLayout implements InvoiceUi {
 		});
 		gridInvoices.setStyleName(STYLE_BORDERED);
 
-		createInvoice = new Button(
-				resBundle.getString(CAPTION_INVOICE_CREATE));
+		createInvoice = new Button(resBundle.getString(CAPTION_INVOICE_CREATE));
 		createInvoice.addClickListener(ev -> {
 
-			String invoiceNo = business.createNextInvoiceId(user,
-					resBundle.getString(CAPTION_INVOICE_PATTERN));
+			String invoiceNo = business.createNextInvoiceId(user, resBundle.getString(CAPTION_INVOICE_PATTERN));
 
 			LOGGER.info("Creating new invoice no: {}", invoiceNo);
 
 			Set<InvoiceItem> selectedItems = gridItems.getSelectedItems();
+			if (selectedItems == null || selectedItems.isEmpty()) {
+				selectedItems = new HashSet<>(loadItems());
+			}
 			if (selectedItems.isEmpty()) {
-				LOGGER.error("No items selected for invoice.");
-				Notification.show(
-						resBundle.getString(ERROR_INVOICE_TITLE_NOITEMS),
-						resBundle.getString(ERROR_INVOICE_TEXT_NOITEMS),
-						Notification.Type.ERROR_MESSAGE);
 				return;
+			}
+			Iterator<InvoiceItem> iter = selectedItems.iterator();
+			Article article = iter.next().getArticle();
+			while (iter.hasNext()) {
+				if (iter.next().getArticle().equals(article) == false) {
+					iter.remove();
+				}
 			}
 			final Invoice inv = new Invoice();
 			inv.setInvoiceId(invoiceNo);
@@ -154,6 +157,8 @@ public class OverviewUi extends BorderLayout implements InvoiceUi {
 			inv.setUser(user);
 			InvoiceDialog dlg = new InvoiceDialog(resBundle);
 			dlg.center();
+			dlg.setHeight(80, Unit.PERCENTAGE);
+			dlg.setWidth(80, Unit.PERCENTAGE);
 			dlg.setInvoice(inv);
 			dlg.addOkClickListener(okEv -> {
 				LOGGER.info("Storing invoice {}", inv);
@@ -189,14 +194,10 @@ public class OverviewUi extends BorderLayout implements InvoiceUi {
 				dlg.addDeleteClickListener(e -> {
 					InvoiceItem item = dlg.getItem();
 					LOGGER.warn("Showing delete dialog for {}" + item);
-					MessageBox.createQuestion().asModal(true)
-							.withCaption(
-									resBundle.getString("message.delete.title"))
-							.withMessage(MessageFormat.format(
-									resBundle.getString("message.delete.text"),
+					MessageBox.createQuestion().asModal(true).withCaption(resBundle.getString("message.delete.title"))
+							.withMessage(MessageFormat.format(resBundle.getString("message.delete.text"),
 									DataPresentators.toPresentation(item)))
-							.withCancelButton(ButtonOption.closeOnClick(true))
-							.withOkButton(() -> {
+							.withCancelButton(ButtonOption.closeOnClick(true)).withOkButton(() -> {
 								LOGGER.warn("Deleting {}", item);
 								business.delete(item);
 								gridItems.setItems(loadItems());
@@ -213,8 +214,7 @@ public class OverviewUi extends BorderLayout implements InvoiceUi {
 		});
 		gridItems.setStyleName(STYLE_BORDERED);
 
-		addItem = new Button(
-				resBundle.getString(CAPTION_INVOICEITEM_ADD));
+		addItem = new Button(resBundle.getString(CAPTION_INVOICEITEM_ADD));
 		addItem.addClickListener(ev -> {
 			final InvoiceItemDialog dlg = new InvoiceItemDialog(resBundle);
 			LOGGER.info("Creating new Item.");
@@ -232,18 +232,15 @@ public class OverviewUi extends BorderLayout implements InvoiceUi {
 		return left;
 	}
 
-	public HorizontalLayout createHeadView(final UI ui,
-			VaadinRequest vaadinRequest) {
+	public HorizontalLayout createHeadView(final UI ui, VaadinRequest vaadinRequest) {
 		Label l1 = new Label(resBundle.getString(LABEL_LOGGEDIN));
-		Label l2 = new Label(
-				String.format("%s %s", user.getPrename(), user.getSurname()));
+		Label l2 = new Label(String.format("%s %s", user.getPrename(), user.getSurname()));
 
 		Button addArticle = new Button(resBundle.getString(CAPTION_ARTICLES));
 		addArticle.addClickListener(ev -> {
 			final ArticleDialog dlg = new ArticleDialog(resBundle);
 			dlg.setUser(user);
-			dlg.setBusiness(
-					new ArticleBusiness(business.getSessionObj(), store));
+			dlg.setBusiness(new ArticleBusiness(business.getSessionObj(), store));
 
 			ui.addWindow(dlg);
 			dlg.addCloseListener((evt) -> checkButtonStates());
@@ -255,10 +252,9 @@ public class OverviewUi extends BorderLayout implements InvoiceUi {
 			logout(ui, vaadinRequest);
 		});
 
-		Button userDetail = new Button(
-				resBundle.getString(CAPTION_USER_DETAILS), ev -> {
-					showUserDetailDialog(ui);
-				});
+		Button userDetail = new Button(resBundle.getString(CAPTION_USER_DETAILS), ev -> {
+			showUserDetailDialog(ui);
+		});
 
 		VerticalLayout userId = new VerticalLayout();
 		userId.addComponents(l1, l2);

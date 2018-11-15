@@ -41,7 +41,7 @@ import net.sf.jasperreports.engine.JasperReport;
 public class InvoiceDialog extends Window {
 
 	private static final long serialVersionUID = -8997281625128779760L;
-	private static final String MTV_JRXML = "/reports/mtv_gross_buchholz.jrxml";
+
 	private TextField invoiceNo;
 	private DateTimeField invoiceDate;
 	private InvoiceItemGrid<InvoiceItem> itemGrid;
@@ -50,21 +50,20 @@ public class InvoiceDialog extends Window {
 
 	public InvoiceDialog(ResourceBundle resBundle) {
 		setWidth(200, Unit.EM);
-		
+
 		invoiceNo = new TextField();
 		invoiceNo.setCaption(resBundle.getString(CAPTION_INVOICE_INVOICENO));
 		invoiceNo.setReadOnly(true);
 
 		invoiceDate = new DateTimeField();
-		invoiceDate
-				.setCaption(resBundle.getString(CAPTION_INVOICE_INVOICEDATE));
+		invoiceDate.setCaption(resBundle.getString(CAPTION_INVOICE_INVOICEDATE));
 		invoiceDate.setReadOnly(true);
 
 		itemGrid = new InvoiceItemGrid<>(resBundle);
+		itemGrid.setSizeFull();
 
 		okButton = new Button(resBundle.getString(LABEL_STORE), ev -> close());
-		Button cancel = new Button(resBundle.getString(LABEL_CANCEL),
-				ev -> close());
+		Button cancel = new Button(resBundle.getString(LABEL_CANCEL), ev -> close());
 		Button previewButton = new Button("Preview", ev -> showPdf(ev));
 		HorizontalLayout btnLayout = new HorizontalLayout();
 		btnLayout.addComponents(okButton, cancel, previewButton);
@@ -72,7 +71,7 @@ public class InvoiceDialog extends Window {
 		VerticalLayout vLayout = new VerticalLayout();
 		vLayout.addComponents(invoiceNo, invoiceDate, itemGrid, btnLayout);
 		vLayout.setSizeFull();
-		
+
 		setContent(vLayout);
 		Invoice invoice = new Invoice();
 		invoice.setInvoiceId("");
@@ -92,15 +91,15 @@ public class InvoiceDialog extends Window {
 
 	private void showInWebWindow(JasperPrint print, ClickEvent ev) throws IOException, JRException {
 
-	    Window window = new Window();
-	    window.setCaption("View PDF");
-	    AbstractComponent e = createEmbedded(print);
-	    window.setContent(e);
-	    window.setModal(true);
-	    window.setWidth("50%");
-	    window.setHeight("90%");
+		Window window = new Window();
+		window.setCaption("View PDF");
+		AbstractComponent e = createEmbedded(print);
+		window.setContent(e);
+		window.setModal(true);
+		window.setWidth("50%");
+		window.setHeight("90%");
 
-	    ev.getButton().getUI().addWindow(window);
+		ev.getButton().getUI().addWindow(window);
 	}
 
 	private AbstractComponent createEmbedded(JasperPrint print) throws IOException, JRException {
@@ -109,30 +108,29 @@ public class InvoiceDialog extends Window {
 		final PipedOutputStream out = new PipedOutputStream(in);
 
 		final StreamResource resource = new StreamResource(() -> in, "invoice.pdf");
-	    resource.setMIMEType("application/pdf");
-	    
+		resource.setMIMEType("application/pdf");
+
 		BrowserFrame c = new BrowserFrame("PDF invoice", resource);
-	    c.setSizeFull();
-	    
-	    ExecutorService exec = Executors.newSingleThreadExecutor();
-	    exec.execute(() -> {
-	    	try {
+		c.setSizeFull();
+
+		ExecutorService exec = Executors.newSingleThreadExecutor();
+		exec.execute(() -> {
+			try {
 				JasperExportManager.exportReportToPdfStream(print, out);
 			} catch (JRException e) {
 				throw new RuntimeException(e);
 			}
-	    });
-	    exec.shutdown();
-	    return c;
+		});
+		exec.shutdown();
+		return c;
 	}
 
 	public JasperPrint createJasperPrint() throws JRException {
 		InvoiceReportSource source = new InvoiceReportSource();
 		source.setInvoice(invoice);
 		JasperReport report = JasperCompileManager
-				.compileReport(getClass().getResourceAsStream(MTV_JRXML));
-		JasperPrint print = JasperFillManager.fillReport(report,
-				new HashMap<>(), source);
+				.compileReport(getClass().getResourceAsStream(invoice.getItems().get(0).getArticle().getReport()));
+		JasperPrint print = JasperFillManager.fillReport(report, new HashMap<>(), source);
 		return print;
 	}
 

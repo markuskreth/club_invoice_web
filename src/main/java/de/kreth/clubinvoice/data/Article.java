@@ -21,6 +21,17 @@ public class Article extends BaseEntity {
 	@Column(name = "user_id")
 	private int userId;
 
+	@Column
+	private String report;
+
+	public String getReport() {
+		return report;
+	}
+
+	public void setReport(String report) {
+		this.report = report;
+	}
+
 	public BigDecimal getPricePerHour() {
 		return pricePerHour;
 	}
@@ -55,18 +66,15 @@ public class Article extends BaseEntity {
 
 	@Override
 	public String toString() {
-		return "Article [pricePerHour=" + pricePerHour + ", title=" + title
-				+ ", description=" + description + "]";
+		return "Article [pricePerHour=" + pricePerHour + ", title=" + title + ", description=" + description + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((description == null) ? 0 : description.hashCode());
-		result = prime * result
-				+ ((pricePerHour == null) ? 0 : pricePerHour.hashCode());
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((pricePerHour == null) ? 0 : pricePerHour.hashCode());
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		result = prime * result + userId;
 		return result;

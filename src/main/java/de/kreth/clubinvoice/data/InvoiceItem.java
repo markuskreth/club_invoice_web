@@ -74,10 +74,8 @@ public class InvoiceItem extends BaseEntity {
 			return null;
 		}
 
-		sumPrice = BigDecimal.valueOf(getDurationInMinutes())
-				.setScale(2, RoundingMode.HALF_UP)
-				.divide(BigDecimal.valueOf(60), RoundingMode.HALF_UP)
-				.multiply(article.getPricePerHour())
+		sumPrice = BigDecimal.valueOf(getDurationInMinutes()).setScale(2, RoundingMode.HALF_UP)
+				.divide(BigDecimal.valueOf(60), RoundingMode.HALF_UP).multiply(article.getPricePerHour())
 				.setScale(2, RoundingMode.HALF_UP);
 		return sumPrice;
 	}
@@ -99,8 +97,7 @@ public class InvoiceItem extends BaseEntity {
 
 	@Override
 	public String toString() {
-		return "InvoiceItem [id=" + getId() + ", start=" + start + ", end="
-				+ end + ", article=" + article + "]";
+		return "InvoiceItem [id=" + getId() + ", start=" + start + ", end=" + end + ", article=" + article + "]";
 	}
 
 	@Override

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="mtv_gross_buchholz" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ba0e72ff-086d-4045-a69c-ff65b323c201">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Invoice2"/>
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="380"/>
 	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="606"/>
 	<queryString>
@@ -103,10 +103,10 @@
 				<textElement textAlignment="Center">
 					<font size="9"/>
 				</textElement>
-				<text><![CDATA[Rotekreuzstraße 25 - 30627 Hannover - Tel.: 0511/57 11 86 - Fax: 0511/57 11 61]]></text>
+				<text><![CDATA[Rotekreuzstraße 25 - 30627 Hannover]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="52" width="556" height="23" uuid="762705d5-be9c-476f-b2ff-dc07cab925f9"/>
+				<reportElement x="0" y="54" width="556" height="21" uuid="762705d5-be9c-476f-b2ff-dc07cab925f9"/>
 				<textElement textAlignment="Center">
 					<font size="16" isUnderline="true"/>
 				</textElement>
@@ -114,7 +114,7 @@
 ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="376" y="0" width="103" height="12" uuid="7927de72-6eab-475d-821b-5267f0fea03e">
+				<reportElement x="376" y="0" width="103" height="10" uuid="7927de72-6eab-475d-821b-5267f0fea03e">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 				</reportElement>
@@ -131,7 +131,7 @@
 ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="376" y="12" width="103" height="13" uuid="85798559-a680-4640-a1c4-2283b1304317"/>
+				<reportElement x="376" y="12" width="103" height="10" uuid="85798559-a680-4640-a1c4-2283b1304317"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
@@ -149,13 +149,22 @@
 				</reportElement>
 			</line>
 			<staticText>
+				<reportElement x="0" y="70" width="550" height="10" uuid="6e3eed4f-1c4d-4383-a358-c58f73d4d103">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<text><![CDATA[zur Vorlage bei der Landeshauptstadt Hannover]]></text>
+			</staticText>
+			<staticText>
 				<reportElement x="3" y="76" width="550" height="10" uuid="195e05ca-09bb-4890-8444-6cba59da2388">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
 				<textElement textAlignment="Center">
 					<font fontName="Arial" size="6"/>
 				</textElement>
-				<text><![CDATA[(o. Übungsleiter-Lizenz)]]></text>
+				<text><![CDATA[zur Inanspruchnahme eines städtischen Zuschusses zu den Personalkosten von Sportübungsleitern]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -515,7 +524,7 @@ des Unterrichts]]></text>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="49" splitType="Stretch">
+		<band height="20" splitType="Stretch">
 			<textField pattern="#,##0.00¤;#,##0.00- ¤">
 				<reportElement x="495" y="4" width="60" height="14" uuid="97cc81ab-b30d-4bec-ac00-894f07714615"/>
 				<textElement textAlignment="Center"/>
@@ -555,22 +564,209 @@ des Unterrichts]]></text>
 		</band>
 	</columnFooter>
 	<pageFooter>
-		<band height="60" splitType="Stretch">
+		<band height="180" splitType="Stretch">
 			<staticText>
-				<reportElement x="7" y="30" width="161" height="20" uuid="8deca167-570b-4feb-b3bb-23af38af502f"/>
-				<box>
-					<topPen lineWidth="1.25"/>
-				</box>
+				<reportElement x="14" y="10" width="384" height="12" uuid="71d9d40c-d319-43bf-a244-e2c0aabacd15"/>
+				<text><![CDATA[Die Richtigkeit der vorstehenden Angaben wird hiermit bestätigt.
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="29" y="78" width="161" height="20" uuid="8deca167-570b-4feb-b3bb-23af38af502f"/>
 				<text><![CDATA[Unterschrift Abt.Leiter/In
 ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="359" y="30" width="185" height="20" uuid="eaea1eea-e4b7-438b-ba8f-37875ecd30e6"/>
-				<box>
-					<topPen lineWidth="1.25"/>
-				</box>
+				<reportElement x="27" y="162" width="185" height="18" uuid="eaea1eea-e4b7-438b-ba8f-37875ecd30e6"/>
 				<text><![CDATA[Unterschrift Übungsleiter/In
 ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="340" y="162" width="201" height="12" uuid="9e84f80c-3160-48c8-a553-4a02afab0c1f">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<printWhenExpression><![CDATA[1==2]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font fontName="Serif" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[*zu überweisender Betrag: netto EUR
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="510" y="147" width="30" height="12" uuid="ec58eaa7-2b8d-4406-b479-63dc47aa1afd">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<printWhenExpression><![CDATA[1==2]]></printWhenExpression>
+				</reportElement>
+				<text><![CDATA[EUR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="340" y="147" width="92" height="12" uuid="4e8623ca-b81c-4b8b-bfe6-d06bb44dd489">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<printWhenExpression><![CDATA[1==2]]></printWhenExpression>
+				</reportElement>
+				<text><![CDATA[LKiSt kath.
+ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="340" y="135" width="92" height="12" uuid="b660623b-4e27-46c1-8b20-72e18f881452">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<printWhenExpression><![CDATA[1==2]]></printWhenExpression>
+				</reportElement>
+				<text><![CDATA[LKiSt ev.
+
+ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="340" y="123" width="92" height="12" uuid="f0caaef2-7915-4c9b-83c7-7cd42091d9ee">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<printWhenExpression><![CDATA[1==2]]></printWhenExpression>
+				</reportElement>
+				<text><![CDATA[Sol.-Steuer
+
+
+ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="340" y="111" width="92" height="12" uuid="a79ebd35-c68b-4cc5-b2a0-4eef0223aca6">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<printWhenExpression><![CDATA[1==2]]></printWhenExpression>
+				</reportElement>
+				<text><![CDATA[Lohnsteuer
+
+
+
+ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="510" y="135" width="30" height="12" uuid="a84dfa91-7521-4b02-8109-45da6e3aca20">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<printWhenExpression><![CDATA[1==2]]></printWhenExpression>
+				</reportElement>
+				<text><![CDATA[EUR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="510" y="123" width="30" height="12" uuid="1305c1d0-168f-405a-84c7-f2a2272a3d0c">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<printWhenExpression><![CDATA[1==2]]></printWhenExpression>
+				</reportElement>
+				<text><![CDATA[EUR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="510" y="111" width="30" height="12" uuid="cce624b8-5bf8-465d-8a98-4a4efb4b9ade">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<printWhenExpression><![CDATA[1==2]]></printWhenExpression>
+				</reportElement>
+				<text><![CDATA[EUR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="510" y="99" width="30" height="12" uuid="11c9c782-304c-43f0-bf11-ebd4e9115f2e">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<printWhenExpression><![CDATA[1==2]]></printWhenExpression>
+				</reportElement>
+				<text><![CDATA[EUR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="510" y="87" width="30" height="12" uuid="aba60deb-e035-4689-8b4f-22bb9d9ab084">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<printWhenExpression><![CDATA[1==2]]></printWhenExpression>
+				</reportElement>
+				<text><![CDATA[EUR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="510" y="75" width="30" height="12" uuid="11ab0a56-8c2a-44b3-b578-797c455ef33a">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<printWhenExpression><![CDATA[1==2]]></printWhenExpression>
+				</reportElement>
+				<text><![CDATA[EUR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="402" y="99" width="30" height="12" uuid="91dc2b58-1692-425d-b916-e59aac3a83d4">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<printWhenExpression><![CDATA[1==2]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[% RV
+
+
+
+
+ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="402" y="87" width="30" height="12" uuid="5fd23cda-b3cb-49dc-9d24-a962043f007e">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<printWhenExpression><![CDATA[1==2]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[% PV
+
+
+
+
+ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="402" y="75" width="30" height="12" uuid="12891e8f-edef-4b5b-a83d-b9ef9a0ff3bf">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<printWhenExpression><![CDATA[1==2]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[% KV
+
+
+
+
+ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="402" y="63" width="100" height="12" uuid="36006289-c0f3-4aec-a83e-2e98adee609f">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<printWhenExpression><![CDATA[1==2]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Sozialversicherung
+
+
+
+
+ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="ElementGroupHeight" x="340" y="38" width="146" height="25" uuid="d315654c-5c49-41a4-9d1e-b0e7a579707a">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<printWhenExpression><![CDATA[1==2]]></printWhenExpression>
+				</reportElement>
+				<text><![CDATA[(Unter Berücksichtigung des
+Freibetrages §3 Nr. 26 EStG)
+
+
+
+ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="341" y="25" width="100" height="13" uuid="568cfee0-40fc-4fdc-8915-ddc48a1dc2b7">
+					<printWhenExpression><![CDATA[1==2]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font fontName="Serif" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Abzüge]]></text>
 			</staticText>
 		</band>
 	</pageFooter>
