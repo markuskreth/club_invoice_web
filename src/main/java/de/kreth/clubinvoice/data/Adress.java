@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @Table(name = "ADRESS")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "adress_type", discriminatorType = DiscriminatorType.STRING)
-public class Adress extends BaseEntity {
+public class Adress<T> extends BaseEntity<T> {
 
 	private static final long serialVersionUID = 8331249424121577387L;
 	@Column(nullable = false, length = 255)
@@ -27,33 +27,40 @@ public class Adress extends BaseEntity {
 	public String getAdress1() {
 		return adress1;
 	}
+
 	public void setAdress1(String adress1) {
 		this.adress1 = adress1;
 	}
+
 	public String getAdress2() {
 		return adress2;
 	}
+
 	public void setAdress2(String adress2) {
 		this.adress2 = adress2;
 	}
+
 	public String getZip() {
 		return zip;
 	}
+
 	public void setZip(String zip) {
 		this.zip = zip;
 	}
+
 	public String getCity() {
 		return city;
 	}
+
 	public void setCity(String city) {
 		this.city = city;
 	}
 
 	@Override
 	public String toString() {
-		return "Adress [adress1=" + adress1 + ", adress2=" + adress2 + ", zip="
-				+ zip + ", city=" + city + "]";
+		return "Adress [adress1=" + adress1 + ", adress2=" + adress2 + ", zip=" + zip + ", city=" + city + "]";
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -64,6 +71,7 @@ public class Adress extends BaseEntity {
 		result = prime * result + ((zip == null) ? 0 : zip.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -72,7 +80,7 @@ public class Adress extends BaseEntity {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Adress other = (Adress) obj;
+		Adress<?> other = (Adress<?>) obj;
 		if (adress1 == null) {
 			if (other.adress1 != null)
 				return false;

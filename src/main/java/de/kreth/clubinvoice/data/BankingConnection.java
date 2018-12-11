@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @Table(name = "BANKING_CONNECTION")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "owner_type", discriminatorType = DiscriminatorType.STRING)
-public class BankingConnection extends BaseEntity {
+public class BankingConnection<T> extends BaseEntity<T> {
 
 	private static final long serialVersionUID = -6168631092559375156L;
 	@Column(nullable = false, length = 150)
@@ -67,7 +67,7 @@ public class BankingConnection extends BaseEntity {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		BankingConnection other = (BankingConnection) obj;
+		BankingConnection<?> other = (BankingConnection<?>) obj;
 		if (iban == null) {
 			if (other.iban != null)
 				return false;

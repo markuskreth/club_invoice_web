@@ -8,7 +8,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "ARTICLE")
-public class Article extends BaseEntity {
+public class Article extends BaseEntity<Article> {
 
 	private static final long serialVersionUID = 6777704420363536698L;
 	@Column(name = "price")

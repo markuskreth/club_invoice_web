@@ -6,7 +6,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 
 @Entity
-public class UserBank extends BankingConnection {
+public class UserBank extends BankingConnection<UserBank> {
 
 	private static final long serialVersionUID = -7356424394007978241L;
 	@OneToOne(fetch = FetchType.LAZY)
@@ -23,8 +23,7 @@ public class UserBank extends BankingConnection {
 			user.setBank(this);
 		} else {
 			if (user.getBank().equals(this) == false) {
-				throw new IllegalArgumentException(
-						"User already set, but other than this.");
+				throw new IllegalArgumentException("User already set, but other than this.");
 			}
 		}
 	}

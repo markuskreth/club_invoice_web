@@ -19,6 +19,7 @@ class InvoiceDialogTest extends ParallelTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
+
 		System.setProperty("webdriver.chrome.driver", "_data/chromedriver.exe");
 		System.setProperty("webdriver.gecko.driver", "_data/geckodriver.exe");
 		RemoteWebDriver webDriver = new FirefoxDriver();

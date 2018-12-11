@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "LOGIN_USER")
-public class User extends BaseEntity {
+public class User extends BaseEntity<User> {
 
 	private static final long serialVersionUID = 8756244776503934540L;
 
@@ -66,12 +66,13 @@ public class User extends BaseEntity {
 
 	public void setBank(UserBank bank) {
 		this.bank = bank;
-		if (bank.getUser() == null) {
+		if (bank == null) {
+			return;
+		} else if (bank.getUser() == null) {
 			bank.setUser(this);
 		} else {
-			if (bank.getUser().equals(this)) {
-				throw new IllegalArgumentException(
-						"Bank already set, but other than this.");
+			if (!bank.getUser().equals(this)) {
+				throw new IllegalArgumentException("Bank already set, but other than this.");
 			}
 		}
 	}
@@ -86,18 +87,16 @@ public class User extends BaseEntity {
 
 	@Override
 	public String toString() {
-		return "User [id=" + getId() + ", loginName=" + loginName + ", prename="
-				+ prename + ", surname=" + surname + "]";
+		return "User [id=" + getId() + ", loginName=" + loginName + ", prename=" + prename + ", surname=" + surname
+				+ "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((loginName == null) ? 0 : loginName.hashCode());
-		result = prime * result
-				+ ((password == null) ? 0 : password.hashCode());
+		result = prime * result + ((loginName == null) ? 0 : loginName.hashCode());
+		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		result = prime * result + ((prename == null) ? 0 : prename.hashCode());
 		result = prime * result + ((surname == null) ? 0 : surname.hashCode());
 		return result;

@@ -13,7 +13,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "INVOICE_ITEM")
-public class InvoiceItem extends BaseEntity {
+public class InvoiceItem extends BaseEntity<InvoiceItem> {
 
 	private static final long serialVersionUID = 3142997452876778041L;
 

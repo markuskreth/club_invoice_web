@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import de.kreth.clubinvoice.data.BaseEntity;
 
-public abstract class AbstractBusiness<T extends BaseEntity> implements Business<T> {
+public abstract class AbstractBusiness<T extends BaseEntity<T>> implements Business<T> {
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	private final Class<T> itemClass;
@@ -20,8 +20,7 @@ public abstract class AbstractBusiness<T extends BaseEntity> implements Business
 	protected final Session sessionObj;
 	protected final PropertyStore propStore;
 
-	public AbstractBusiness(Session sessionObj, PropertyStore propStore,
-			Class<T> itemClass) {
+	public AbstractBusiness(Session sessionObj, PropertyStore propStore, Class<T> itemClass) {
 		super();
 		this.sessionObj = sessionObj;
 		this.propStore = propStore;
@@ -49,19 +48,15 @@ public abstract class AbstractBusiness<T extends BaseEntity> implements Business
 
 	@Override
 	public List<T> loadAll() {
-		List<T> list = sessionObj
-				.createQuery("from " + itemClass.getSimpleName(), itemClass)
-				.list();
+		List<T> list = sessionObj.createQuery("from " + itemClass.getSimpleName(), itemClass).list();
 		logger.trace("Loaded {} of {}", list.size(), itemClass.getSimpleName());
 		return list;
 	}
 
 	public List<T> loadAll(Predicate<T> predicate) {
 		List<T> loadAll = loadAll();
-		List<T> result = loadAll.stream().filter(predicate)
-				.collect(Collectors.toList());
-		logger.trace("Filtered {} of {} total {}", result.size(),
-				loadAll.size(), itemClass.getSimpleName());
+		List<T> result = loadAll.stream().filter(predicate).collect(Collectors.toList());
+		logger.trace("Filtered {} of {} total {}", result.size(), loadAll.size(), itemClass.getSimpleName());
 		return result;
 	}
 

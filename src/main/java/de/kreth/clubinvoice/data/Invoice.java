@@ -16,7 +16,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "INVOICE")
-public class Invoice extends BaseEntity {
+public class Invoice extends BaseEntity<Invoice> {
 
 	private static final long serialVersionUID = 736651954892271409L;
 
@@ -67,14 +67,12 @@ public class Invoice extends BaseEntity {
 		if (items == null || items.isEmpty()) {
 			return BigDecimal.ZERO;
 		}
-		return items.stream().map(i -> i.getSumPrice()).reduce(BigDecimal.ZERO,
-				BigDecimal::add);
+		return items.stream().map(i -> i.getSumPrice()).reduce(BigDecimal.ZERO, BigDecimal::add);
 	}
 
 	@Override
 	public String toString() {
-		return "Invoice [invoiceId=" + invoiceId + ", itemscount="
-				+ items.size() + ", sum=" + getSum() + "]";
+		return "Invoice [invoiceId=" + invoiceId + ", itemscount=" + items.size() + ", sum=" + getSum() + "]";
 	}
 
 	@Override

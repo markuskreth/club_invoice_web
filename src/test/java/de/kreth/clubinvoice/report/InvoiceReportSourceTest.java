@@ -16,9 +16,7 @@ import org.mockito.MockitoAnnotations;
 import de.kreth.clubinvoice.data.Article;
 import de.kreth.clubinvoice.data.Invoice;
 import de.kreth.clubinvoice.data.InvoiceItem;
-import de.kreth.clubinvoice.data.User;
-import de.kreth.clubinvoice.data.UserAdress;
-import de.kreth.clubinvoice.data.UserBank;
+import de.kreth.clubinvoice.data.TestData;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRField;
 import net.sf.jasperreports.engine.JasperReport;
@@ -26,40 +24,18 @@ import net.sf.jasperreports.engine.JasperReport;
 class InvoiceReportSourceTest {
 
 	private InvoiceReportSource source;
-	private User user;
-	private UserAdress adress;
 	@Mock
 	private JasperReport report;
-	private UserBank bank;
+	private TestData testData;
 
 	@BeforeEach
 	void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
-		adress = new UserAdress();
-		adress.setAdress1("adress1");
-		adress.setAdress2("adress2");
-		adress.setCity("city");
-		adress.setZip("zip");
-		
-		bank = new UserBank();
-		bank.setBankName("bankName");
-		bank.setBic("bic");
-		bank.setIban("iban");
-		
-		user = new User();
-		user.setLoginName("loginName");
-		user.setPrename("prename");
-		user.setSurname("surname");
-		user.setAdress(adress);
-		user.setBank(bank);
-
-		adress.setUser(user);
-		bank.setUser(user);
-		
+		testData = new TestData();
 		InvoiceItem item = new InvoiceItem();
 		Article article = new Article();
 		article.setTitle("title");
-		article.setUserId(user.getId());
+		article.setUserId(testData.user.getId());
 		article.setPricePerHour(BigDecimal.TEN);
 		article.setDescription("description");
 
@@ -68,14 +44,14 @@ class InvoiceReportSourceTest {
 		LocalDateTime start = LocalDateTime.of(2018, 6, 21, 17, 0);
 		item.setStart(start);
 		item.setEnd(start.plusMinutes(90));
-		
+
 		Invoice invoice = new Invoice();
 		invoice.setId(-1);
-		invoice.setUser(user);
+		invoice.setUser(testData.user);
 		invoice.setItems(Arrays.asList(item));
 		invoice.setInvoiceId("invoiceId");
 		invoice.setInvoiceDate(start.plusDays(45));
-		
+
 		source = new InvoiceReportSource();
 		source.setInvoice(invoice);
 	}

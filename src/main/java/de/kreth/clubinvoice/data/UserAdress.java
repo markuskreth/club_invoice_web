@@ -6,7 +6,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 
 @Entity
-public class UserAdress extends Adress {
+public class UserAdress extends Adress<UserAdress> {
 
 	private static final long serialVersionUID = -8104370538500175340L;
 	@OneToOne(fetch = FetchType.LAZY)

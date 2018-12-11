@@ -12,7 +12,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
 @MappedSuperclass
-public class BaseEntity implements Serializable {
+public class BaseEntity<T> implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = 6953593432069408729L;
 
@@ -21,7 +21,7 @@ public class BaseEntity implements Serializable {
 	private int id;
 	@Column(name = "created")
 	private LocalDateTime createdDate;
-	@Column(name = "updated", nullable=false)
+	@Column(name = "updated", nullable = false)
 	private LocalDateTime changeDate;
 
 	public int getId() {
@@ -48,21 +48,27 @@ public class BaseEntity implements Serializable {
 		this.changeDate = changeDate;
 	}
 
-    @PrePersist
-    protected void onCreate() {
-    	changeDate = createdDate = LocalDateTime.now();
-    }
+	@PrePersist
+	protected void onCreate() {
+		changeDate = createdDate = LocalDateTime.now();
+	}
 
-    @PreUpdate
-    protected void onUpdate() {
-    	changeDate = LocalDateTime.now();
-    }
+	@PreUpdate
+	protected void onUpdate() {
+		changeDate = LocalDateTime.now();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public T clone() throws CloneNotSupportedException {
+		return (T) super.clone();
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((createdDate == null) ? 0 : createdDate.hashCode());
+		result = prime * result + ((createdDate == null) ? 0 : createdDate.hashCode());
 		result = prime * result + id;
 		return result;
 	}
@@ -75,7 +81,7 @@ public class BaseEntity implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		BaseEntity other = (BaseEntity) obj;
+		BaseEntity<?> other = (BaseEntity<?>) obj;
 		if (createdDate == null) {
 			if (other.createdDate != null)
 				return false;
