@@ -12,8 +12,6 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.ResourceBundle;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import com.vaadin.server.StreamResource;
 import com.vaadin.shared.Registration;
@@ -105,23 +103,15 @@ public class InvoiceDialog extends Window {
 	private AbstractComponent createEmbedded(JasperPrint print) throws IOException, JRException {
 
 		PipedInputStream in = new PipedInputStream();
-		final PipedOutputStream out = new PipedOutputStream(in);
-
 		final StreamResource resource = new StreamResource(() -> in, "invoice.pdf");
 		resource.setMIMEType("application/pdf");
 
 		BrowserFrame c = new BrowserFrame("PDF invoice", resource);
 		c.setSizeFull();
+		try (PipedOutputStream out = new PipedOutputStream(in)) {
+			JasperExportManager.exportReportToPdfStream(print, out);
+		}
 
-		ExecutorService exec = Executors.newSingleThreadExecutor();
-		exec.execute(() -> {
-			try {
-				JasperExportManager.exportReportToPdfStream(print, out);
-			} catch (JRException e) {
-				throw new RuntimeException(e);
-			}
-		});
-		exec.shutdown();
 		return c;
 	}
 
@@ -130,8 +120,7 @@ public class InvoiceDialog extends Window {
 		source.setInvoice(invoice);
 		JasperReport report = JasperCompileManager
 				.compileReport(getClass().getResourceAsStream(invoice.getItems().get(0).getArticle().getReport()));
-		JasperPrint print = JasperFillManager.fillReport(report, new HashMap<>(), source);
-		return print;
+		return JasperFillManager.fillReport(report, new HashMap<>(), source);
 	}
 
 	public Registration addOkClickListener(ClickListener listener) {

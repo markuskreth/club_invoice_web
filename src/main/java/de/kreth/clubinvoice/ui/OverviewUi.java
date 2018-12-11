@@ -123,6 +123,8 @@ public class OverviewUi extends BorderLayout implements InvoiceUi {
 			LOGGER.debug("Invoice clicked, opening {}", itemEv.getItem());
 			InvoiceDialog dlg = new InvoiceDialog(resBundle);
 			dlg.center();
+			dlg.setHeight(80, Unit.PERCENTAGE);
+			dlg.setWidth(60, Unit.PERCENTAGE);
 			dlg.setInvoice(itemEv.getItem());
 			dlg.setOkVisible(false);
 			ui.addWindow(dlg);
@@ -182,7 +184,7 @@ public class OverviewUi extends BorderLayout implements InvoiceUi {
 		gridItems.setItems(loadItems());
 		gridItems.addItemClickListener(ev -> {
 
-			LOGGER.debug("Opening item for edit: {}" + ev.getItem());
+			LOGGER.debug("Opening item for edit: {}", ev.getItem());
 			final InvoiceItemDialog dlg = new InvoiceItemDialog(resBundle);
 			dlg.setItem(ev.getItem());
 			dlg.addOkClickListener(e -> {

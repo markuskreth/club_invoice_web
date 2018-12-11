@@ -11,6 +11,7 @@ import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
 
 import de.kreth.clubinvoice.business.OverviewBusiness;
 import de.kreth.clubinvoice.business.UserRegister;
@@ -46,6 +47,7 @@ public class LoginUi extends VerticalLayout implements InvoiceUi {
 		passwordField.setCaption(resBundle.getString(CAPTION_USER_PASSWORD));
 
 		loginButton = new Button(resBundle.getString(CAPTION_USER_LOGIN));
+		loginButton.addStyleName(ValoTheme.BUTTON_PRIMARY);
 		loginButton.addClickListener(e -> {
 			String login = loginName.getValue();
 			String password = passwordField.getValue();
