@@ -17,7 +17,7 @@
 	<properties>
 		<vaadin.version>8.4.5</vaadin.version>
 		<vaadin.plugin.version>8.4.5</vaadin.plugin.version>
-		<jetty.plugin.version>9.3.9.v20160517</jetty.plugin.version>
+<!-- 		<jetty.plugin.version>9.3.9.v20160517</jetty.plugin.version> -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>11</java.version>
@@ -247,13 +247,14 @@
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-testbench-core</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
-			<scope>test</scope>
 			<version>3.141.59</version>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
@@ -276,14 +277,14 @@
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-firefox-driver</artifactId>
-			<scope>test</scope>
 			<version>3.141.59</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-chrome-driver</artifactId>
-			<scope>test</scope>
 			<version>3.141.59</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.collections</groupId>
@@ -360,14 +361,14 @@
 
 			<!-- The Jetty plugin allows us to easily test the development build by 
 				running jetty:run on the command line. -->
-			<plugin>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-maven-plugin</artifactId>
-				<version>${jetty.plugin.version}</version>
-				<configuration>
-					<scanIntervalSeconds>2</scanIntervalSeconds>
-				</configuration>
-			</plugin>
+<!-- 			<plugin> -->
+<!-- 				<groupId>org.eclipse.jetty</groupId> -->
+<!-- 				<artifactId>jetty-maven-plugin</artifactId> -->
+<!-- 				<version>${jetty.plugin.version}</version> -->
+<!-- 				<configuration> -->
+<!-- 					<scanIntervalSeconds>2</scanIntervalSeconds> -->
+<!-- 				</configuration> -->
+<!-- 			</plugin> -->
 
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
