@@ -90,7 +90,7 @@
 	<title>
 		<band height="89" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="25" width="556" height="20" uuid="38e32426-ceb9-40ee-af7a-ab84b566d96b"/>
+				<reportElement x="0" y="25" width="556" height="15" uuid="38e32426-ceb9-40ee-af7a-ab84b566d96b"/>
 				<textElement textAlignment="Center">
 					<font fontName="Arial" size="12" isBold="false"/>
 				</textElement>
@@ -100,18 +100,10 @@
 				<reportElement x="0" y="37" width="556" height="15" uuid="88043ee4-db2c-43ca-96f2-fa078918d134">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9"/>
 				</textElement>
 				<text><![CDATA[Rotekreuzstraße 25 - 30627 Hannover]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="54" width="556" height="21" uuid="762705d5-be9c-476f-b2ff-dc07cab925f9"/>
-				<textElement textAlignment="Center">
-					<font size="16" isUnderline="true"/>
-				</textElement>
-				<text><![CDATA[Monatsabrechnung Übungsleitervergütung
-]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="376" y="0" width="103" height="10" uuid="7927de72-6eab-475d-821b-5267f0fea03e">
@@ -149,22 +141,30 @@
 				</reportElement>
 			</line>
 			<staticText>
-				<reportElement x="0" y="70" width="550" height="10" uuid="6e3eed4f-1c4d-4383-a358-c58f73d4d103">
+				<reportElement x="3" y="78" width="550" height="10" uuid="195e05ca-09bb-4890-8444-6cba59da2388">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<text><![CDATA[zur Inanspruchnahme eines städtischen Zuschusses zu den Personalkosten von Sportübungsleitern]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="72" width="550" height="10" uuid="6e3eed4f-1c4d-4383-a358-c58f73d4d103">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="6"/>
 				</textElement>
 				<text><![CDATA[zur Vorlage bei der Landeshauptstadt Hannover]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="3" y="76" width="550" height="10" uuid="195e05ca-09bb-4890-8444-6cba59da2388">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-				</reportElement>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="6"/>
+				<reportElement x="0" y="52" width="556" height="21" uuid="762705d5-be9c-476f-b2ff-dc07cab925f9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isUnderline="true"/>
 				</textElement>
-				<text><![CDATA[zur Inanspruchnahme eines städtischen Zuschusses zu den Personalkosten von Sportübungsleitern]]></text>
+				<text><![CDATA[Monatsabrechnung Übungsleitervergütung
+]]></text>
 			</staticText>
 		</band>
 	</title>

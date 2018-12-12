@@ -106,14 +106,6 @@
 				<text><![CDATA[Rotekreuzstraße 25 - 30627 Hannover - Tel.: 0511/57 11 86 - Fax: 0511/57 11 61]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="52" width="556" height="23" uuid="762705d5-be9c-476f-b2ff-dc07cab925f9"/>
-				<textElement textAlignment="Center">
-					<font size="16" isUnderline="true"/>
-				</textElement>
-				<text><![CDATA[Monatsabrechnung Übungsleitervergütung
-]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="376" y="0" width="103" height="12" uuid="7927de72-6eab-475d-821b-5267f0fea03e">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
@@ -149,13 +141,21 @@
 				</reportElement>
 			</line>
 			<staticText>
-				<reportElement x="3" y="76" width="550" height="10" uuid="195e05ca-09bb-4890-8444-6cba59da2388">
+				<reportElement x="3" y="73" width="550" height="14" uuid="195e05ca-09bb-4890-8444-6cba59da2388">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="6"/>
 				</textElement>
 				<text><![CDATA[(o. Übungsleiter-Lizenz)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="48" width="556" height="25" uuid="762705d5-be9c-476f-b2ff-dc07cab925f9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Monatsabrechnung Übungsleitervergütung
+]]></text>
 			</staticText>
 		</band>
 	</title>
