@@ -130,7 +130,7 @@ public class OverviewUi extends BorderLayout implements InvoiceUi {
 		gridInvoices.addItemClickListener(itemEv -> {
 
 			LOGGER.debug("Invoice clicked, opening {}", itemEv.getItem());
-			InvoiceDialog dlg = new InvoiceDialog(resBundle, InvoiceDialog.OpenPdfLabel.OPEN);
+			InvoiceDialog dlg = new InvoiceDialog(resBundle, InvoiceDialog.InvoiceMode.VIEW_ONLY);
 			dlg.center();
 			dlg.setHeight(80, Unit.PERCENTAGE);
 			dlg.setWidth(60, Unit.PERCENTAGE);
@@ -166,7 +166,7 @@ public class OverviewUi extends BorderLayout implements InvoiceUi {
 			inv.setInvoiceDate(LocalDateTime.now());
 			inv.setItems(selectedItems);
 			inv.setUser(user);
-			InvoiceDialog dlg = new InvoiceDialog(resBundle, InvoiceDialog.OpenPdfLabel.PREVIEW);
+			InvoiceDialog dlg = new InvoiceDialog(resBundle, InvoiceDialog.InvoiceMode.CREATE);
 			dlg.center();
 			dlg.setHeight(80, Unit.PERCENTAGE);
 			dlg.setWidth(80, Unit.PERCENTAGE);

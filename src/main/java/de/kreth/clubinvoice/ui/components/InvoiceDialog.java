@@ -20,6 +20,7 @@ import java.util.concurrent.Executors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.vaadin.data.HasValue.ValueChangeEvent;
 import com.vaadin.server.StreamResource;
 import com.vaadin.shared.Registration;
 import com.vaadin.ui.AbstractComponent;
@@ -48,8 +49,8 @@ public class InvoiceDialog extends Window {
 	private static final long serialVersionUID = -8997281625128779760L;
 	private static final Logger LOGGER = LoggerFactory.getLogger(InvoiceDialog.class);
 
-	public enum OpenPdfLabel {
-		PREVIEW, OPEN
+	public enum InvoiceMode {
+		CREATE, VIEW_ONLY
 	}
 
 	private TextField invoiceNo;
@@ -58,12 +59,16 @@ public class InvoiceDialog extends Window {
 	private Button okButton;
 	private Invoice invoice;
 
-	public InvoiceDialog(ResourceBundle resBundle, OpenPdfLabel pdfOpenLabel) {
+	public InvoiceDialog(ResourceBundle resBundle, InvoiceMode pdfOpenLabel) {
 		setWidth(200, Unit.EM);
 
 		invoiceNo = new TextField();
 		invoiceNo.setCaption(resBundle.getString(CAPTION_INVOICE_INVOICENO));
-		invoiceNo.setReadOnly(true);
+		if (InvoiceMode.VIEW_ONLY == pdfOpenLabel) {
+			invoiceNo.setReadOnly(true);
+		} else {
+			invoiceNo.addValueChangeListener(ev -> updateInvoiceNo(ev));
+		}
 
 		invoiceDate = new DateTimeField();
 		invoiceDate.setCaption(resBundle.getString(CAPTION_INVOICE_INVOICEDATE));
@@ -76,7 +81,7 @@ public class InvoiceDialog extends Window {
 		Button cancel = new Button(resBundle.getString(LABEL_CANCEL), ev -> close());
 
 		String caption;
-		if (pdfOpenLabel == OpenPdfLabel.OPEN) {
+		if (pdfOpenLabel == InvoiceMode.VIEW_ONLY) {
 			caption = resBundle.getString(LABEL_OPEN);
 		} else {
 			caption = resBundle.getString(LABEL_PREVIEW);
@@ -95,6 +100,12 @@ public class InvoiceDialog extends Window {
 		invoice.setInvoiceDate(LocalDateTime.now());
 		invoice.setItems(Collections.emptyList());
 		setInvoice(invoice);
+	}
+
+	private void updateInvoiceNo(ValueChangeEvent<String> ev) {
+		if (invoice != null) {
+			invoice.setInvoiceId(ev.getValue());
+		}
 	}
 
 	private void showPdf(ClickEvent ev) {
