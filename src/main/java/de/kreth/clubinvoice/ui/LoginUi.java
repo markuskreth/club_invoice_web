@@ -41,27 +41,27 @@ public class LoginUi extends VerticalLayout implements InvoiceUi {
 	public void setContent(UI ui, VaadinRequest vaadinRequest) {
 
 		loginName = new TextField();
+		loginName.setId("user.loginname");
 		loginName.setCaption(resBundle.getString(CAPTION_USER_LOGINNAME2));
 
 		passwordField = new PasswordField();
+		passwordField.setId("user.password");
 		passwordField.setCaption(resBundle.getString(CAPTION_USER_PASSWORD));
 
 		loginButton = new Button(resBundle.getString(CAPTION_USER_LOGIN));
+		loginButton.setId("user.login");
 		loginButton.addStyleName(ValoTheme.BUTTON_PRIMARY);
 		loginButton.addClickListener(e -> {
 			String login = loginName.getValue();
 			String password = passwordField.getValue();
 			if (business.login(login, password)) {
 
-				OverviewBusiness overviewBusiness = new OverviewBusiness(
-						business.getSessionObj(), business.getStore(),
+				OverviewBusiness overviewBusiness = new OverviewBusiness(business.getSessionObj(), business.getStore(),
 						business.getCookieStore());
-				OverviewUi overview = new OverviewUi(business.getStore(),
-						overviewBusiness);
+				OverviewUi overview = new OverviewUi(business.getStore(), overviewBusiness);
 				overview.setContent(ui, vaadinRequest);
 			} else {
-				String failMessage = resBundle
-						.getString("message.user.loginfailure");
+				String failMessage = resBundle.getString("message.user.loginfailure");
 				UserError err = new UserError(failMessage);
 				loginName.setComponentError(err);
 				passwordField.setComponentError(err);
@@ -71,14 +71,14 @@ public class LoginUi extends VerticalLayout implements InvoiceUi {
 		});
 		separator = new Label("<hr />", ContentMode.HTML);
 		linkToRegister = new Button("Register");
+		linkToRegister.setId("user.register");
 		linkToRegister.addClickListener(e -> {
 
 			UserRegisterUi registerUi = new UserRegisterUi(business);
 			registerUi.setContent(ui, vaadinRequest);
 		});
 
-		addComponents(loginName, passwordField, loginButton, separator,
-				linkToRegister);
+		addComponents(loginName, passwordField, loginButton, separator, linkToRegister);
 
 		ui.setContent(this);
 	}
