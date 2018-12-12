@@ -3,6 +3,8 @@ package de.kreth.clubinvoice.ui.components;
 import static de.kreth.clubinvoice.ui.Constants.CAPTION_INVOICE_INVOICEDATE;
 import static de.kreth.clubinvoice.ui.Constants.CAPTION_INVOICE_INVOICENO;
 import static de.kreth.clubinvoice.ui.Constants.LABEL_CANCEL;
+import static de.kreth.clubinvoice.ui.Constants.LABEL_OPEN;
+import static de.kreth.clubinvoice.ui.Constants.LABEL_PREVIEW;
 import static de.kreth.clubinvoice.ui.Constants.LABEL_STORE;
 
 import java.io.IOException;
@@ -12,6 +14,11 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.vaadin.server.StreamResource;
 import com.vaadin.shared.Registration;
@@ -39,6 +46,11 @@ import net.sf.jasperreports.engine.JasperReport;
 public class InvoiceDialog extends Window {
 
 	private static final long serialVersionUID = -8997281625128779760L;
+	private static final Logger LOGGER = LoggerFactory.getLogger(InvoiceDialog.class);
+
+	public enum OpenPdfLabel {
+		PREVIEW, OPEN
+	}
 
 	private TextField invoiceNo;
 	private DateTimeField invoiceDate;
@@ -46,7 +58,7 @@ public class InvoiceDialog extends Window {
 	private Button okButton;
 	private Invoice invoice;
 
-	public InvoiceDialog(ResourceBundle resBundle) {
+	public InvoiceDialog(ResourceBundle resBundle, OpenPdfLabel pdfOpenLabel) {
 		setWidth(200, Unit.EM);
 
 		invoiceNo = new TextField();
@@ -62,7 +74,14 @@ public class InvoiceDialog extends Window {
 
 		okButton = new Button(resBundle.getString(LABEL_STORE), ev -> close());
 		Button cancel = new Button(resBundle.getString(LABEL_CANCEL), ev -> close());
-		Button previewButton = new Button("Preview", ev -> showPdf(ev));
+
+		String caption;
+		if (pdfOpenLabel == OpenPdfLabel.OPEN) {
+			caption = resBundle.getString(LABEL_OPEN);
+		} else {
+			caption = resBundle.getString(LABEL_PREVIEW);
+		}
+		Button previewButton = new Button(caption, this::showPdf);
 		HorizontalLayout btnLayout = new HorizontalLayout();
 		btnLayout.addComponents(okButton, cancel, previewButton);
 
@@ -81,6 +100,7 @@ public class InvoiceDialog extends Window {
 	private void showPdf(ClickEvent ev) {
 		try {
 			JasperPrint print = createJasperPrint();
+			LOGGER.debug("Created JasperPrint");
 			showInWebWindow(print, ev);
 		} catch (JRException | IOException e) {
 			throw new RuntimeException(e);
@@ -108,9 +128,15 @@ public class InvoiceDialog extends Window {
 
 		BrowserFrame c = new BrowserFrame("PDF invoice", resource);
 		c.setSizeFull();
-		try (PipedOutputStream out = new PipedOutputStream(in)) {
-			JasperExportManager.exportReportToPdfStream(print, out);
-		}
+		ExecutorService exec = Executors.newSingleThreadExecutor();
+		exec.execute(() -> {
+			try (PipedOutputStream out = new PipedOutputStream(in)) {
+				JasperExportManager.exportReportToPdfStream(print, out);
+			} catch (JRException | IOException e) {
+				LOGGER.error("Error exporting Report to Browser Window", e);
+			}
+		});
+		exec.shutdown();
 
 		return c;
 	}

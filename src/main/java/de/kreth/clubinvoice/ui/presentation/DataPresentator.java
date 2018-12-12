@@ -2,14 +2,13 @@ package de.kreth.clubinvoice.ui.presentation;
 
 import java.util.ResourceBundle;
 
-import de.kreth.clubinvoice.ui.Constants;
-
-public interface DataPresentator<T> extends Constants {
+public interface DataPresentator<T> {
 
 	public enum Resouce {
 		INSTANCE;
 
 		public final transient ResourceBundle resBundle;
+
 		private Resouce() {
 			resBundle = ResourceBundle.getBundle("application");
 		}

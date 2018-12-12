@@ -1,5 +1,14 @@
 package de.kreth.clubinvoice.ui;
 
+import static de.kreth.clubinvoice.ui.Constants.CAPTION_ARTICLES;
+import static de.kreth.clubinvoice.ui.Constants.CAPTION_INVOICEITEM_ADD;
+import static de.kreth.clubinvoice.ui.Constants.CAPTION_INVOICE_CREATE;
+import static de.kreth.clubinvoice.ui.Constants.CAPTION_INVOICE_PATTERN;
+import static de.kreth.clubinvoice.ui.Constants.CAPTION_USER_DETAILS;
+import static de.kreth.clubinvoice.ui.Constants.LABEL_LOGGEDIN;
+import static de.kreth.clubinvoice.ui.Constants.LABEL_LOGOUT;
+import static de.kreth.clubinvoice.ui.Constants.STYLE_BORDERED;
+
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -121,7 +130,7 @@ public class OverviewUi extends BorderLayout implements InvoiceUi {
 		gridInvoices.addItemClickListener(itemEv -> {
 
 			LOGGER.debug("Invoice clicked, opening {}", itemEv.getItem());
-			InvoiceDialog dlg = new InvoiceDialog(resBundle);
+			InvoiceDialog dlg = new InvoiceDialog(resBundle, InvoiceDialog.OpenPdfLabel.OPEN);
 			dlg.center();
 			dlg.setHeight(80, Unit.PERCENTAGE);
 			dlg.setWidth(60, Unit.PERCENTAGE);
@@ -157,7 +166,7 @@ public class OverviewUi extends BorderLayout implements InvoiceUi {
 			inv.setInvoiceDate(LocalDateTime.now());
 			inv.setItems(selectedItems);
 			inv.setUser(user);
-			InvoiceDialog dlg = new InvoiceDialog(resBundle);
+			InvoiceDialog dlg = new InvoiceDialog(resBundle, InvoiceDialog.OpenPdfLabel.PREVIEW);
 			dlg.center();
 			dlg.setHeight(80, Unit.PERCENTAGE);
 			dlg.setWidth(80, Unit.PERCENTAGE);

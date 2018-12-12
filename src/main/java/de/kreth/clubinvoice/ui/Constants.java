@@ -1,6 +1,9 @@
 package de.kreth.clubinvoice.ui;
 
-public interface Constants {
+public class Constants {
+
+	private Constants() {
+	}
 
 	public static final String CAPTION_ARTICLES = "caption.articles";
 	public static final String CAPTION_INVOICEITEM_ADD = "caption.invoiceitem.add";
@@ -56,6 +59,8 @@ public interface Constants {
 	public static final String LABEL_CLOSE = "label.close";
 	public static final String LABEL_DISCART = "label.discart";
 	public static final String LABEL_ADDARTICLE = "label.addarticle";
+	public static final String LABEL_PREVIEW = "label.preview";
+	public static final String LABEL_OPEN = "label.open";
 	public static final String LABEL_USER_REGISTER = "label.user.register";
 
 	public static final String STYLE_BORDERED = "bordered";

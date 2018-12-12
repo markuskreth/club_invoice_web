@@ -1,5 +1,14 @@
 package de.kreth.clubinvoice.ui;
 
+import static de.kreth.clubinvoice.ui.Constants.CAPTION_USER_LOGINNAME;
+import static de.kreth.clubinvoice.ui.Constants.CAPTION_USER_PASSWORD;
+import static de.kreth.clubinvoice.ui.Constants.CAPTION_USER_PASSWORDCONFIRMATION;
+import static de.kreth.clubinvoice.ui.Constants.CAPTION_USER_PRENAME2;
+import static de.kreth.clubinvoice.ui.Constants.CAPTION_USER_SURNAME;
+import static de.kreth.clubinvoice.ui.Constants.LABEL_USER_REGISTER;
+import static de.kreth.clubinvoice.ui.Constants.MESSAGE_USER_CREATE_SUCCESS;
+import static de.kreth.clubinvoice.ui.Constants.MESSAGE_USER_PASSWORDMISSMATCH;
+
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
@@ -33,7 +42,6 @@ public class UserRegisterUi extends VerticalLayout implements InvoiceUi {
 
 	private PasswordField passwordFieldVerification;
 
-
 	public UserRegisterUi(UserRegister business) {
 		this.business = business;
 		this.resBundle = ResourceBundle.getBundle("/application");
@@ -55,8 +63,7 @@ public class UserRegisterUi extends VerticalLayout implements InvoiceUi {
 		passwordField.setCaption(resBundle.getString(CAPTION_USER_PASSWORD));
 
 		passwordFieldVerification = new PasswordField();
-		passwordFieldVerification.setCaption(
-				resBundle.getString(CAPTION_USER_PASSWORDCONFIRMATION));
+		passwordFieldVerification.setCaption(resBundle.getString(CAPTION_USER_PASSWORDCONFIRMATION));
 
 		prename = new TextField();
 		prename.setCaption(resBundle.getString(CAPTION_USER_PRENAME2));
@@ -68,17 +75,14 @@ public class UserRegisterUi extends VerticalLayout implements InvoiceUi {
 		button.addClickListener(e -> {
 			if (inputIsValid()) {
 				storeUserData();
-				OverviewBusiness overViewBusiness = new OverviewBusiness(
-						business.getSessionObj(), business.getStore(),
+				OverviewBusiness overViewBusiness = new OverviewBusiness(business.getSessionObj(), business.getStore(),
 						business.getCookieStore());
-				OverviewUi overview = new OverviewUi(business.getStore(),
-						overViewBusiness);
+				OverviewUi overview = new OverviewUi(business.getStore(), overViewBusiness);
 				overview.setContent(ui, vaadinRequest);
 			}
 		});
 
-		addComponents(loginName, prename, surname, passwordField,
-				passwordFieldVerification, button);
+		addComponents(loginName, prename, surname, passwordField, passwordFieldVerification, button);
 
 		ui.setContent(this);
 	}
@@ -89,8 +93,7 @@ public class UserRegisterUi extends VerticalLayout implements InvoiceUi {
 
 		boolean isValid = true;
 		if (value.equals(repeat) == false) {
-			UserError err = new UserError(
-					resBundle.getString(MESSAGE_USER_PASSWORDMISSMATCH));
+			UserError err = new UserError(resBundle.getString(MESSAGE_USER_PASSWORDMISSMATCH));
 			passwordField.setComponentError(err);
 			passwordFieldVerification.setComponentError(err);
 			isValid = false;
@@ -110,8 +113,7 @@ public class UserRegisterUi extends VerticalLayout implements InvoiceUi {
 
 		business.save(user);
 
-		addComponent(new Label(MessageFormat.format(
-				resBundle.getString(MESSAGE_USER_CREATE_SUCCESS), user)));
+		addComponent(new Label(MessageFormat.format(resBundle.getString(MESSAGE_USER_CREATE_SUCCESS), user)));
 
 	}
 
