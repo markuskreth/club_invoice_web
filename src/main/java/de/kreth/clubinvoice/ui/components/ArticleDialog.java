@@ -154,15 +154,19 @@ public class ArticleDialog extends Window {
 	}
 
 	private boolean reportToCheckbox(Article source) {
+		if (source == null || source.getReport() == null) {
+			return false;
+		}
 		return source.getReport().contentEquals(ReportLicense.TRAINER.getRessource());
 	}
 
 	private void checkboxToReportLicense(Article bean, Boolean fieldvalue) {
-		if (fieldvalue) {
-			bean.setReport(ReportLicense.TRAINER.getRessource());
-		} else {
-
-			bean.setReport(ReportLicense.ASSISTANT.getRessource());
+		if (bean != null && fieldvalue != null) {
+			if (fieldvalue) {
+				bean.setReport(ReportLicense.TRAINER.getRessource());
+			} else {
+				bean.setReport(ReportLicense.ASSISTANT.getRessource());
+			}
 		}
 	}
 
