@@ -25,6 +25,10 @@ public class Constants {
 	public static final String CAPTION_ARTICLE_DESCRIPTION = "caption.article.description";
 	public static final String CAPTION_ARTICLE_PRICE = "caption.article.price";
 	public static final String CAPTION_ARTICLE_TITLE = "caption.article.title";
+	public static final String CAPTION_ARTICLE_REPORT = "caption.article.report";
+	public static final String CAPTION_ARTICLE_TYPE_TRAINER = "caption.article.type.trainer";
+	public static final String CAPTION_ARTICLE_TYPE_ASSISTANT = "caption.article.type.assistant";
+
 	public static final String CAPTION_USER_PRENAME = "caption.user.prename";
 	public static final String CAPTION_USER_LOGINNAME = "caption.user.loginname";
 	public static final String CAPTION_USER_DETAILS = "caption.user.details";
