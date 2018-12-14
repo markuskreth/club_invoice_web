@@ -30,11 +30,13 @@ class InvoiceItemPresentatorTest {
 	public static void initLocale() {
 		defaultLocale = Locale.getDefault();
 		Locale.setDefault(Locale.GERMANY);
+		DataPresentators.cleanCache();
 	}
 
 	@AfterAll
 	public static void resetLocale() {
 		Locale.setDefault(defaultLocale);
+		DataPresentators.cleanCache();
 	}
 
 	@BeforeEach
@@ -43,6 +45,7 @@ class InvoiceItemPresentatorTest {
 		article.setTitle("title");
 		article.setUserId(2);
 		article.setDescription("description");
+		article.setReport("");
 		article.setPricePerHour(BigDecimal.valueOf(8.5));
 
 		user = new User();
