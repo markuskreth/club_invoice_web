@@ -18,11 +18,11 @@
 		<vaadin.version>8.4.5</vaadin.version>
 		<vaadin.plugin.version>8.4.5</vaadin.plugin.version>
 		<!-- <jetty.plugin.version>9.3.9.v20160517</jetty.plugin.version> -->
-<!-- 		<jetty.version>9.4.14.v20181114</jetty.version> -->
-        
-        <jetty.version>6.1.26</jetty.version>
-        <jsp.version>2.1.v20100127</jsp.version>
-        
+		<!-- <jetty.version>9.4.14.v20181114</jetty.version> -->
+
+		<jetty.version>6.1.26</jetty.version>
+		<jsp.version>2.1.v20100127</jsp.version>
+
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>11</java.version>
@@ -100,12 +100,7 @@
 			<artifactId>activation</artifactId>
 			<version>1.1.1</version>
 		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>3.0.1</version>
-			<scope>provided</scope>
-		</dependency>
+
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-server</artifactId>
@@ -146,7 +141,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>8.0.12</version>
+			<version>8.0.13</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-codec</groupId>
@@ -204,16 +199,7 @@
 			<artifactId>vaadin-slf4j-jdk14</artifactId>
 			<version>1.6.1</version>
 		</dependency>
-		<!-- <dependency> -->
-		<!-- <groupId>com.vaadin</groupId> -->
-		<!-- <artifactId>vaadin-testbench-api</artifactId> -->
-		<!-- <scope>test</scope> -->
-		<!-- </dependency> -->
-		<!-- <dependency> -->
-		<!-- <groupId>com.vaadin</groupId> -->
-		<!-- <artifactId>vaadin-testbench-core</artifactId> -->
-		<!-- <scope>test</scope> -->
-		<!-- </dependency> -->
+
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
@@ -285,42 +271,34 @@
 			<scope>test</scope>
 		</dependency>
 
-<!-- 		<dependency> -->
-<!-- 			<groupId>javax.servlet</groupId> -->
-<!-- 			<artifactId>javax.servlet-api</artifactId> -->
-<!-- 			<version>3.1.0</version> -->
-<!-- 			<scope>provided</scope> -->
-<!-- 		</dependency> -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.eclipse.jetty</groupId> -->
-<!-- 			<artifactId>jetty-server</artifactId> -->
-<!-- 			<version>${jetty.version}</version> -->
-<!-- 			<type>jar</type> -->
-<!-- 			<scope>test</scope> -->
-<!-- 		</dependency> -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.eclipse.jetty</groupId> -->
-<!-- 			<artifactId>jetty-servlet</artifactId> -->
-<!-- 			<version>${jetty.version}</version> -->
-<!-- 			<scope>test</scope> -->
-<!-- 		</dependency> -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.eclipse.jetty</groupId> -->
-<!-- 			<artifactId>jetty-http</artifactId> -->
-<!-- 			<version>${jetty.version}</version> -->
-<!-- 			<scope>test</scope> -->
-<!-- 		</dependency> -->
-		
-        <dependency>
-            <groupId>org.mortbay.jetty</groupId>
-            <artifactId>jetty</artifactId>
-            <version>${jetty.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mortbay.jetty</groupId>
-            <artifactId>jsp-2.1-glassfish</artifactId>
-            <version>${jsp.version}</version>
-        </dependency>
+		<!--API´s -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!--Infrastructure -->
+		<dependency>
+			<groupId>io.undertow</groupId>
+			<artifactId>undertow-core</artifactId>
+			<version>1.4.16.Final</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>io.undertow</groupId>
+			<artifactId>undertow-servlet</artifactId>
+			<version>1.4.16.Final</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>simple-jndi</groupId>
+			<artifactId>simple-jndi</artifactId>
+			<version>0.11.4.1</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
