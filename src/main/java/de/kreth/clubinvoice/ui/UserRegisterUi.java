@@ -25,6 +25,7 @@ import com.vaadin.ui.VerticalLayout;
 import de.kreth.clubinvoice.business.OverviewBusiness;
 import de.kreth.clubinvoice.business.UserRegister;
 import de.kreth.clubinvoice.data.User;
+import de.kreth.clubinvoice.utils.ResourceBundleProvider;
 
 public class UserRegisterUi extends VerticalLayout implements InvoiceUi {
 
@@ -44,7 +45,7 @@ public class UserRegisterUi extends VerticalLayout implements InvoiceUi {
 
 	public UserRegisterUi(UserRegister business) {
 		this.business = business;
-		this.resBundle = ResourceBundle.getBundle("/application");
+		this.resBundle = ResourceBundleProvider.getBundle();
 	}
 
 	/*

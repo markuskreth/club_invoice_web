@@ -3,12 +3,13 @@ package de.kreth.clubinvoice.data;
 import java.util.ResourceBundle;
 
 import de.kreth.clubinvoice.ui.Constants;
+import de.kreth.clubinvoice.utils.ResourceBundleProvider;
 
 public enum ReportLicense {
 
 	TRAINER("/reports/mtv_gross_buchholz_trainer.jrxml"), ASSISTANT("/reports/mtv_gross_buchholz.jrxml");
 
-	private static final ResourceBundle resBundle = ResourceBundle.getBundle("/application");
+	private static final ResourceBundle resBundle = ResourceBundleProvider.getBundle();
 	private String ressource;
 
 	private ReportLicense(String ressource) {

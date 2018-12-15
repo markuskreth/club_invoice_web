@@ -47,6 +47,7 @@ import de.kreth.clubinvoice.ui.components.InvoiceItemDialog;
 import de.kreth.clubinvoice.ui.components.InvoiceItemGrid;
 import de.kreth.clubinvoice.ui.components.UserDetailsDialog;
 import de.kreth.clubinvoice.ui.presentation.DataPresentators;
+import de.kreth.clubinvoice.utils.ResourceBundleProvider;
 import de.steinwedel.messagebox.ButtonOption;
 import de.steinwedel.messagebox.MessageBox;
 
@@ -69,7 +70,7 @@ public class OverviewUi extends BorderLayout implements InvoiceUi {
 		this.business = business;
 		this.store = store;
 		this.user = (User) store.getAttribute(PropertyStore.LOGGED_IN_USER);
-		resBundle = ResourceBundle.getBundle("/application");
+		resBundle = ResourceBundleProvider.getBundle();
 	}
 
 	@Override

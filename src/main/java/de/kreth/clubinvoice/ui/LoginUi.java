@@ -15,6 +15,7 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import de.kreth.clubinvoice.business.OverviewBusiness;
 import de.kreth.clubinvoice.business.UserRegister;
+import de.kreth.clubinvoice.utils.ResourceBundleProvider;
 
 public class LoginUi extends VerticalLayout implements InvoiceUi {
 
@@ -23,6 +24,7 @@ public class LoginUi extends VerticalLayout implements InvoiceUi {
 	private static final String CAPTION_USER_LOGINNAME2 = "caption.user.loginname";
 	private static final long serialVersionUID = 7795197656597564420L;
 	private transient final UserRegister business;
+	private transient final ResourceBundle resBundle;
 
 	private TextField loginName;
 	private PasswordField passwordField;
@@ -30,11 +32,10 @@ public class LoginUi extends VerticalLayout implements InvoiceUi {
 	private Label separator;
 	private Button linkToRegister;
 	private Label errorMsg;
-	private transient ResourceBundle resBundle;
 
 	public LoginUi(UserRegister business) {
 		this.business = business;
-		this.resBundle = ResourceBundle.getBundle("/application");
+		this.resBundle = ResourceBundleProvider.getBundle();
 	}
 
 	@Override
