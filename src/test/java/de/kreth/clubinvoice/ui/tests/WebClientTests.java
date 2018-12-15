@@ -1,10 +1,12 @@
 package de.kreth.clubinvoice.ui.tests;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.sql.SQLException;
 
 import javax.naming.NamingException;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +23,7 @@ public class WebClientTests {
 	@BeforeAll
 	public static void setDriverPaths() throws NamingException, SQLException {
 
-		if (System.getProperty("webdriver.chrome.driver") == null) {
+		if (System.getProperty("webdriver.chrome.driver") == null && System.getenv("webdriver.chrome.driver") != null) {
 			System.setProperty("webdriver.chrome.driver", System.getenv("webdriver.chrome.driver"));
 		}
 
@@ -43,11 +45,17 @@ public class WebClientTests {
 	}
 
 	@Test
+	public void testSetPropertyNull() {
+		assertThrows(NullPointerException.class, () -> System.setProperty("test.key.setting", null));
+
+	}
+
+	@Test
 	public void testGuru99Demo() {
 
 		driver.get("http://demo.guru99.com/test/guru99home/");
 		String title = driver.getTitle();
-		Assert.assertTrue(title.contains("Demo Guru99 Page"));
+		assertTrue(title.contains("Demo Guru99 Page"));
 	}
 
 }
