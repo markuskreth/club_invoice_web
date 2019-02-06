@@ -33,7 +33,7 @@
 	</classpathentry>
 	<classpathentry exported="true" kind="con" path="net.sf.jasperreports.JR_CONTAINER"/>
 	<classpathentry exported="true" kind="con" path="com.jaspersoft.server.JRS_CONTAINER"/>
-	<classpathentry kind="src" output="target/classes" path="target/generated-resources/gwt">
+	<classpathentry excluding="**" kind="src" output="target/classes" path="target/generated-resources/gwt">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 			<attribute name="optional" value="true"/>

@@ -1077,7 +1077,7 @@
  */
 
 .v-vaadin-version:after {
-	content: "8.4.5";
+	content: "8.6.2";
 }
 
 .v-widget {
@@ -4376,6 +4376,10 @@ div.v-layout.v-horizontal.v-widget {
 	left: 0;
 }
 
+.invoiceTheme .v-grid-body .v-grid-header > .v-grid-row {
+	position: relative;
+}
+
 .invoiceTheme .v-grid-row {
 	display: block;
 }
@@ -4551,6 +4555,8 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-box-shadow: 1px 0 2px rgba(0, 0, 0, 0.1);
 	box-shadow: 1px 0 2px rgba(0, 0, 0, 0.1);
 	border-right: 1px solid #d4d4d4;
+	position: relative;
+	z-index: 11;
 }
 
 .invoiceTheme .v-grid-cell.frozen  + th, .invoiceTheme .v-grid-cell.frozen  + td {
@@ -9022,6 +9028,10 @@ div.v-layout.v-horizontal.v-widget {
 	left: 0;
 }
 
+.invoiceTheme .v-tree8-body .v-tree8-header > .v-tree8-row {
+	position: relative;
+}
+
 .invoiceTheme .v-tree8-row {
 	display: block;
 }
@@ -9197,6 +9207,8 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-box-shadow: 1px 0 2px rgba(0, 0, 0, 0.1);
 	box-shadow: 1px 0 2px rgba(0, 0, 0, 0.1);
 	border-right: 1px solid #d4d4d4;
+	position: relative;
+	z-index: 11;
 }
 
 .invoiceTheme .v-tree8-cell.frozen  + th, .invoiceTheme .v-tree8-cell.frozen  + td {
@@ -10098,6 +10110,10 @@ div.v-layout.v-horizontal.v-widget {
 	left: 0;
 }
 
+.invoiceTheme .v-treegrid-body .v-treegrid-header > .v-treegrid-row {
+	position: relative;
+}
+
 .invoiceTheme .v-treegrid-row {
 	display: block;
 }
@@ -10273,6 +10289,8 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-box-shadow: 1px 0 2px rgba(0, 0, 0, 0.1);
 	box-shadow: 1px 0 2px rgba(0, 0, 0, 0.1);
 	border-right: 1px solid #d4d4d4;
+	position: relative;
+	z-index: 11;
 }
 
 .invoiceTheme .v-treegrid-cell.frozen  + th, .invoiceTheme .v-treegrid-cell.frozen  + td {
@@ -12472,6 +12490,14 @@ div.v-layout.v-horizontal.v-widget {
 
 .invoiceTheme .v-tabsheet-right-aligned-tabs  > .v-tabsheet-tabcontainer {
 	text-align: right;
+}
+
+.invoiceTheme .v-tabsheet-right-aligned-tabs .v-tabsheet-spacertd {
+	display: inline-block !important;
+}
+
+.invoiceTheme .v-tabsheet-right-aligned-tabs .v-tabsheet-scroller {
+	padding-left: 9px;
 }
 
 .invoiceTheme .v-tabsheet-padded-tabbar  > .v-tabsheet-tabcontainer .v-tabsheet-tabs {
