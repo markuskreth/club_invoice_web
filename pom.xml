@@ -389,11 +389,11 @@
 				<artifactId>wildfly-swarm-plugin</artifactId>
 				<version>${version.wildfly-swarm}</version>
 				<executions>
-					<execution>
-						<goals>
-							<goal>package</goal>
-						</goals>
-					</execution>
+<!-- 					<execution> -->
+<!-- 						<goals> -->
+<!-- 							<goal>package</goal> -->
+<!-- 						</goals> -->
+<!-- 					</execution> -->
 				</executions>
 			</plugin>
 			<plugin>
