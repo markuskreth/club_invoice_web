@@ -10,8 +10,6 @@ import static de.kreth.clubinvoice.ui.Constants.CAPTION_INVOICEITEM_SUMPRICE;
 
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.ResourceBundle;
 
 import com.vaadin.data.provider.GridSortOrder;
@@ -29,28 +27,20 @@ public class InvoiceItemGrid<T extends InvoiceItem> extends Grid<T> {
 	public InvoiceItemGrid(ResourceBundle resBundle) {
 		setCaption(resBundle.getString(CAPTION_INVOICEITEMS));
 
-		addColumn(InvoiceItem::getArticle, Article::getTitle)
-				.setCaption(resBundle.getString(CAPTION_ARTICLE));
+		addColumn(InvoiceItem::getArticle, Article::getTitle).setCaption(resBundle.getString(CAPTION_ARTICLE));
 
 		Column<T, LocalDateTime> dateColumn = addColumn(InvoiceItem::getStart)
 				.setCaption(resBundle.getString(CAPTION_INVOICEITEM_DATE))
-				.setRenderer(new LocalDateTimeRenderer(
-						DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)));
+				.setRenderer(new LocalDateTimeRenderer("EEE, dd.MM.yyyy"));
 		Column<T, LocalDateTime> startColumn = addColumn(InvoiceItem::getStart)
 				.setCaption(resBundle.getString(CAPTION_INVOICEITEM_START))
-				.setRenderer(new LocalDateTimeRenderer(
-						DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)));
-		addColumn(InvoiceItem::getEnd)
-				.setCaption(resBundle.getString(CAPTION_INVOICEITEM_END))
-				.setRenderer(new LocalDateTimeRenderer(
-						DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)));
-		addColumn(InvoiceItem::getParticipants).setCaption(
-				resBundle.getString(CAPTION_INVOICEITEM_PARTICIPANTS));
+				.setRenderer(new LocalDateTimeRenderer("HH:mm"));
+		addColumn(InvoiceItem::getEnd).setCaption(resBundle.getString(CAPTION_INVOICEITEM_END))
+				.setRenderer(new LocalDateTimeRenderer("HH:mm"));
+		addColumn(InvoiceItem::getParticipants).setCaption(resBundle.getString(CAPTION_INVOICEITEM_PARTICIPANTS));
 
-		addColumn(InvoiceItem::getSumPrice)
-				.setCaption(resBundle.getString(CAPTION_INVOICEITEM_SUMPRICE))
-				.setRenderer(
-						new NumberRenderer(NumberFormat.getCurrencyInstance()));
+		addColumn(InvoiceItem::getSumPrice).setCaption(resBundle.getString(CAPTION_INVOICEITEM_SUMPRICE))
+				.setRenderer(new NumberRenderer(NumberFormat.getCurrencyInstance()));
 
 		setSortOrder(GridSortOrder.asc(dateColumn).thenAsc(startColumn));
 	}

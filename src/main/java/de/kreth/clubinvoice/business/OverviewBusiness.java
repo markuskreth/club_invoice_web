@@ -16,8 +16,7 @@ public class OverviewBusiness {
 	private final InvoiceBusiness invoiceBusiness;
 	private final UserRegister userBusiness;
 
-	public OverviewBusiness(Session sessionObj, PropertyStore propStore,
-			CookieStore cookieStore) {
+	public OverviewBusiness(Session sessionObj, PropertyStore propStore, CookieStore cookieStore) {
 		articleBusiness = new ArticleBusiness(sessionObj, propStore);
 		itemBusiness = new InvoiceItemBusiness(sessionObj, propStore);
 		invoiceBusiness = new InvoiceBusiness(sessionObj, propStore);
@@ -33,13 +32,13 @@ public class OverviewBusiness {
 	}
 
 	public List<InvoiceItem> getInvoiceItems(User user) {
-		return itemBusiness
-				.loadAll(i -> i.getArticle().getUserId() == user.getId()
-						&& i.getInvoice() == null);
+		return itemBusiness.loadAll(i -> i.getArticle().getUserId() == user.getId() && i.getInvoice() == null);
 	}
 
 	public List<Invoice> getInvoices(User user) {
-		return invoiceBusiness.loadAll(i -> i.getUser().equals(user));
+		List<Invoice> loadAll = invoiceBusiness.loadAll(i -> i.getUser().equals(user));
+		loadAll.sort((o1, o2) -> o1.getInvoiceDate().compareTo(o2.getInvoiceDate()));
+		return loadAll;
 	}
 
 	public void save(InvoiceItem item) {
