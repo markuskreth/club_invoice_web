@@ -126,11 +126,6 @@
 			<version>0.2.0</version>
 		</dependency>
 		<dependency>
-			<groupId>org.vaadin.addons</groupId>
-			<artifactId>border-layout-addon</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
 			<groupId>de.steinwedel.vaadin.addon</groupId>
 			<artifactId>messagebox</artifactId>
 			<version>4.0.21</version>

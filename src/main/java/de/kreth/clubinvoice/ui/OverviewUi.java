@@ -19,9 +19,9 @@ import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.vaadin.addon.borderlayout.BorderLayout;
 
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.ui.AbstractLayout;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Grid;
@@ -51,7 +51,7 @@ import de.kreth.clubinvoice.utils.ResourceBundleProvider;
 import de.steinwedel.messagebox.ButtonOption;
 import de.steinwedel.messagebox.MessageBox;
 
-public class OverviewUi extends BorderLayout implements InvoiceUi {
+public class OverviewUi extends VerticalLayout implements InvoiceUi {
 
 	private static final long serialVersionUID = 318645298331660865L;
 	private static final Logger LOGGER = LoggerFactory.getLogger(OverviewUi.class);
@@ -84,17 +84,18 @@ public class OverviewUi extends BorderLayout implements InvoiceUi {
 		VerticalLayout right = createInvoicesView(ui);
 		right.setSizeFull();
 
-		HorizontalLayout main = new HorizontalLayout();
+		AbstractLayout main;
+		if (ui.getPage().getBrowserWindowWidth() > 1000) {
+			main = new HorizontalLayout();
+		} else {
+			main = new VerticalLayout();
+		}
 		main.setSizeFull();
 		main.addComponents(left, right);
 
 		Layout footer = createFooter();
 
-		addComponent(head, BorderLayout.Constraint.PAGE_START);
-
-		addComponent(main, BorderLayout.Constraint.CENTER);
-
-		addComponent(footer, BorderLayout.Constraint.PAGE_END);
+		addComponents(head, main, footer);
 
 		ui.setContent(this);
 
