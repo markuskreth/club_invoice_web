@@ -1,11 +1,11 @@
 package de.kreth.clubinvoice.ui.components;
 
-import static de.kreth.clubinvoice.ui.Constants.CAPTION_INVOICE_INVOICEDATE;
-import static de.kreth.clubinvoice.ui.Constants.CAPTION_INVOICE_INVOICENO;
-import static de.kreth.clubinvoice.ui.Constants.LABEL_CANCEL;
-import static de.kreth.clubinvoice.ui.Constants.LABEL_OPEN;
-import static de.kreth.clubinvoice.ui.Constants.LABEL_PREVIEW;
-import static de.kreth.clubinvoice.ui.Constants.LABEL_STORE;
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICE_INVOICEDATE;
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICE_INVOICENO;
+import static de.kreth.clubinvoice.Application_Properties.LABEL_CANCEL;
+import static de.kreth.clubinvoice.Application_Properties.LABEL_OPEN;
+import static de.kreth.clubinvoice.Application_Properties.LABEL_PREVIEW;
+import static de.kreth.clubinvoice.Application_Properties.LABEL_STORE;
 
 import java.io.File;
 import java.io.IOException;
@@ -51,44 +51,52 @@ import net.sf.jasperreports.engine.JasperReport;
 public class InvoiceDialog extends Window {
 
 	private static final long serialVersionUID = -8997281625128779760L;
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(InvoiceDialog.class);
 
 	public enum InvoiceMode {
-		CREATE, VIEW_ONLY
+		CREATE,
+		VIEW_ONLY
 	}
 
 	private TextField invoiceNo;
+
 	private DateTimeField invoiceDate;
+
 	private InvoiceItemGrid<InvoiceItem> itemGrid;
+
 	private Button okButton;
+
 	private Invoice invoice;
 
 	public InvoiceDialog(ResourceBundle resBundle, InvoiceMode pdfOpenLabel) {
 		setWidth(200, Unit.EM);
 
 		invoiceNo = new TextField();
-		invoiceNo.setCaption(resBundle.getString(CAPTION_INVOICE_INVOICENO));
+		invoiceNo.setCaption(CAPTION_INVOICE_INVOICENO.getString(resBundle::getString));
 		if (InvoiceMode.VIEW_ONLY == pdfOpenLabel) {
 			invoiceNo.setReadOnly(true);
-		} else {
+		}
+		else {
 			invoiceNo.addValueChangeListener(ev -> updateInvoiceNo(ev));
 		}
 
 		invoiceDate = new DateTimeField();
-		invoiceDate.setCaption(resBundle.getString(CAPTION_INVOICE_INVOICEDATE));
+		invoiceDate.setCaption((CAPTION_INVOICE_INVOICEDATE.getString(resBundle::getString)));
 		invoiceDate.setReadOnly(true);
 
 		itemGrid = new InvoiceItemGrid<>(resBundle);
 		itemGrid.setSizeFull();
 
-		okButton = new Button(resBundle.getString(LABEL_STORE), ev -> close());
-		Button cancel = new Button(resBundle.getString(LABEL_CANCEL), ev -> close());
+		okButton = new Button(LABEL_STORE.getString(resBundle::getString), ev -> close());
+		Button cancel = new Button((LABEL_CANCEL.getString(resBundle::getString)), ev -> close());
 
 		String caption;
 		if (pdfOpenLabel == InvoiceMode.VIEW_ONLY) {
-			caption = resBundle.getString(LABEL_OPEN);
-		} else {
-			caption = resBundle.getString(LABEL_PREVIEW);
+			caption = (LABEL_OPEN.getString(resBundle::getString));
+		}
+		else {
+			caption = (LABEL_PREVIEW.getString(resBundle::getString));
 		}
 		Button previewButton = new Button(caption, this::showPdf);
 		HorizontalLayout btnLayout = new HorizontalLayout();
@@ -117,7 +125,8 @@ public class InvoiceDialog extends Window {
 			JasperPrint print = createJasperPrint();
 			LOGGER.debug("Created JasperPrint");
 			showInWebWindow(print, ev);
-		} catch (JRException | IOException e) {
+		}
+		catch (JRException | IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -150,7 +159,8 @@ public class InvoiceDialog extends Window {
 		exec.execute(() -> {
 			try (PipedOutputStream out1 = new PipedOutputStream(inFrame)) {
 				JasperExportManager.exportReportToPdfStream(print, out1);
-			} catch (JRException | IOException e) {
+			}
+			catch (JRException | IOException e) {
 				LOGGER.error("Error exporting Report to Browser Window", e);
 			}
 		});

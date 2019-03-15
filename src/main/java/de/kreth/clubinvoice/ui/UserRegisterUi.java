@@ -1,13 +1,12 @@
 package de.kreth.clubinvoice.ui;
 
-import static de.kreth.clubinvoice.ui.Constants.CAPTION_USER_LOGINNAME;
-import static de.kreth.clubinvoice.ui.Constants.CAPTION_USER_PASSWORD;
-import static de.kreth.clubinvoice.ui.Constants.CAPTION_USER_PASSWORDCONFIRMATION;
-import static de.kreth.clubinvoice.ui.Constants.CAPTION_USER_PRENAME2;
-import static de.kreth.clubinvoice.ui.Constants.CAPTION_USER_SURNAME;
-import static de.kreth.clubinvoice.ui.Constants.LABEL_USER_REGISTER;
-import static de.kreth.clubinvoice.ui.Constants.MESSAGE_USER_CREATE_SUCCESS;
-import static de.kreth.clubinvoice.ui.Constants.MESSAGE_USER_PASSWORDMISSMATCH;
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_USER_LOGINNAME;
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_USER_PASSWORD;
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_USER_PASSWORDCONFIRMATION;
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_USER_PRENAME;
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_USER_SURNAME;
+import static de.kreth.clubinvoice.Application_Properties.MESSAGE_USER_CREATE_SUCCESS;
+import static de.kreth.clubinvoice.Application_Properties.MESSAGE_USER_PASSWORDMISSMATCH;
 
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
@@ -22,6 +21,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
+import de.kreth.clubinvoice.Application_Properties;
 import de.kreth.clubinvoice.business.OverviewBusiness;
 import de.kreth.clubinvoice.business.UserRegister;
 import de.kreth.clubinvoice.data.User;
@@ -32,13 +32,19 @@ public class UserRegisterUi extends VerticalLayout implements InvoiceUi {
 	private static final long serialVersionUID = -7409842921091527159L;
 
 	public static final String ID_LOGIN_NAME = UserRegisterUi.class.getName() + ".loginText";
+
 	private final transient UserRegister business;
+
 	private final transient ResourceBundle resBundle;
 
 	private TextField loginName;
+
 	private PasswordField passwordField;
+
 	private TextField prename;
+
 	private TextField surname;
+
 	private Button button;
 
 	private PasswordField passwordFieldVerification;
@@ -58,21 +64,21 @@ public class UserRegisterUi extends VerticalLayout implements InvoiceUi {
 
 		loginName = new TextField();
 		loginName.setId(ID_LOGIN_NAME);
-		loginName.setCaption(resBundle.getString(CAPTION_USER_LOGINNAME));
+		loginName.setCaption(CAPTION_USER_LOGINNAME.getString(resBundle::getString));
 
 		passwordField = new PasswordField();
-		passwordField.setCaption(resBundle.getString(CAPTION_USER_PASSWORD));
+		passwordField.setCaption(CAPTION_USER_PASSWORD.getString(resBundle::getString));
 
 		passwordFieldVerification = new PasswordField();
-		passwordFieldVerification.setCaption(resBundle.getString(CAPTION_USER_PASSWORDCONFIRMATION));
+		passwordFieldVerification.setCaption(CAPTION_USER_PASSWORDCONFIRMATION.getString(resBundle::getString));
 
 		prename = new TextField();
-		prename.setCaption(resBundle.getString(CAPTION_USER_PRENAME2));
+		prename.setCaption(CAPTION_USER_PRENAME.getString(resBundle::getString));
 
 		surname = new TextField();
-		surname.setCaption(resBundle.getString(CAPTION_USER_SURNAME));
+		surname.setCaption(CAPTION_USER_SURNAME.getString(resBundle::getString));
 
-		button = new Button(resBundle.getString(LABEL_USER_REGISTER));
+		button = new Button(Application_Properties.LABEL_USER_REGISTER.getString(resBundle::getString));
 		button.addClickListener(e -> {
 			if (inputIsValid()) {
 				storeUserData();
@@ -94,7 +100,7 @@ public class UserRegisterUi extends VerticalLayout implements InvoiceUi {
 
 		boolean isValid = true;
 		if (value.equals(repeat) == false) {
-			UserError err = new UserError(resBundle.getString(MESSAGE_USER_PASSWORDMISSMATCH));
+			UserError err = new UserError(MESSAGE_USER_PASSWORDMISSMATCH.getString(resBundle::getString));
 			passwordField.setComponentError(err);
 			passwordFieldVerification.setComponentError(err);
 			isValid = false;
@@ -114,7 +120,8 @@ public class UserRegisterUi extends VerticalLayout implements InvoiceUi {
 
 		business.save(user);
 
-		addComponent(new Label(MessageFormat.format(resBundle.getString(MESSAGE_USER_CREATE_SUCCESS), user)));
+		addComponent(
+				new Label(MessageFormat.format(MESSAGE_USER_CREATE_SUCCESS.getString(resBundle::getString), user)));
 
 	}
 

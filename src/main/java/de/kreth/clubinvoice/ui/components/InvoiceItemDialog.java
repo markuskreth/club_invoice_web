@@ -1,15 +1,15 @@
 package de.kreth.clubinvoice.ui.components;
 
-import static de.kreth.clubinvoice.ui.Constants.CAPTION_ARTICLES;
-import static de.kreth.clubinvoice.ui.Constants.CAPTION_INVOICEITEM_DATE;
-import static de.kreth.clubinvoice.ui.Constants.CAPTION_INVOICEITEM_END;
-import static de.kreth.clubinvoice.ui.Constants.CAPTION_INVOICEITEM_PARTICIPANTS;
-import static de.kreth.clubinvoice.ui.Constants.CAPTION_INVOICEITEM_START;
-import static de.kreth.clubinvoice.ui.Constants.LABEL_CANCEL;
-import static de.kreth.clubinvoice.ui.Constants.LABEL_DELETE;
-import static de.kreth.clubinvoice.ui.Constants.LABEL_OK;
-import static de.kreth.clubinvoice.ui.Constants.MESSAGE_INVOICEITEM_ALLFIELDSMUSTBESET;
-import static de.kreth.clubinvoice.ui.Constants.MESSAGE_INVOICEITEM_STARTBEFOREEND;
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_ARTICLES;
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICEITEM_DATE;
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICEITEM_END;
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICEITEM_PARTICIPANTS;
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICEITEM_START;
+import static de.kreth.clubinvoice.Application_Properties.LABEL_CANCEL;
+import static de.kreth.clubinvoice.Application_Properties.LABEL_DELETE;
+import static de.kreth.clubinvoice.Application_Properties.LABEL_OK;
+import static de.kreth.clubinvoice.Application_Properties.MESSAGE_INVOICEITEM_ALLFIELDSMUSTBESET;
+import static de.kreth.clubinvoice.Application_Properties.MESSAGE_INVOICEITEM_STARTBEFOREEND;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -48,17 +48,23 @@ public class InvoiceItemDialog extends Window {
 	private static final long serialVersionUID = -8997281625128779760L;
 
 	private InvoiceItem item;
+
 	private final List<Article> selectableArticles;
 
 	private ComboBox<Article> articleBox;
+
 	private TextField endTimeField;
+
 	private TextField startTimeField;
+
 	private DateField dateField;
+
 	private TextField participants;
 
 	private Binder<InvoiceItem> binder;
 
 	private Button okButton;
+
 	private List<ClickListener> okListeners;
 
 	private ResourceBundle resBundle;
@@ -75,20 +81,20 @@ public class InvoiceItemDialog extends Window {
 
 		dateField = new DateField();
 		dateField.setLocale(Locale.getDefault());
-		dateField.setCaption(resBundle.getString(CAPTION_INVOICEITEM_DATE));
+		dateField.setCaption(resBundle.getString(CAPTION_INVOICEITEM_DATE.getValue()));
 		startTimeField = new TextField();
 		startTimeField.setRequiredIndicatorVisible(true);
 		startTimeField
-				.setCaption(resBundle.getString(CAPTION_INVOICEITEM_START));
+				.setCaption(resBundle.getString(CAPTION_INVOICEITEM_START.getValue()));
 		endTimeField = new TextField();
 		endTimeField.setRequiredIndicatorVisible(true);
-		endTimeField.setCaption(resBundle.getString(CAPTION_INVOICEITEM_END));
+		endTimeField.setCaption(resBundle.getString(CAPTION_INVOICEITEM_END.getValue()));
 		participants = new TextField();
 		participants.setCaption(
-				resBundle.getString(CAPTION_INVOICEITEM_PARTICIPANTS));
+				resBundle.getString(CAPTION_INVOICEITEM_PARTICIPANTS.getValue()));
 
 		articleBox = new ComboBox<>();
-		articleBox.setCaption(resBundle.getString(CAPTION_ARTICLES));
+		articleBox.setCaption(resBundle.getString(CAPTION_ARTICLES.getValue()));
 		articleBox.setItemCaptionGenerator(Article::getTitle);
 		articleBox.addSelectionListener(ev -> {
 			item.setArticle(ev.getSelectedItem().orElse(item.getArticle()));
@@ -96,13 +102,13 @@ public class InvoiceItemDialog extends Window {
 
 		bindItemFields();
 
-		okButton = new Button(resBundle.getString(LABEL_OK));
+		okButton = new Button((LABEL_OK.getString(resBundle::getString)));
 		okListeners = new ArrayList<>();
 		okListeners.add(ev -> {
 			close();
 		});
 
-		deleteButton = new Button(resBundle.getString(LABEL_DELETE));
+		deleteButton = new Button((LABEL_DELETE.getString(resBundle::getString)));
 		deleteButton.setVisible(false);
 
 		okButton.addClickListener(ev -> {
@@ -113,7 +119,7 @@ public class InvoiceItemDialog extends Window {
 			}
 		});
 
-		Button cancelButton = new Button(resBundle.getString(LABEL_CANCEL),
+		Button cancelButton = new Button((LABEL_CANCEL.getString(resBundle::getString)),
 				ev -> close());
 
 		HorizontalLayout buttons = new HorizontalLayout();
@@ -131,7 +137,7 @@ public class InvoiceItemDialog extends Window {
 		if (item.getArticle() == null || item.getStart() == null
 				|| item.getEnd() == null) {
 			Notification.show(
-					resBundle.getString(MESSAGE_INVOICEITEM_ALLFIELDSMUSTBESET),
+					resBundle.getString(MESSAGE_INVOICEITEM_ALLFIELDSMUSTBESET.getValue()),
 					Notification.Type.ERROR_MESSAGE);
 			return false;
 		}
@@ -144,7 +150,7 @@ public class InvoiceItemDialog extends Window {
 		}
 		if (item.getStart().isAfter(item.getEnd())) {
 			UserError componentError = new UserError(
-					resBundle.getString(MESSAGE_INVOICEITEM_STARTBEFOREEND));
+					resBundle.getString(MESSAGE_INVOICEITEM_STARTBEFOREEND.getValue()));
 			startTimeField.setComponentError(componentError);
 			endTimeField.setComponentError(componentError);
 			return false;
@@ -152,7 +158,7 @@ public class InvoiceItemDialog extends Window {
 		BigDecimal sumPrice = item.getSumPrice();
 		if (sumPrice == null || sumPrice.doubleValue() <= 0) {
 			Notification.show(
-					resBundle.getString(MESSAGE_INVOICEITEM_ALLFIELDSMUSTBESET),
+					resBundle.getString(MESSAGE_INVOICEITEM_ALLFIELDSMUSTBESET.getValue()),
 					Notification.Type.ERROR_MESSAGE);
 		}
 		return true;
@@ -188,7 +194,8 @@ public class InvoiceItemDialog extends Window {
 					LocalDateTime value) {
 				if (value == null) {
 					value = fieldvalue.atStartOfDay();
-				} else {
+				}
+				else {
 					value = fieldvalue.atTime(value.toLocalTime());
 				}
 				return value;

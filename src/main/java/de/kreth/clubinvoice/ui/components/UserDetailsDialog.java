@@ -1,17 +1,17 @@
 package de.kreth.clubinvoice.ui.components;
 
-import static de.kreth.clubinvoice.ui.Constants.CAPTION_ADRESS_CITY;
-import static de.kreth.clubinvoice.ui.Constants.CAPTION_ADRESS_STREET1;
-import static de.kreth.clubinvoice.ui.Constants.CAPTION_ADRESS_STREET2;
-import static de.kreth.clubinvoice.ui.Constants.CAPTION_ADRESS_ZIPCODE;
-import static de.kreth.clubinvoice.ui.Constants.CAPTION_BANK_BIC;
-import static de.kreth.clubinvoice.ui.Constants.CAPTION_BANK_IBAN;
-import static de.kreth.clubinvoice.ui.Constants.CAPTION_BANK_NAME;
-import static de.kreth.clubinvoice.ui.Constants.CAPTION_USER_LOGINNAME;
-import static de.kreth.clubinvoice.ui.Constants.CAPTION_USER_PRENAME;
-import static de.kreth.clubinvoice.ui.Constants.CAPTION_USER_SURNAME;
-import static de.kreth.clubinvoice.ui.Constants.LABEL_CANCEL;
-import static de.kreth.clubinvoice.ui.Constants.LABEL_OK;
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_ADRESS_CITY;
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_ADRESS_STREET1;
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_ADRESS_STREET2;
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_ADRESS_ZIPCODE;
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_BANK_BIC;
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_BANK_IBAN;
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_BANK_NAME;
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_USER_LOGINNAME;
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_USER_PRENAME;
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_USER_SURNAME;
+import static de.kreth.clubinvoice.Application_Properties.LABEL_CANCEL;
+import static de.kreth.clubinvoice.Application_Properties.LABEL_OK;
 
 import java.util.ResourceBundle;
 
@@ -29,6 +29,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
+import de.kreth.clubinvoice.Application_Properties;
 import de.kreth.clubinvoice.data.User;
 import de.kreth.clubinvoice.data.UserAdress;
 import de.kreth.clubinvoice.data.UserBank;
@@ -37,72 +38,87 @@ public class UserDetailsDialog extends Window {
 
 	private static final long serialVersionUID = -6255487997073609068L;
 
-	private TextField loginName;
-	private TextField prename;
-	private TextField surname;
+	private final Binder<User> beanBinder = new Binder<>();
 
-	private TextField bankName;
-	private TextField iban;
-	private TextField bic;
+	private final TextField loginName;
 
-	private TextField adress1;
-	private TextField adress2;
-	private TextField zipCode;
-	private TextField city;
+	private final TextField prename;
 
-	private Button okButton;
+	private final TextField surname;
 
-	Binder<User> beanBinder = new Binder<>();
+	private final TextField bankName;
+
+	private final TextField iban;
+
+	private final TextField bic;
+
+	private final TextField adress1;
+
+	private final TextField adress2;
+
+	private final TextField zipCode;
+
+	private final TextField city;
+
+	private final Button okButton;
 
 	public UserDetailsDialog(ResourceBundle resBundle) {
 		loginName = new TextField();
-		loginName.setCaption(resBundle.getString(CAPTION_USER_LOGINNAME));
+		loginName.setCaption(resBundle.getString(CAPTION_USER_LOGINNAME.getValue()));
 
 		loginName.setRequiredIndicatorVisible(true);
-		beanBinder.forField(loginName).asRequired(resBundle.getString("error.userdetails.username_empty"))
+		beanBinder.forField(loginName)
+				.asRequired(resBundle.getString(Application_Properties.ERROR_USERDETAILS_USERNAME_EMPTY.getValue()))
 				.bind(User::getLoginName, User::setLoginName);
 
 		prename = new TextField();
-		prename.setCaption(resBundle.getString(CAPTION_USER_PRENAME));
-		beanBinder.forField(prename).asRequired(resBundle.getString("error.userdetails.prename_empty"))
+		prename.setCaption(resBundle.getString(CAPTION_USER_PRENAME.getValue()));
+		beanBinder.forField(prename)
+				.asRequired(resBundle.getString(Application_Properties.ERROR_USERDETAILS_PRENAME_EMPTY.getValue()))
 				.bind(User::getPrename, User::setPrename);
 
 		surname = new TextField();
-		surname.setCaption(resBundle.getString(CAPTION_USER_SURNAME));
-		beanBinder.forField(surname).asRequired(resBundle.getString("error.userdetails.surname_empty"))
+		surname.setCaption(resBundle.getString(CAPTION_USER_SURNAME.getValue()));
+		beanBinder.forField(surname)
+				.asRequired(resBundle.getString(Application_Properties.ERROR_USERDETAILS_SURNAME_EMPTY.getValue()))
 				.bind(User::getSurname, User::setSurname);
 
 		bankName = new TextField();
-		bankName.setCaption(resBundle.getString(CAPTION_BANK_NAME));
-		beanBinder.forField(bankName).asRequired(resBundle.getString("error.userdetails.bankname_empty"))
+		bankName.setCaption(resBundle.getString(CAPTION_BANK_NAME.getValue()));
+		beanBinder.forField(bankName)
+				.asRequired(resBundle.getString(Application_Properties.ERROR_USERDETAILS_BANKNAME_EMPTY.getValue()))
 				.bind(new BankNameProvider(), new BankNameSetter());
 
 		iban = new TextField();
-		iban.setCaption(resBundle.getString(CAPTION_BANK_IBAN));
-		beanBinder.forField(iban).asRequired(resBundle.getString("error.userdetails.iban_empty"))
+		iban.setCaption(resBundle.getString(CAPTION_BANK_IBAN.getValue()));
+		beanBinder.forField(iban)
+				.asRequired(resBundle.getString(Application_Properties.ERROR_USERDETAILS_IBAN_EMPTY.getValue()))
 				.bind(new BankIbanProvider(), new BankIbanSetter());
 
 		bic = new TextField();
-		bic.setCaption(resBundle.getString(CAPTION_BANK_BIC));
+		bic.setCaption(resBundle.getString(CAPTION_BANK_BIC.getValue()));
 		beanBinder.forField(bic).bind(new BankBicProvider(), new BankBicSetter());
 
 		adress1 = new TextField();
-		adress1.setCaption(resBundle.getString(CAPTION_ADRESS_STREET1));
-		beanBinder.forField(adress1).asRequired(resBundle.getString("error.userdetails.adress_empty"))
+		adress1.setCaption(resBundle.getString(CAPTION_ADRESS_STREET1.getValue()));
+		beanBinder.forField(adress1)
+				.asRequired(resBundle.getString(Application_Properties.ERROR_USERDETAILS_ADRESS_EMPTY.getValue()))
 				.bind(new Adress1Provider(), new Adress1Setter());
 
 		adress2 = new TextField();
-		adress2.setCaption(resBundle.getString(CAPTION_ADRESS_STREET2));
+		adress2.setCaption(resBundle.getString(CAPTION_ADRESS_STREET2.getValue()));
 		beanBinder.forField(adress2).bind(new Adress2Provider(), new Adress2Setter());
 
 		zipCode = new TextField();
-		zipCode.setCaption(resBundle.getString(CAPTION_ADRESS_ZIPCODE));
-		beanBinder.forField(zipCode).asRequired(resBundle.getString("error.userdetails.zip_empty"))
+		zipCode.setCaption(resBundle.getString(CAPTION_ADRESS_ZIPCODE.getValue()));
+		beanBinder.forField(zipCode)
+				.asRequired(resBundle.getString(Application_Properties.ERROR_USERDETAILS_ZIP_EMPTY.getValue()))
 				.bind(new ZipCodeProvider(), new ZipCodeSetter());
 
 		city = new TextField();
-		city.setCaption(resBundle.getString(CAPTION_ADRESS_CITY));
-		beanBinder.forField(city).asRequired(resBundle.getString("error.userdetails.city_empty"))
+		city.setCaption(resBundle.getString(CAPTION_ADRESS_CITY.getValue()));
+		beanBinder.forField(city)
+				.asRequired(resBundle.getString(Application_Properties.ERROR_USERDETAILS_CITY_EMPTY.getValue()))
 				.bind(new CityProvider(), new CitySetter());
 
 		VerticalLayout layout = new VerticalLayout();
@@ -115,14 +131,14 @@ public class UserDetailsDialog extends Window {
 
 		layout.addComponents(adress1, adress2, cityLayout);
 
-		okButton = new Button(resBundle.getString(LABEL_OK), ev -> {
+		okButton = new Button((LABEL_OK.getString(resBundle::getString)), ev -> {
 			BinderValidationStatus<User> validation = beanBinder.validate();
 			if (validation.isOk()) {
 				close();
 			}
 		});
 
-		Button cancel = new Button(resBundle.getString(LABEL_CANCEL), ev -> close());
+		Button cancel = new Button((LABEL_CANCEL.getString(resBundle::getString)), ev -> close());
 
 		HorizontalLayout buttons = new HorizontalLayout();
 		buttons.addComponents(okButton, cancel);
@@ -189,7 +205,6 @@ public class UserDetailsDialog extends Window {
 		public void accept(User bean, String fieldvalue) {
 			UserBank bank = getBankFromUser(bean);
 			bank.setIban(fieldvalue);
-			;
 		}
 
 	}

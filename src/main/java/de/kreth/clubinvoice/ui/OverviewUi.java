@@ -1,13 +1,10 @@
 package de.kreth.clubinvoice.ui;
 
-import static de.kreth.clubinvoice.ui.Constants.CAPTION_ARTICLES;
-import static de.kreth.clubinvoice.ui.Constants.CAPTION_INVOICEITEM_ADD;
-import static de.kreth.clubinvoice.ui.Constants.CAPTION_INVOICE_CREATE;
-import static de.kreth.clubinvoice.ui.Constants.CAPTION_INVOICE_PATTERN;
-import static de.kreth.clubinvoice.ui.Constants.CAPTION_USER_DETAILS;
-import static de.kreth.clubinvoice.ui.Constants.LABEL_LOGGEDIN;
-import static de.kreth.clubinvoice.ui.Constants.LABEL_LOGOUT;
-import static de.kreth.clubinvoice.ui.Constants.STYLE_BORDERED;
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_ARTICLES;
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICEITEM_ADD;
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICE_CREATE;
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICE_PATTERN;
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_USER_DETAILS;
 
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
@@ -32,6 +29,7 @@ import com.vaadin.ui.Layout;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
+import de.kreth.clubinvoice.Application_Properties;
 import de.kreth.clubinvoice.business.ArticleBusiness;
 import de.kreth.clubinvoice.business.OverviewBusiness;
 import de.kreth.clubinvoice.business.PropertyStore;
@@ -54,15 +52,25 @@ import de.steinwedel.messagebox.MessageBox;
 public class OverviewUi extends VerticalLayout implements InvoiceUi {
 
 	private static final long serialVersionUID = 318645298331660865L;
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(OverviewUi.class);
 
+	public static final String STYLE_BORDERED = "bordered";
+
 	private final User user;
+
 	private final transient OverviewBusiness business;
+
 	private final transient ResourceBundle resBundle;
+
 	private final transient PropertyStore store;
+
 	private Grid<InvoiceItem> gridItems;
+
 	private InvoiceGrid gridInvoices;
+
 	private Button createInvoice;
+
 	private Button addItem;
 
 	public OverviewUi(PropertyStore store, OverviewBusiness business) {
@@ -87,7 +95,8 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 		AbstractLayout main;
 		if (ui.getPage().getBrowserWindowWidth() > 1000) {
 			main = new HorizontalLayout();
-		} else {
+		}
+		else {
 			main = new VerticalLayout();
 		}
 		main.setSizeFull();
@@ -110,13 +119,15 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 		boolean noItems = loadItems().isEmpty();
 		if (noItems) {
 			createInvoice.setEnabled(false);
-		} else {
+		}
+		else {
 			createInvoice.setEnabled(true);
 		}
 		boolean noArticles = business.getArticles(user).isEmpty();
 		if (noArticles) {
 			addItem.setEnabled(false);
-		} else {
+		}
+		else {
 			addItem.setEnabled(true);
 		}
 	}
@@ -142,10 +153,11 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 		});
 		gridInvoices.setStyleName(STYLE_BORDERED);
 
-		createInvoice = new Button(resBundle.getString(CAPTION_INVOICE_CREATE));
+		createInvoice = new Button(CAPTION_INVOICE_CREATE.getString(resBundle::getString));
 		createInvoice.addClickListener(ev -> {
 
-			String invoiceNo = business.createNextInvoiceId(user, resBundle.getString(CAPTION_INVOICE_PATTERN));
+			String invoiceNo = business.createNextInvoiceId(user,
+					CAPTION_INVOICE_PATTERN.getString(resBundle::getString));
 
 			LOGGER.info("Creating new invoice no: {}", invoiceNo);
 
@@ -227,7 +239,7 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 		});
 		gridItems.setStyleName(STYLE_BORDERED);
 
-		addItem = new Button(resBundle.getString(CAPTION_INVOICEITEM_ADD));
+		addItem = new Button(CAPTION_INVOICEITEM_ADD.getString(resBundle::getString));
 		addItem.addClickListener(ev -> {
 			final InvoiceItemDialog dlg = new InvoiceItemDialog(resBundle);
 			LOGGER.info("Creating new Item.");
@@ -246,10 +258,10 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 	}
 
 	public HorizontalLayout createHeadView(final UI ui, VaadinRequest vaadinRequest) {
-		Label l1 = new Label(resBundle.getString(LABEL_LOGGEDIN));
+		Label l1 = new Label(resBundle.getString(Application_Properties.LABEL_LOGGEDIN.getValue()));
 		Label l2 = new Label(String.format("%s %s", user.getPrename(), user.getSurname()));
 
-		Button addArticle = new Button(resBundle.getString(CAPTION_ARTICLES));
+		Button addArticle = new Button(CAPTION_ARTICLES.getString(resBundle::getString));
 		addArticle.addClickListener(ev -> {
 			final ArticleDialog dlg = new ArticleDialog(resBundle);
 			dlg.setUser(user);
@@ -259,13 +271,13 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 			dlg.addCloseListener((evt) -> checkButtonStates());
 		});
 
-		Button logoutButton = new Button(resBundle.getString(LABEL_LOGOUT));
+		Button logoutButton = new Button(resBundle.getString(Application_Properties.LABEL_LOGOUT.getValue()));
 		logoutButton.addClickListener(ev -> {
 			LOGGER.warn("Logging out.");
 			logout(ui, vaadinRequest);
 		});
 
-		Button userDetail = new Button(resBundle.getString(CAPTION_USER_DETAILS), ev -> {
+		Button userDetail = new Button(CAPTION_USER_DETAILS.getString(resBundle::getString), ev -> {
 			showUserDetailDialog(ui);
 		});
 
