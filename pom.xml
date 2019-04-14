@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.kreth.clubinvoice</groupId>
@@ -290,14 +292,31 @@
 			<groupId>org.wildfly.swarm</groupId>
 			<artifactId>full</artifactId>
 		</dependency>
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.wildfly.swarm</groupId> -->
-<!-- 			<artifactId>jaxrs</artifactId> -->
-<!-- 		</dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.wildfly.swarm</groupId> -->
+		<!-- <artifactId>jaxrs</artifactId> -->
+		<!-- </dependency> -->
 	</dependencies>
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/main/generated</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -384,11 +403,11 @@
 				<artifactId>wildfly-swarm-plugin</artifactId>
 				<version>${version.wildfly-swarm}</version>
 				<executions>
-<!-- 					<execution> -->
-<!-- 						<goals> -->
-<!-- 							<goal>package</goal> -->
-<!-- 						</goals> -->
-<!-- 					</execution> -->
+					<!-- <execution> -->
+					<!-- <goals> -->
+					<!-- <goal>package</goal> -->
+					<!-- </goals> -->
+					<!-- </execution> -->
 				</executions>
 			</plugin>
 			<plugin>
@@ -411,6 +430,24 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<plugin>
+				<groupId>de.kreth.maven</groupId>
+				<artifactId>property-to-java-maven-plugin</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+				<executions>
+					<execution>
+						<id>default-descriptor</id>
+						<phase>generate-sources</phase>
+					</execution>
+				</executions>
+				<configuration>
+					<include>application.properties</include>
+					<target>src/main/generated</target>
+					<package>de.kreth.clubinvoice</package>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
 

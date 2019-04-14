@@ -9,7 +9,7 @@ import javax.annotation.processing.Generated;
 /**
  * Property keys from application_de_DE.properties
  */
-@Generated(date = "15.03.2019, 22:53:41", value = "de.kreth.property2java.Generator")
+@Generated(date = "24.03.2019, 23:56:24", value = "de.kreth.property2java.Generator")
 public enum Application_Properties {
 
 	/**
@@ -57,11 +57,11 @@ public enum Application_Properties {
 	 */
 	CAPTION_INVOICEITEMS ("caption.invoiceitems"),
 	/**
-	 * message.user.passwordmissmatch = "Passworter stimmen nicht Ã¼berein!"
+	 * message.user.passwordmissmatch = "Passworter stimmen nicht überein!"
 	 */
 	MESSAGE_USER_PASSWORDMISSMATCH ("message.user.passwordmissmatch"),
 	/**
-	 * label.delete = "LÃ¶schen"
+	 * label.delete = "Löschen"
 	 */
 	LABEL_DELETE ("label.delete"),
 	/**
@@ -77,7 +77,7 @@ public enum Application_Properties {
 	 */
 	CAPTION_INVOICEITEM_SUMPRICE ("caption.invoiceitem.sumprice"),
 	/**
-	 * message.delete.text = "{0} lÃ¶schen?"
+	 * message.delete.text = "{0} löschen?"
 	 */
 	MESSAGE_DELETE_TEXT ("message.delete.text"),
 	/**
@@ -93,7 +93,7 @@ public enum Application_Properties {
 	 */
 	LABEL_OK ("label.ok"),
 	/**
-	 * label.open = "Ã–ffnen"
+	 * label.open = "Öffnen"
 	 */
 	LABEL_OPEN ("label.open"),
 	/**
@@ -121,7 +121,7 @@ public enum Application_Properties {
 	 */
 	ERROR_USERDETAILS_PRENAME_EMPTY ("error.userdetails.prename_empty"),
 	/**
-	 * error.invoice.text.noitems = "Bitte Posten fÃ¼r Rechnung auswÃ¤hlen."
+	 * error.invoice.text.noitems = "Bitte Posten für Rechnung auswählen."
 	 */
 	ERROR_INVOICE_TEXT_NOITEMS ("error.invoice.text.noitems"),
 	/**
@@ -145,7 +145,7 @@ public enum Application_Properties {
 	 */
 	CAPTION_INVOICEITEM_NAME ("caption.invoiceitem.name"),
 	/**
-	 * message.delete.title = "Wirklich lÃ¶schen?"
+	 * message.delete.title = "Wirklich löschen?"
 	 */
 	MESSAGE_DELETE_TITLE ("message.delete.title"),
 	/**
@@ -153,7 +153,7 @@ public enum Application_Properties {
 	 */
 	ERROR_USERDETAILS_ZIP_EMPTY ("error.userdetails.zip_empty"),
 	/**
-	 * message.invoiceitem.allfieldsmustbeset = "Start, Ende und Artikel mÃ¼ssen gesetzt sein!"
+	 * message.invoiceitem.allfieldsmustbeset = "Start, Ende und Artikel müssen gesetzt sein!"
 	 */
 	MESSAGE_INVOICEITEM_ALLFIELDSMUSTBESET ("message.invoiceitem.allfieldsmustbeset"),
 	/**
@@ -161,7 +161,7 @@ public enum Application_Properties {
 	 */
 	CAPTION_INVOICES ("caption.invoices"),
 	/**
-	 * caption.user.passwordconfirmation = "Password bestÃ¤tigen:"
+	 * caption.user.passwordconfirmation = "Password bestätigen:"
 	 */
 	CAPTION_USER_PASSWORDCONFIRMATION ("caption.user.passwordconfirmation"),
 	/**
@@ -193,7 +193,7 @@ public enum Application_Properties {
 	 */
 	CAPTION_BANK_BIC ("caption.bank.bic"),
 	/**
-	 * caption.article.type.assistant = "ï¿½bungsleiter"
+	 * caption.article.type.assistant = "Übungsleiter"
 	 */
 	CAPTION_ARTICLE_TYPE_ASSISTANT ("caption.article.type.assistant"),
 	/**
@@ -217,7 +217,7 @@ public enum Application_Properties {
 	 */
 	ERROR_USERDETAILS_SURNAME_EMPTY ("error.userdetails.surname_empty"),
 	/**
-	 * label.close = "SchlieÃŸen"
+	 * label.close = "Schließen"
 	 */
 	LABEL_CLOSE ("label.close"),
 	/**

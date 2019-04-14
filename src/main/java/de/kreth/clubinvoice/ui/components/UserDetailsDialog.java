@@ -10,6 +10,14 @@ import static de.kreth.clubinvoice.Application_Properties.CAPTION_BANK_NAME;
 import static de.kreth.clubinvoice.Application_Properties.CAPTION_USER_LOGINNAME;
 import static de.kreth.clubinvoice.Application_Properties.CAPTION_USER_PRENAME;
 import static de.kreth.clubinvoice.Application_Properties.CAPTION_USER_SURNAME;
+import static de.kreth.clubinvoice.Application_Properties.ERROR_USERDETAILS_ADRESS_EMPTY;
+import static de.kreth.clubinvoice.Application_Properties.ERROR_USERDETAILS_BANKNAME_EMPTY;
+import static de.kreth.clubinvoice.Application_Properties.ERROR_USERDETAILS_CITY_EMPTY;
+import static de.kreth.clubinvoice.Application_Properties.ERROR_USERDETAILS_IBAN_EMPTY;
+import static de.kreth.clubinvoice.Application_Properties.ERROR_USERDETAILS_PRENAME_EMPTY;
+import static de.kreth.clubinvoice.Application_Properties.ERROR_USERDETAILS_SURNAME_EMPTY;
+import static de.kreth.clubinvoice.Application_Properties.ERROR_USERDETAILS_USERNAME_EMPTY;
+import static de.kreth.clubinvoice.Application_Properties.ERROR_USERDETAILS_ZIP_EMPTY;
 import static de.kreth.clubinvoice.Application_Properties.LABEL_CANCEL;
 import static de.kreth.clubinvoice.Application_Properties.LABEL_OK;
 
@@ -62,63 +70,66 @@ public class UserDetailsDialog extends Window {
 
 	private final Button okButton;
 
+	private final ResourceBundle resBundle;
+
 	public UserDetailsDialog(ResourceBundle resBundle) {
+		this.resBundle = resBundle;
 		loginName = new TextField();
-		loginName.setCaption(resBundle.getString(CAPTION_USER_LOGINNAME.getValue()));
+		loginName.setCaption(getString(CAPTION_USER_LOGINNAME));
 
 		loginName.setRequiredIndicatorVisible(true);
 		beanBinder.forField(loginName)
-				.asRequired(resBundle.getString(Application_Properties.ERROR_USERDETAILS_USERNAME_EMPTY.getValue()))
+				.asRequired(getString(ERROR_USERDETAILS_USERNAME_EMPTY))
 				.bind(User::getLoginName, User::setLoginName);
 
 		prename = new TextField();
-		prename.setCaption(resBundle.getString(CAPTION_USER_PRENAME.getValue()));
+		prename.setCaption(getString(CAPTION_USER_PRENAME));
 		beanBinder.forField(prename)
-				.asRequired(resBundle.getString(Application_Properties.ERROR_USERDETAILS_PRENAME_EMPTY.getValue()))
+				.asRequired(getString(ERROR_USERDETAILS_PRENAME_EMPTY))
 				.bind(User::getPrename, User::setPrename);
 
 		surname = new TextField();
-		surname.setCaption(resBundle.getString(CAPTION_USER_SURNAME.getValue()));
+		surname.setCaption(getString(CAPTION_USER_SURNAME));
 		beanBinder.forField(surname)
-				.asRequired(resBundle.getString(Application_Properties.ERROR_USERDETAILS_SURNAME_EMPTY.getValue()))
+				.asRequired(getString(ERROR_USERDETAILS_SURNAME_EMPTY))
 				.bind(User::getSurname, User::setSurname);
 
 		bankName = new TextField();
-		bankName.setCaption(resBundle.getString(CAPTION_BANK_NAME.getValue()));
+		bankName.setCaption(getString(CAPTION_BANK_NAME));
 		beanBinder.forField(bankName)
-				.asRequired(resBundle.getString(Application_Properties.ERROR_USERDETAILS_BANKNAME_EMPTY.getValue()))
+				.asRequired(getString(ERROR_USERDETAILS_BANKNAME_EMPTY))
 				.bind(new BankNameProvider(), new BankNameSetter());
 
 		iban = new TextField();
-		iban.setCaption(resBundle.getString(CAPTION_BANK_IBAN.getValue()));
+		iban.setCaption(getString(CAPTION_BANK_IBAN));
 		beanBinder.forField(iban)
-				.asRequired(resBundle.getString(Application_Properties.ERROR_USERDETAILS_IBAN_EMPTY.getValue()))
+				.asRequired(getString(ERROR_USERDETAILS_IBAN_EMPTY))
 				.bind(new BankIbanProvider(), new BankIbanSetter());
 
 		bic = new TextField();
-		bic.setCaption(resBundle.getString(CAPTION_BANK_BIC.getValue()));
+		bic.setCaption(getString(CAPTION_BANK_BIC));
 		beanBinder.forField(bic).bind(new BankBicProvider(), new BankBicSetter());
 
 		adress1 = new TextField();
-		adress1.setCaption(resBundle.getString(CAPTION_ADRESS_STREET1.getValue()));
+		adress1.setCaption(getString(CAPTION_ADRESS_STREET1));
 		beanBinder.forField(adress1)
-				.asRequired(resBundle.getString(Application_Properties.ERROR_USERDETAILS_ADRESS_EMPTY.getValue()))
+				.asRequired(getString(ERROR_USERDETAILS_ADRESS_EMPTY))
 				.bind(new Adress1Provider(), new Adress1Setter());
 
 		adress2 = new TextField();
-		adress2.setCaption(resBundle.getString(CAPTION_ADRESS_STREET2.getValue()));
+		adress2.setCaption(getString(CAPTION_ADRESS_STREET2));
 		beanBinder.forField(adress2).bind(new Adress2Provider(), new Adress2Setter());
 
 		zipCode = new TextField();
-		zipCode.setCaption(resBundle.getString(CAPTION_ADRESS_ZIPCODE.getValue()));
+		zipCode.setCaption(getString(CAPTION_ADRESS_ZIPCODE));
 		beanBinder.forField(zipCode)
-				.asRequired(resBundle.getString(Application_Properties.ERROR_USERDETAILS_ZIP_EMPTY.getValue()))
+				.asRequired(getString(ERROR_USERDETAILS_ZIP_EMPTY))
 				.bind(new ZipCodeProvider(), new ZipCodeSetter());
 
 		city = new TextField();
-		city.setCaption(resBundle.getString(CAPTION_ADRESS_CITY.getValue()));
+		city.setCaption(getString(CAPTION_ADRESS_CITY));
 		beanBinder.forField(city)
-				.asRequired(resBundle.getString(Application_Properties.ERROR_USERDETAILS_CITY_EMPTY.getValue()))
+				.asRequired(getString(ERROR_USERDETAILS_CITY_EMPTY))
 				.bind(new CityProvider(), new CitySetter());
 
 		VerticalLayout layout = new VerticalLayout();
@@ -131,20 +142,24 @@ public class UserDetailsDialog extends Window {
 
 		layout.addComponents(adress1, adress2, cityLayout);
 
-		okButton = new Button((LABEL_OK.getString(resBundle::getString)), ev -> {
+		okButton = new Button((getString(LABEL_OK)), ev -> {
 			BinderValidationStatus<User> validation = beanBinder.validate();
 			if (validation.isOk()) {
 				close();
 			}
 		});
 
-		Button cancel = new Button((LABEL_CANCEL.getString(resBundle::getString)), ev -> close());
+		Button cancel = new Button((getString(LABEL_CANCEL)), ev -> close());
 
 		HorizontalLayout buttons = new HorizontalLayout();
 		buttons.addComponents(okButton, cancel);
 		layout.addComponent(buttons);
 
 		setContent(layout);
+	}
+
+	private String getString(Application_Properties property) {
+		return property.getString(resBundle::getString);
 	}
 
 	public Registration addOkClickListener(ClickListener listener) {

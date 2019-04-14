@@ -17,6 +17,7 @@ import com.vaadin.ui.Grid;
 import com.vaadin.ui.renderers.LocalDateTimeRenderer;
 import com.vaadin.ui.renderers.NumberRenderer;
 
+import de.kreth.clubinvoice.Application_Properties;
 import de.kreth.clubinvoice.data.Article;
 import de.kreth.clubinvoice.data.InvoiceItem;
 
@@ -24,26 +25,33 @@ public class InvoiceItemGrid<T extends InvoiceItem> extends Grid<T> {
 
 	private static final long serialVersionUID = -8653320112619816426L;
 
+	private final ResourceBundle resBundle;
+
 	public InvoiceItemGrid(ResourceBundle resBundle) {
-		setCaption(resBundle.getString(CAPTION_INVOICEITEMS.getValue()));
+		this.resBundle = resBundle;
+		setCaption(getString(CAPTION_INVOICEITEMS));
 
 		addColumn(InvoiceItem::getArticle, Article::getTitle)
-				.setCaption(resBundle.getString(CAPTION_ARTICLE.getValue()));
+				.setCaption(getString(CAPTION_ARTICLE));
 
 		Column<T, LocalDateTime> dateColumn = addColumn(InvoiceItem::getStart)
-				.setCaption(resBundle.getString(CAPTION_INVOICEITEM_DATE.getValue()))
+				.setCaption(getString(CAPTION_INVOICEITEM_DATE))
 				.setRenderer(new LocalDateTimeRenderer("EEE, dd.MM.yyyy"));
 		Column<T, LocalDateTime> startColumn = addColumn(InvoiceItem::getStart)
-				.setCaption(resBundle.getString(CAPTION_INVOICEITEM_START.getValue()))
+				.setCaption(getString(CAPTION_INVOICEITEM_START))
 				.setRenderer(new LocalDateTimeRenderer("HH:mm"));
-		addColumn(InvoiceItem::getEnd).setCaption(resBundle.getString(CAPTION_INVOICEITEM_END.getValue()))
+		addColumn(InvoiceItem::getEnd).setCaption(getString(CAPTION_INVOICEITEM_END))
 				.setRenderer(new LocalDateTimeRenderer("HH:mm"));
 		addColumn(InvoiceItem::getParticipants)
-				.setCaption(resBundle.getString(CAPTION_INVOICEITEM_PARTICIPANTS.getValue()));
+				.setCaption(getString(CAPTION_INVOICEITEM_PARTICIPANTS));
 
-		addColumn(InvoiceItem::getSumPrice).setCaption(resBundle.getString(CAPTION_INVOICEITEM_SUMPRICE.getValue()))
+		addColumn(InvoiceItem::getSumPrice).setCaption(getString(CAPTION_INVOICEITEM_SUMPRICE))
 				.setRenderer(new NumberRenderer(NumberFormat.getCurrencyInstance()));
 
 		setSortOrder(GridSortOrder.asc(dateColumn).thenAsc(startColumn));
+	}
+
+	private String getString(Application_Properties property) {
+		return property.getString(resBundle::getString);
 	}
 }

@@ -6,6 +6,11 @@ import static de.kreth.clubinvoice.Application_Properties.CAPTION_ARTICLE_DESCRI
 import static de.kreth.clubinvoice.Application_Properties.CAPTION_ARTICLE_PRICE;
 import static de.kreth.clubinvoice.Application_Properties.CAPTION_ARTICLE_REPORT;
 import static de.kreth.clubinvoice.Application_Properties.CAPTION_ARTICLE_TITLE;
+import static de.kreth.clubinvoice.Application_Properties.LABEL_ADDARTICLE;
+import static de.kreth.clubinvoice.Application_Properties.LABEL_CLOSE;
+import static de.kreth.clubinvoice.Application_Properties.LABEL_DELETE;
+import static de.kreth.clubinvoice.Application_Properties.LABEL_DISCART;
+import static de.kreth.clubinvoice.Application_Properties.LABEL_STORE;
 import static de.kreth.clubinvoice.Application_Properties.MESSAGE_ARTICLE_PRICEERROR;
 
 import java.math.BigDecimal;
@@ -24,7 +29,6 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
-import de.kreth.clubinvoice.Application_Properties;
 import de.kreth.clubinvoice.business.ArticleBusiness;
 import de.kreth.clubinvoice.data.Article;
 import de.kreth.clubinvoice.data.ReportLicense;
@@ -71,7 +75,7 @@ public class ArticleDialog extends Window {
 		HorizontalLayout contentValues = new HorizontalLayout();
 		contentValues.addComponents(title, pricePerHour, description, isTrainer);
 
-		Button addArticle = new Button(Application_Properties.LABEL_ADDARTICLE.getString(resBundle::getString));
+		Button addArticle = new Button(LABEL_ADDARTICLE.getString(resBundle::getString));
 
 		addArticle.addClickListener(ev -> {
 			current = new Article();
@@ -83,14 +87,14 @@ public class ArticleDialog extends Window {
 			binder.setBean(current);
 		});
 
-		discartButton = new Button(resBundle.getString(Application_Properties.LABEL_DISCART.getValue()), e -> {
+		discartButton = new Button(resBundle.getString(LABEL_DISCART.getValue()), e -> {
 			binder.readBean(current);
 			discartButton.setVisible(false);
 			storeButton.setVisible(false);
 		});
 		discartButton.setVisible(false);
 
-		storeButton = new Button(resBundle.getString(Application_Properties.LABEL_STORE.getValue()), e -> {
+		storeButton = new Button(resBundle.getString(LABEL_STORE.getValue()), e -> {
 			if (binder.validate().isOk()) {
 				business.save(current);
 				reloadItems();
@@ -100,10 +104,10 @@ public class ArticleDialog extends Window {
 		});
 		storeButton.setVisible(false);
 
-		Button closeButton = new Button(resBundle.getString(Application_Properties.LABEL_CLOSE.getValue()),
+		Button closeButton = new Button(resBundle.getString(LABEL_CLOSE.getValue()),
 				ev -> close());
 
-		Button deleteButton = new Button(resBundle.getString(Application_Properties.LABEL_DELETE.getValue()), ev -> {
+		Button deleteButton = new Button(resBundle.getString(LABEL_DELETE.getValue()), ev -> {
 			business.delete(current);
 			reloadItems();
 		});

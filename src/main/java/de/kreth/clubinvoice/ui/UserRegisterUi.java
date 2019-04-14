@@ -5,6 +5,7 @@ import static de.kreth.clubinvoice.Application_Properties.CAPTION_USER_PASSWORD;
 import static de.kreth.clubinvoice.Application_Properties.CAPTION_USER_PASSWORDCONFIRMATION;
 import static de.kreth.clubinvoice.Application_Properties.CAPTION_USER_PRENAME;
 import static de.kreth.clubinvoice.Application_Properties.CAPTION_USER_SURNAME;
+import static de.kreth.clubinvoice.Application_Properties.LABEL_USER_REGISTER;
 import static de.kreth.clubinvoice.Application_Properties.MESSAGE_USER_CREATE_SUCCESS;
 import static de.kreth.clubinvoice.Application_Properties.MESSAGE_USER_PASSWORDMISSMATCH;
 
@@ -54,31 +55,26 @@ public class UserRegisterUi extends VerticalLayout implements InvoiceUi {
 		this.resBundle = ResourceBundleProvider.getBundle();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.kreth.clubinvoice.ui.InvoiceUi#setContent(com.vaadin.ui.UI)
-	 */
 	@Override
 	public void setContent(final UI ui, final VaadinRequest vaadinRequest) {
 
 		loginName = new TextField();
 		loginName.setId(ID_LOGIN_NAME);
-		loginName.setCaption(CAPTION_USER_LOGINNAME.getString(resBundle::getString));
+		loginName.setCaption(getString(CAPTION_USER_LOGINNAME));
 
 		passwordField = new PasswordField();
-		passwordField.setCaption(CAPTION_USER_PASSWORD.getString(resBundle::getString));
+		passwordField.setCaption(getString(CAPTION_USER_PASSWORD));
 
 		passwordFieldVerification = new PasswordField();
-		passwordFieldVerification.setCaption(CAPTION_USER_PASSWORDCONFIRMATION.getString(resBundle::getString));
+		passwordFieldVerification.setCaption(getString(CAPTION_USER_PASSWORDCONFIRMATION));
 
 		prename = new TextField();
-		prename.setCaption(CAPTION_USER_PRENAME.getString(resBundle::getString));
+		prename.setCaption(getString(CAPTION_USER_PRENAME));
 
 		surname = new TextField();
-		surname.setCaption(CAPTION_USER_SURNAME.getString(resBundle::getString));
+		surname.setCaption(getString(CAPTION_USER_SURNAME));
 
-		button = new Button(Application_Properties.LABEL_USER_REGISTER.getString(resBundle::getString));
+		button = new Button(getString(LABEL_USER_REGISTER));
 		button.addClickListener(e -> {
 			if (inputIsValid()) {
 				storeUserData();
@@ -100,7 +96,7 @@ public class UserRegisterUi extends VerticalLayout implements InvoiceUi {
 
 		boolean isValid = true;
 		if (value.equals(repeat) == false) {
-			UserError err = new UserError(MESSAGE_USER_PASSWORDMISSMATCH.getString(resBundle::getString));
+			UserError err = new UserError(getString(MESSAGE_USER_PASSWORDMISSMATCH));
 			passwordField.setComponentError(err);
 			passwordFieldVerification.setComponentError(err);
 			isValid = false;
@@ -121,8 +117,12 @@ public class UserRegisterUi extends VerticalLayout implements InvoiceUi {
 		business.save(user);
 
 		addComponent(
-				new Label(MessageFormat.format(MESSAGE_USER_CREATE_SUCCESS.getString(resBundle::getString), user)));
+				new Label(MessageFormat.format(getString(MESSAGE_USER_CREATE_SUCCESS), user)));
 
+	}
+
+	private String getString(Application_Properties properties) {
+		return properties.getString(resBundle::getString);
 	}
 
 }

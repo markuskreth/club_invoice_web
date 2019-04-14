@@ -38,6 +38,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
+import de.kreth.clubinvoice.Application_Properties;
 import de.kreth.clubinvoice.data.Invoice;
 import de.kreth.clubinvoice.data.InvoiceItem;
 import de.kreth.clubinvoice.report.InvoiceReportSource;
@@ -69,34 +70,37 @@ public class InvoiceDialog extends Window {
 
 	private Invoice invoice;
 
+	private ResourceBundle resBundle;
+
 	public InvoiceDialog(ResourceBundle resBundle, InvoiceMode pdfOpenLabel) {
+		this.resBundle = resBundle;
 		setWidth(200, Unit.EM);
 
 		invoiceNo = new TextField();
-		invoiceNo.setCaption(CAPTION_INVOICE_INVOICENO.getString(resBundle::getString));
+		invoiceNo.setCaption(getString(CAPTION_INVOICE_INVOICENO));
 		if (InvoiceMode.VIEW_ONLY == pdfOpenLabel) {
 			invoiceNo.setReadOnly(true);
 		}
 		else {
-			invoiceNo.addValueChangeListener(ev -> updateInvoiceNo(ev));
+			invoiceNo.addValueChangeListener(this::updateInvoiceNo);
 		}
 
 		invoiceDate = new DateTimeField();
-		invoiceDate.setCaption((CAPTION_INVOICE_INVOICEDATE.getString(resBundle::getString)));
+		invoiceDate.setCaption(getString(CAPTION_INVOICE_INVOICEDATE));
 		invoiceDate.setReadOnly(true);
 
 		itemGrid = new InvoiceItemGrid<>(resBundle);
 		itemGrid.setSizeFull();
 
-		okButton = new Button(LABEL_STORE.getString(resBundle::getString), ev -> close());
-		Button cancel = new Button((LABEL_CANCEL.getString(resBundle::getString)), ev -> close());
+		okButton = new Button(getString(LABEL_STORE), ev -> close());
+		Button cancel = new Button(getString(LABEL_CANCEL), ev -> close());
 
 		String caption;
 		if (pdfOpenLabel == InvoiceMode.VIEW_ONLY) {
-			caption = (LABEL_OPEN.getString(resBundle::getString));
+			caption = getString(LABEL_OPEN);
 		}
 		else {
-			caption = (LABEL_PREVIEW.getString(resBundle::getString));
+			caption = getString(LABEL_PREVIEW);
 		}
 		Button previewButton = new Button(caption, this::showPdf);
 		HorizontalLayout btnLayout = new HorizontalLayout();
@@ -112,6 +116,10 @@ public class InvoiceDialog extends Window {
 		invoice.setInvoiceDate(LocalDateTime.now());
 		invoice.setItems(Collections.emptyList());
 		setInvoice(invoice);
+	}
+
+	private String getString(Application_Properties property) {
+		return property.getString(resBundle::getString);
 	}
 
 	private void updateInvoiceNo(ValueChangeEvent<String> ev) {

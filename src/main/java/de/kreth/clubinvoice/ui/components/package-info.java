@@ -1,4 +1,5 @@
 /**
+ * UI Components like Dialogs, Grids, Footer
  * @author markus
  *
  */

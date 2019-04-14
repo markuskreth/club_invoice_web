@@ -25,7 +25,7 @@ public class InvoiceGrid extends Grid<Invoice> {
 		addColumn(Invoice::getInvoiceId).setCaption(resBundle.getString(CAPTION_INVOICE_INVOICENO.getValue()));
 		addColumn(Invoice::getInvoiceDate).setCaption(resBundle.getString(CAPTION_INVOICE_INVOICEDATE.getValue()))
 				.setRenderer(new LocalDateTimeRenderer("dd.MM.yyyy"));
-		addColumn(Invoice::getSum).setCaption(resBundle.getString(CAPTION_INVOICE_SUM.getValue()))
+		addColumn(Invoice::getSum).setCaption(CAPTION_INVOICE_SUM.getString(resBundle::getString))
 				.setRenderer(new NumberRenderer(NumberFormat.getCurrencyInstance()));
 
 	}

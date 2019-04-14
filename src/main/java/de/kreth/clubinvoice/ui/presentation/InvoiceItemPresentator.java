@@ -8,9 +8,10 @@ import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICEITEM_ST
 
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.util.ResourceBundle;
 
+import de.kreth.clubinvoice.Application_Properties;
 import de.kreth.clubinvoice.data.InvoiceItem;
+import de.kreth.clubinvoice.utils.ResourceBundleProvider;
 
 class InvoiceItemPresentator implements DataPresentator<InvoiceItem> {
 
@@ -23,19 +24,22 @@ class InvoiceItemPresentator implements DataPresentator<InvoiceItem> {
 		if (obj == null) {
 			return "null";
 		}
-		ResourceBundle resBundle = Resouce.INSTANCE.resBundle;
 		StringBuilder text = new StringBuilder();
-		text.append(resBundle.getString(CAPTION_INVOICEITEM_NAME.getValue()));
-		text.append(" [").append(resBundle.getString(CAPTION_INVOICEITEM_DATE.getValue())).append("=");
+		text.append(getString(CAPTION_INVOICEITEM_NAME));
+		text.append(" [").append(getString(CAPTION_INVOICEITEM_DATE)).append("=");
 		text.append(dateFormat.format(obj.getStart()));
-		text.append(", ").append(resBundle.getString(CAPTION_INVOICEITEM_START.getValue())).append("=");
+		text.append(", ").append(getString(CAPTION_INVOICEITEM_START)).append("=");
 		text.append(timeFormat.format(obj.getStart()));
-		text.append(", ").append(resBundle.getString(CAPTION_INVOICEITEM_END.getValue())).append("=");
+		text.append(", ").append(getString(CAPTION_INVOICEITEM_END)).append("=");
 		text.append(timeFormat.format(obj.getEnd()));
-		text.append(", ").append(resBundle.getString(CAPTION_ARTICLE.getValue())).append("=");
+		text.append(", ").append(getString(CAPTION_ARTICLE)).append("=");
 		text.append(obj.getArticle().getTitle());
 		text.append("]");
 		return text.toString();
+	}
+
+	private String getString(Application_Properties properties) {
+		return properties.getString(ResourceBundleProvider.getBundle()::getString);
 	}
 
 	@Override

@@ -13,24 +13,29 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
+import de.kreth.clubinvoice.Application_Properties;
 import de.kreth.clubinvoice.business.OverviewBusiness;
 import de.kreth.clubinvoice.business.UserRegister;
 import de.kreth.clubinvoice.utils.ResourceBundleProvider;
 
 public class LoginUi extends VerticalLayout implements InvoiceUi {
 
-	private static final String CAPTION_USER_LOGIN = "caption.user.login";
-	private static final String CAPTION_USER_PASSWORD = "caption.user.password";
-	private static final String CAPTION_USER_LOGINNAME2 = "caption.user.loginname";
 	private static final long serialVersionUID = 7795197656597564420L;
-	private transient final UserRegister business;
-	private transient final ResourceBundle resBundle;
+
+	private final transient UserRegister business;
+
+	private final transient ResourceBundle resBundle;
 
 	private TextField loginName;
+
 	private PasswordField passwordField;
+
 	private Button loginButton;
+
 	private Label separator;
+
 	private Button linkToRegister;
+
 	private Label errorMsg;
 
 	public LoginUi(UserRegister business) {
@@ -43,13 +48,13 @@ public class LoginUi extends VerticalLayout implements InvoiceUi {
 
 		loginName = new TextField();
 		loginName.setId("user.loginname");
-		loginName.setCaption(resBundle.getString(CAPTION_USER_LOGINNAME2));
+		loginName.setCaption(Application_Properties.CAPTION_USER_LOGINNAME.getString(resBundle::getString));
 
 		passwordField = new PasswordField();
 		passwordField.setId("user.password");
-		passwordField.setCaption(resBundle.getString(CAPTION_USER_PASSWORD));
+		passwordField.setCaption(resBundle.getString(Application_Properties.CAPTION_USER_PASSWORD.getValue()));
 
-		loginButton = new Button(resBundle.getString(CAPTION_USER_LOGIN));
+		loginButton = new Button(resBundle.getString(Application_Properties.CAPTION_USER_LOGIN.getValue()));
 		loginButton.setId("user.login");
 		loginButton.addStyleName(ValoTheme.BUTTON_PRIMARY);
 		loginButton.addClickListener(e -> {
@@ -61,7 +66,8 @@ public class LoginUi extends VerticalLayout implements InvoiceUi {
 						business.getCookieStore());
 				OverviewUi overview = new OverviewUi(business.getStore(), overviewBusiness);
 				overview.setContent(ui, vaadinRequest);
-			} else {
+			}
+			else {
 				String failMessage = resBundle.getString("message.user.loginfailure");
 				UserError err = new UserError(failMessage);
 				loginName.setComponentError(err);

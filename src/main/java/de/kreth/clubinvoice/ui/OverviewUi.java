@@ -218,9 +218,12 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 
 				dlg.addDeleteClickListener(e -> {
 					InvoiceItem item = dlg.getItem();
-					LOGGER.warn("Showing delete dialog for {}" + item);
-					MessageBox.createQuestion().asModal(true).withCaption(resBundle.getString("message.delete.title"))
-							.withMessage(MessageFormat.format(resBundle.getString("message.delete.text"),
+					LOGGER.warn("Showing delete dialog for {}", item);
+
+					MessageBox.createQuestion().asModal(true)
+							.withCaption(Application_Properties.MESSAGE_DELETE_TITLE.getString(resBundle::getString))
+							.withMessage(MessageFormat.format(
+									Application_Properties.MESSAGE_DELETE_TEXT.getString(resBundle::getString),
 									DataPresentators.toPresentation(item)))
 							.withCancelButton(ButtonOption.closeOnClick(true)).withOkButton(() -> {
 								LOGGER.warn("Deleting {}", item);
