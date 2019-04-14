@@ -3,6 +3,7 @@ package de.kreth.clubinvoice.report;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Iterator;
+import java.util.List;
 
 import de.kreth.clubinvoice.data.Invoice;
 import de.kreth.clubinvoice.data.InvoiceItem;
@@ -16,28 +17,49 @@ import net.sf.jasperreports.engine.base.JRBaseField;
 public class InvoiceReportSource implements JRDataSource, JRDataSourceProvider {
 
 	public static final String FIELD_INVOICE_NO = "INVOICE_NO";
+
 	public static final String FIELD_INVOICE_DATE = "INVOICE_DATE";
+
 	public static final String FIELD_INVOICE_SUM = "INVOICE_SUM";
+
 	public static final String FIELD_USER_PRENAME = "USER_PRENAME";
+
 	public static final String FIELD_USER_SURNAME = "USER_SURNAME";
+
 	public static final String FIELD_USER_ADRESS1 = "USER_ADRESS1";
+
 	public static final String FIELD_USER_ADRESS2 = "USER_ADRESS2";
+
 	public static final String FIELD_USER_ZIP = "USER_ZIPCODE";
+
 	public static final String FIELD_USER_CITY = "USER_CITY";
+
 	public static final String FIELD_BANK_NAME = "BANK_NAME";
+
 	public static final String FIELD_BANK_IBAN = "BANK_IBAN";
+
 	public static final String FIELD_BANK_BIC = "BANK_BIC";
+
 	public static final String FIELD_ARTICLE_TITLE = "ARTICLE_TITLE";
+
 	public static final String FIELD_ARTICLE_DESCRIPTION = "ARTICLE_DESCRIPTION";
+
 	public static final String FIELD_ARTICLE_PRICE_PER_HOUR = "ARTICLE_PRICE_PER_HOUR";
+
 	public static final String FIELD_ITEM_START = "ITEM_START";
+
 	public static final String FIELD_ITEM_END = "ITEM_END";
+
 	public static final String FIELD_ITEM_PARTICIPANTS = "FIELD_ITEM_PARTICIPANTS";
+
 	public static final String FIELD_ITEM_DURATION_MINUTES = "ITEM_DURATION_MINUTES";
+
 	public static final String FIELD_ITEM_SUM = "ITEM_SUM";
 
 	private Invoice invoice;
+
 	private Iterator<InvoiceItem> itemIterator;
+
 	private InvoiceItem currentItem;
 
 	public InvoiceReportSource() {
@@ -45,7 +67,13 @@ public class InvoiceReportSource implements JRDataSource, JRDataSourceProvider {
 
 	public void setInvoice(Invoice invoice) {
 		this.invoice = invoice;
-		itemIterator = invoice.getItems().iterator();
+		List<InvoiceItem> items = invoice.getItems();
+		items.sort(this::compare);
+		itemIterator = items.iterator();
+	}
+
+	private int compare(InvoiceItem i1, InvoiceItem i2) {
+		return i1.getStart().compareTo(i2.getStart());
 	}
 
 	@Override
@@ -61,57 +89,57 @@ public class InvoiceReportSource implements JRDataSource, JRDataSourceProvider {
 	@Override
 	public Object getFieldValue(JRField jrField) throws JRException {
 		switch (jrField.getName()) {
-			case FIELD_INVOICE_NO :
-				return invoice.getInvoiceId();
-			case FIELD_INVOICE_DATE :
-				return invoice.getInvoiceDate();
-			case FIELD_INVOICE_SUM :
-				return invoice.getSum();
-			case FIELD_USER_PRENAME :
-				return invoice.getUser().getPrename();
-			case FIELD_USER_SURNAME :
-				return invoice.getUser().getSurname();
+		case FIELD_INVOICE_NO:
+			return invoice.getInvoiceId();
+		case FIELD_INVOICE_DATE:
+			return invoice.getInvoiceDate();
+		case FIELD_INVOICE_SUM:
+			return invoice.getSum();
+		case FIELD_USER_PRENAME:
+			return invoice.getUser().getPrename();
+		case FIELD_USER_SURNAME:
+			return invoice.getUser().getSurname();
 
-			case FIELD_BANK_NAME :
-				return invoice.getUser().getBank().getBankName();
-			case FIELD_BANK_IBAN :
-				return invoice.getUser().getBank().getIban();
-			case FIELD_BANK_BIC :
-				return invoice.getUser().getBank().getBic();
-			case FIELD_USER_ADRESS1 :
-				return invoice.getUser().getAdress().getAdress1();
-			case FIELD_USER_ADRESS2 :
-				return invoice.getUser().getAdress().getAdress2();
-			case FIELD_USER_ZIP :
-				return invoice.getUser().getAdress().getZip();
-			case FIELD_USER_CITY :
-				return invoice.getUser().getAdress().getCity();
-			default :
-				break;
+		case FIELD_BANK_NAME:
+			return invoice.getUser().getBank().getBankName();
+		case FIELD_BANK_IBAN:
+			return invoice.getUser().getBank().getIban();
+		case FIELD_BANK_BIC:
+			return invoice.getUser().getBank().getBic();
+		case FIELD_USER_ADRESS1:
+			return invoice.getUser().getAdress().getAdress1();
+		case FIELD_USER_ADRESS2:
+			return invoice.getUser().getAdress().getAdress2();
+		case FIELD_USER_ZIP:
+			return invoice.getUser().getAdress().getZip();
+		case FIELD_USER_CITY:
+			return invoice.getUser().getAdress().getCity();
+		default:
+			break;
 		}
 
 		if (currentItem != null) {
 
 			switch (jrField.getName()) {
-				case FIELD_ARTICLE_TITLE :
-					return currentItem.getArticle().getTitle();
-				case FIELD_ARTICLE_DESCRIPTION :
-					return currentItem.getArticle().getDescription();
-				case FIELD_ARTICLE_PRICE_PER_HOUR :
-					return currentItem.getArticle().getPricePerHour();
-				case FIELD_ITEM_START :
-					return currentItem.getStart();
-				case FIELD_ITEM_END :
-					return currentItem.getEnd();
-				case FIELD_ITEM_DURATION_MINUTES :
-					return currentItem.getDurationInMinutes();
-				case FIELD_ITEM_SUM :
-					return currentItem.getSumPrice();
-				case FIELD_ITEM_PARTICIPANTS :
-					return currentItem.getParticipants();
+			case FIELD_ARTICLE_TITLE:
+				return currentItem.getArticle().getTitle();
+			case FIELD_ARTICLE_DESCRIPTION:
+				return currentItem.getArticle().getDescription();
+			case FIELD_ARTICLE_PRICE_PER_HOUR:
+				return currentItem.getArticle().getPricePerHour();
+			case FIELD_ITEM_START:
+				return currentItem.getStart();
+			case FIELD_ITEM_END:
+				return currentItem.getEnd();
+			case FIELD_ITEM_DURATION_MINUTES:
+				return currentItem.getDurationInMinutes();
+			case FIELD_ITEM_SUM:
+				return currentItem.getSumPrice();
+			case FIELD_ITEM_PARTICIPANTS:
+				return currentItem.getParticipants();
 
-				default :
-					break;
+			default:
+				break;
 			}
 		}
 
@@ -167,7 +195,7 @@ public class InvoiceReportSource implements JRDataSource, JRDataSourceProvider {
 				new InternalField(FIELD_ITEM_PARTICIPANTS, "Item Participants",
 						String.class),
 				new InternalField(FIELD_ITEM_SUM, "Item Sum",
-						BigDecimal.class)};
+						BigDecimal.class) };
 		return fields;
 	}
 

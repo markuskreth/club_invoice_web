@@ -29,6 +29,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
+import de.kreth.clubinvoice.Application_Properties;
 import de.kreth.clubinvoice.business.ArticleBusiness;
 import de.kreth.clubinvoice.data.Article;
 import de.kreth.clubinvoice.data.ReportLicense;
@@ -61,21 +62,24 @@ public class ArticleDialog extends Window {
 
 	private CheckBox isTrainer;
 
+	private final ResourceBundle resBundle;
+
 	public ArticleDialog(ResourceBundle resBundle) {
+		this.resBundle = resBundle;
 		title = new TextField();
-		title.setCaption(CAPTION_ARTICLE.getString(resBundle::getString));
+		title.setCaption(getString(CAPTION_ARTICLE));
 		pricePerHour = new TextField();
-		pricePerHour.setCaption(CAPTION_ARTICLE_PRICE.getString(resBundle::getString));
+		pricePerHour.setCaption(getString(CAPTION_ARTICLE_PRICE));
 
 		description = new TextField();
-		description.setCaption(CAPTION_ARTICLE_DESCRIPTION.getString(resBundle::getString));
+		description.setCaption(getString(CAPTION_ARTICLE_DESCRIPTION));
 
-		isTrainer = new CheckBox(CAPTION_ARTICLE_REPORT.getString(resBundle::getString), false);
+		isTrainer = new CheckBox(getString(CAPTION_ARTICLE_REPORT), false);
 
 		HorizontalLayout contentValues = new HorizontalLayout();
 		contentValues.addComponents(title, pricePerHour, description, isTrainer);
 
-		Button addArticle = new Button(LABEL_ADDARTICLE.getString(resBundle::getString));
+		Button addArticle = new Button(getString(LABEL_ADDARTICLE));
 
 		addArticle.addClickListener(ev -> {
 			current = new Article();
@@ -87,14 +91,14 @@ public class ArticleDialog extends Window {
 			binder.setBean(current);
 		});
 
-		discartButton = new Button(resBundle.getString(LABEL_DISCART.getValue()), e -> {
+		discartButton = new Button(getString(LABEL_DISCART), e -> {
 			binder.readBean(current);
 			discartButton.setVisible(false);
 			storeButton.setVisible(false);
 		});
 		discartButton.setVisible(false);
 
-		storeButton = new Button(resBundle.getString(LABEL_STORE.getValue()), e -> {
+		storeButton = new Button(getString(LABEL_STORE), e -> {
 			if (binder.validate().isOk()) {
 				business.save(current);
 				reloadItems();
@@ -104,10 +108,10 @@ public class ArticleDialog extends Window {
 		});
 		storeButton.setVisible(false);
 
-		Button closeButton = new Button(resBundle.getString(LABEL_CLOSE.getValue()),
+		Button closeButton = new Button(getString(LABEL_CLOSE),
 				ev -> close());
 
-		Button deleteButton = new Button(resBundle.getString(LABEL_DELETE.getValue()), ev -> {
+		Button deleteButton = new Button(getString(LABEL_DELETE), ev -> {
 			business.delete(current);
 			reloadItems();
 		});
@@ -115,9 +119,9 @@ public class ArticleDialog extends Window {
 		HorizontalLayout contentButtons = new HorizontalLayout();
 		contentButtons.addComponents(storeButton, discartButton, addArticle, deleteButton, closeButton);
 
-		setupArticleGrid(resBundle);
+		setupArticleGrid();
 
-		setupBinder(resBundle);
+		setupBinder();
 
 		VerticalLayout content = new VerticalLayout();
 		content.addComponents(contentValues, articleGrid, contentButtons);
@@ -133,11 +137,11 @@ public class ArticleDialog extends Window {
 		return loadAll;
 	}
 
-	private void setupBinder(ResourceBundle resBundle) {
+	private void setupBinder() {
 		binder = new Binder<>(Article.class);
 		binder.forField(title).asRequired().withNullRepresentation("").bind(Article::getTitle, Article::setTitle);
 		PriceConverter converter = new PriceConverter(BigDecimal.ZERO,
-				MESSAGE_ARTICLE_PRICEERROR.getString(resBundle::getString));
+				getString(MESSAGE_ARTICLE_PRICEERROR));
 
 		binder.forField(pricePerHour).asRequired().withNullRepresentation("").withConverter(converter)
 				.bind(Article::getPricePerHour, Article::setPricePerHour);
@@ -179,12 +183,12 @@ public class ArticleDialog extends Window {
 		}
 	}
 
-	private void setupArticleGrid(ResourceBundle resBundle) {
+	private void setupArticleGrid() {
 		articleGrid = new Grid<>();
-		articleGrid.setCaption(CAPTION_ARTICLES.getString(resBundle::getString));
+		articleGrid.setCaption(getString(CAPTION_ARTICLES));
 		articleGrid.setSizeFull();
 
-		articleGrid.addColumn(Article::getTitle).setCaption(CAPTION_ARTICLE_TITLE.getString(resBundle::getString));
+		articleGrid.addColumn(Article::getTitle).setCaption(getString(CAPTION_ARTICLE_TITLE));
 
 		ValueProvider<BigDecimal, String> currencyProvider = new ValueProvider<BigDecimal, String>() {
 
@@ -198,11 +202,11 @@ public class ArticleDialog extends Window {
 			}
 		};
 		articleGrid.addColumn(Article::getPricePerHour, currencyProvider)
-				.setCaption(CAPTION_ARTICLE_PRICE.getString(resBundle::getString));
+				.setCaption(getString(CAPTION_ARTICLE_PRICE));
 		articleGrid.addColumn(Article::getDescription)
-				.setCaption(CAPTION_ARTICLE_DESCRIPTION.getString(resBundle::getString));
+				.setCaption(getString(CAPTION_ARTICLE_DESCRIPTION));
 		articleGrid.addColumn(this::reportToCheckbox)
-				.setCaption(CAPTION_ARTICLE_REPORT.getString(resBundle::getString));
+				.setCaption(getString(CAPTION_ARTICLE_REPORT));
 
 		articleGrid.addSelectionListener(sel -> {
 			if (!binder.hasChanges()) {
@@ -211,9 +215,26 @@ public class ArticleDialog extends Window {
 				if (selected.isPresent()) {
 					current = selected.get();
 					binder.setBean(current);
+					boolean hasInvoice = business.hasInvoice(current);
+					binder.setReadOnly(hasInvoice);
+					if (hasInvoice) {
+						String errorMessage = getString(Application_Properties.MESSAGE_ARTICLE_ERROR_INVOICEEXISTS);
+						title.setDescription(errorMessage);
+						pricePerHour.setDescription(errorMessage);
+						description.setDescription(errorMessage);
+					}
+					else {
+						title.setDescription("");
+						pricePerHour.setDescription("");
+						description.setDescription("");
+					}
 				}
 			}
 		});
+	}
+
+	private String getString(Application_Properties properties) {
+		return properties.getString(resBundle::getString);
 	}
 
 	public void setBusiness(ArticleBusiness articleBusiness) {

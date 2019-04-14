@@ -40,7 +40,13 @@ public class InvoiceBusiness extends AbstractBusiness<Invoice> {
 		if (latest.isPresent()) {
 			String old = latest.get().getInvoiceId();
 			int start = pattern.indexOf("{0}");
-			lastInvoiceId = Integer.parseInt(old.substring(start));
+			String substring = old.substring(start);
+			if (substring.matches("[0-9]+")) {
+				lastInvoiceId = Integer.parseInt(substring);
+			}
+			else {
+				lastInvoiceId++;
+			}
 		}
 
 		lastInvoiceId++;
