@@ -9,7 +9,7 @@ public enum ResourceBundleProvider {
 
 	public static ResourceBundle getBundle() {
 		if (INSTANCE.implementation == null) {
-			INSTANCE.implementation = ResourceBundle.getBundle("/application");
+			INSTANCE.implementation = ResourceBundle.getBundle("application");
 		}
 		return INSTANCE.implementation;
 	}
