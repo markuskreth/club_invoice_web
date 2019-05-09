@@ -11,7 +11,6 @@ import java.util.ResourceBundle;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.renderers.NumberRenderer;
 
-import de.kreth.clubinvoice.Application_Properties;
 import de.kreth.clubinvoice.data.Article;
 
 public class ArticleGrid extends Grid<Article> {
@@ -20,23 +19,19 @@ public class ArticleGrid extends Grid<Article> {
 
 	public ArticleGrid(ResourceBundle resBundle) {
 
-		setCaption(getString(resBundle, CAPTION_ARTICLES));
+		setCaption(CAPTION_ARTICLES.getString(resBundle::getString));
 		setStyleName("bordered");
 
 		addColumn(Article::getTitle)
-				.setCaption(getString(resBundle, CAPTION_ARTICLE_TITLE));
+				.setCaption(CAPTION_ARTICLE_TITLE.getString(resBundle::getString));
 
 		addColumn(Article::getPricePerHour)
 				.setRenderer(
 						new NumberRenderer(NumberFormat.getCurrencyInstance()))
-				.setCaption(getString(resBundle, CAPTION_ARTICLE_PRICE));
+				.setCaption(CAPTION_ARTICLE_PRICE.getString(resBundle::getString));
 		addColumn(Article::getDescription)
-				.setCaption(getString(resBundle, CAPTION_ARTICLE_DESCRIPTION));
+				.setCaption(CAPTION_ARTICLE_DESCRIPTION.getString(resBundle::getString));
 
-	}
-
-	private String getString(ResourceBundle resBundle, Application_Properties captionArticles) {
-		return captionArticles.getString(resBundle::getString);
 	}
 
 }

@@ -70,7 +70,7 @@ public class InvoiceDialog extends Window {
 
 	private Invoice invoice;
 
-	private ResourceBundle resBundle;
+	private final transient ResourceBundle resBundle;
 
 	public InvoiceDialog(ResourceBundle resBundle, InvoiceMode pdfOpenLabel) {
 		this.resBundle = resBundle;

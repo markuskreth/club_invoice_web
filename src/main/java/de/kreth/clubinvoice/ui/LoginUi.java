@@ -1,7 +1,13 @@
 package de.kreth.clubinvoice.ui;
 
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_USER_LOGIN;
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_USER_LOGINNAME;
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_USER_PASSWORD;
+import static de.kreth.clubinvoice.Application_Properties.MESSAGE_USER_LOGINFAILURE;
+
 import java.util.ResourceBundle;
 
+import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.UserError;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.ui.ContentMode;
@@ -48,14 +54,15 @@ public class LoginUi extends VerticalLayout implements InvoiceUi {
 
 		loginName = new TextField();
 		loginName.setId("user.loginname");
-		loginName.setCaption(Application_Properties.CAPTION_USER_LOGINNAME.getString(resBundle::getString));
+		loginName.setCaption(getString(CAPTION_USER_LOGINNAME));
 
 		passwordField = new PasswordField();
 		passwordField.setId("user.password");
-		passwordField.setCaption(resBundle.getString(Application_Properties.CAPTION_USER_PASSWORD.getValue()));
+		passwordField.setCaption(getString(CAPTION_USER_PASSWORD));
 
-		loginButton = new Button(resBundle.getString(Application_Properties.CAPTION_USER_LOGIN.getValue()));
+		loginButton = new Button(getString(CAPTION_USER_LOGIN));
 		loginButton.setId("user.login");
+		loginButton.setClickShortcut(KeyCode.ENTER);
 		loginButton.addStyleName(ValoTheme.BUTTON_PRIMARY);
 		loginButton.addClickListener(e -> {
 			String login = loginName.getValue();
@@ -68,7 +75,7 @@ public class LoginUi extends VerticalLayout implements InvoiceUi {
 				overview.setContent(ui, vaadinRequest);
 			}
 			else {
-				String failMessage = resBundle.getString("message.user.loginfailure");
+				String failMessage = getString(MESSAGE_USER_LOGINFAILURE);
 				UserError err = new UserError(failMessage);
 				loginName.setComponentError(err);
 				passwordField.setComponentError(err);
@@ -88,6 +95,10 @@ public class LoginUi extends VerticalLayout implements InvoiceUi {
 		addComponents(loginName, passwordField, loginButton, separator, linkToRegister);
 
 		ui.setContent(this);
+	}
+
+	private String getString(Application_Properties property) {
+		return property.getString(resBundle::getString);
 	}
 
 }

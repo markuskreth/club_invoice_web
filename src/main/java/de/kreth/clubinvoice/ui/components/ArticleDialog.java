@@ -11,6 +11,7 @@ import static de.kreth.clubinvoice.Application_Properties.LABEL_CLOSE;
 import static de.kreth.clubinvoice.Application_Properties.LABEL_DELETE;
 import static de.kreth.clubinvoice.Application_Properties.LABEL_DISCART;
 import static de.kreth.clubinvoice.Application_Properties.LABEL_STORE;
+import static de.kreth.clubinvoice.Application_Properties.MESSAGE_ARTICLE_ERROR_INVOICEEXISTS;
 import static de.kreth.clubinvoice.Application_Properties.MESSAGE_ARTICLE_PRICEERROR;
 
 import java.math.BigDecimal;
@@ -62,7 +63,7 @@ public class ArticleDialog extends Window {
 
 	private CheckBox isTrainer;
 
-	private final ResourceBundle resBundle;
+	private final transient ResourceBundle resBundle;
 
 	public ArticleDialog(ResourceBundle resBundle) {
 		this.resBundle = resBundle;
@@ -218,7 +219,7 @@ public class ArticleDialog extends Window {
 					boolean hasInvoice = business.hasInvoice(current);
 					binder.setReadOnly(hasInvoice);
 					if (hasInvoice) {
-						String errorMessage = getString(Application_Properties.MESSAGE_ARTICLE_ERROR_INVOICEEXISTS);
+						String errorMessage = getString(MESSAGE_ARTICLE_ERROR_INVOICEEXISTS);
 						title.setDescription(errorMessage);
 						pricePerHour.setDescription(errorMessage);
 						description.setDescription(errorMessage);

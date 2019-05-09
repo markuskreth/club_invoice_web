@@ -5,6 +5,10 @@ import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICEITEM_AD
 import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICE_CREATE;
 import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICE_PATTERN;
 import static de.kreth.clubinvoice.Application_Properties.CAPTION_USER_DETAILS;
+import static de.kreth.clubinvoice.Application_Properties.LABEL_LOGGEDIN;
+import static de.kreth.clubinvoice.Application_Properties.LABEL_LOGOUT;
+import static de.kreth.clubinvoice.Application_Properties.MESSAGE_DELETE_TEXT;
+import static de.kreth.clubinvoice.Application_Properties.MESSAGE_DELETE_TITLE;
 
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
@@ -153,11 +157,11 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 		});
 		gridInvoices.setStyleName(STYLE_BORDERED);
 
-		createInvoice = new Button(CAPTION_INVOICE_CREATE.getString(resBundle::getString));
+		createInvoice = new Button(getString(CAPTION_INVOICE_CREATE));
 		createInvoice.addClickListener(ev -> {
 
 			String invoiceNo = business.createNextInvoiceId(user,
-					CAPTION_INVOICE_PATTERN.getString(resBundle::getString));
+					getString(CAPTION_INVOICE_PATTERN));
 
 			LOGGER.info("Creating new invoice no: {}", invoiceNo);
 
@@ -200,6 +204,10 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 		return right;
 	}
 
+	private String getString(Application_Properties properties) {
+		return properties.getString(resBundle::getString);
+	}
+
 	public VerticalLayout createItemsView(final UI ui) {
 		gridItems = new InvoiceItemGrid<>(resBundle);
 		gridItems.setSizeFull();
@@ -221,9 +229,9 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 					LOGGER.warn("Showing delete dialog for {}", item);
 
 					MessageBox.createQuestion().asModal(true)
-							.withCaption(Application_Properties.MESSAGE_DELETE_TITLE.getString(resBundle::getString))
+							.withCaption(getString(MESSAGE_DELETE_TITLE))
 							.withMessage(MessageFormat.format(
-									Application_Properties.MESSAGE_DELETE_TEXT.getString(resBundle::getString),
+									getString(MESSAGE_DELETE_TEXT),
 									DataPresentators.toPresentation(item)))
 							.withCancelButton(ButtonOption.closeOnClick(true)).withOkButton(() -> {
 								LOGGER.warn("Deleting {}", item);
@@ -242,7 +250,7 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 		});
 		gridItems.setStyleName(STYLE_BORDERED);
 
-		addItem = new Button(CAPTION_INVOICEITEM_ADD.getString(resBundle::getString));
+		addItem = new Button(getString(CAPTION_INVOICEITEM_ADD));
 		addItem.addClickListener(ev -> {
 			final InvoiceItemDialog dlg = new InvoiceItemDialog(resBundle);
 			LOGGER.info("Creating new Item.");
@@ -261,10 +269,10 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 	}
 
 	public HorizontalLayout createHeadView(final UI ui, VaadinRequest vaadinRequest) {
-		Label l1 = new Label(resBundle.getString(Application_Properties.LABEL_LOGGEDIN.getValue()));
+		Label l1 = new Label(getString(LABEL_LOGGEDIN));
 		Label l2 = new Label(String.format("%s %s", user.getPrename(), user.getSurname()));
 
-		Button addArticle = new Button(CAPTION_ARTICLES.getString(resBundle::getString));
+		Button addArticle = new Button(getString(CAPTION_ARTICLES));
 		addArticle.addClickListener(ev -> {
 			final ArticleDialog dlg = new ArticleDialog(resBundle);
 			dlg.setUser(user);
@@ -274,13 +282,13 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 			dlg.addCloseListener((evt) -> checkButtonStates());
 		});
 
-		Button logoutButton = new Button(resBundle.getString(Application_Properties.LABEL_LOGOUT.getValue()));
+		Button logoutButton = new Button(getString(LABEL_LOGOUT));
 		logoutButton.addClickListener(ev -> {
 			LOGGER.warn("Logging out.");
 			logout(ui, vaadinRequest);
 		});
 
-		Button userDetail = new Button(CAPTION_USER_DETAILS.getString(resBundle::getString), ev -> {
+		Button userDetail = new Button(getString(CAPTION_USER_DETAILS), ev -> {
 			showUserDetailDialog(ui);
 		});
 
