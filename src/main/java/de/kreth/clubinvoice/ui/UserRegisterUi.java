@@ -6,12 +6,15 @@ import static de.kreth.clubinvoice.Application_Properties.CAPTION_USER_PASSWORDC
 import static de.kreth.clubinvoice.Application_Properties.CAPTION_USER_PRENAME;
 import static de.kreth.clubinvoice.Application_Properties.CAPTION_USER_SURNAME;
 import static de.kreth.clubinvoice.Application_Properties.LABEL_USER_REGISTER;
+import static de.kreth.clubinvoice.Application_Properties.MESSAGE_USER_CREATE_FAILURE;
 import static de.kreth.clubinvoice.Application_Properties.MESSAGE_USER_CREATE_SUCCESS;
 import static de.kreth.clubinvoice.Application_Properties.MESSAGE_USER_PASSWORDMISSMATCH;
 
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
+
+import javax.persistence.PersistenceException;
 
 import com.vaadin.server.UserError;
 import com.vaadin.server.VaadinRequest;
@@ -50,6 +53,8 @@ public class UserRegisterUi extends VerticalLayout implements InvoiceUi {
 
 	private PasswordField passwordFieldVerification;
 
+	private Label errorLabel;
+
 	public UserRegisterUi(UserRegister business) {
 		this.business = business;
 		this.resBundle = ResourceBundleProvider.getBundle();
@@ -76,9 +81,9 @@ public class UserRegisterUi extends VerticalLayout implements InvoiceUi {
 
 		button = new Button(getString(LABEL_USER_REGISTER));
 		button.addClickListener(e -> {
-			if (inputIsValid()) {
-				storeUserData();
-				OverviewBusiness overViewBusiness = new OverviewBusiness(business.getSessionObj(), business.getStore(),
+			if (inputIsValid() && storeUserData()) {
+				OverviewBusiness overViewBusiness = new OverviewBusiness(business.getSessionObj(),
+						business.getStore(),
 						business.getCookieStore());
 				OverviewUi overview = new OverviewUi(business.getStore(), overViewBusiness);
 				overview.setContent(ui, vaadinRequest);
@@ -94,6 +99,7 @@ public class UserRegisterUi extends VerticalLayout implements InvoiceUi {
 		String value = passwordField.getValue();
 		String repeat = passwordFieldVerification.getValue();
 
+		passwordField.setComponentError(null);
 		boolean isValid = true;
 		if (value.equals(repeat) == false) {
 			UserError err = new UserError(getString(MESSAGE_USER_PASSWORDMISSMATCH));
@@ -105,7 +111,13 @@ public class UserRegisterUi extends VerticalLayout implements InvoiceUi {
 		return isValid;
 	}
 
-	private void storeUserData() {
+	private boolean storeUserData() {
+		if (errorLabel != null) {
+			removeComponent(errorLabel);
+			errorLabel = null;
+			button.setComponentError(null);
+			loginName.setComponentError(null);
+		}
 		User user = new User();
 		user.setLoginName(loginName.getValue());
 		user.setPrename(prename.getValue());
@@ -114,10 +126,27 @@ public class UserRegisterUi extends VerticalLayout implements InvoiceUi {
 		user.setCreatedDate(LocalDateTime.now());
 		user.setChangeDate(LocalDateTime.now());
 
-		business.save(user);
+		try {
+			business.save(user);
+			addComponent(
+					new Label(MessageFormat.format(getString(MESSAGE_USER_CREATE_SUCCESS), user)));
+			return true;
+		}
+		catch (PersistenceException ex) {
 
-		addComponent(
-				new Label(MessageFormat.format(getString(MESSAGE_USER_CREATE_SUCCESS), user)));
+			Throwable e = ex;
+			while (e.getCause() != null) {
+				e = e.getCause();
+			}
+			String formated = MessageFormat.format(getString(MESSAGE_USER_CREATE_FAILURE), user.getLoginName(),
+					e.getLocalizedMessage());
+			UserError componentError = new UserError(formated);
+			button.setComponentError(componentError);
+			loginName.setComponentError(componentError);
+			errorLabel = new Label(formated);
+			addComponent(errorLabel);
+			return false;
+		}
 
 	}
 
