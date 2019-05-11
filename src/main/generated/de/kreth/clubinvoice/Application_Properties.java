@@ -9,7 +9,7 @@ import javax.annotation.processing.Generated;
 /**
  * Property keys from application_de_DE.properties
  */
-@Generated(date = "09.05.2019, 20:30:32", value = "de.kreth.property2java.Generator")
+@Generated(date = "11.05.2019, 02:36:33", value = "de.kreth.property2java.Generator")
 public enum Application_Properties {
 
 	/**
@@ -189,6 +189,10 @@ public enum Application_Properties {
 	 */
 	CAPTION_INVOICE_CREATE ("caption.invoice.create"),
 	/**
+	 * error.article.undefined = "Bitte Artikel anlegen."
+	 */
+	ERROR_ARTICLE_UNDEFINED ("error.article.undefined"),
+	/**
 	 * caption.bank.bic = "BIC"
 	 */
 	CAPTION_BANK_BIC ("caption.bank.bic"),
@@ -257,13 +261,13 @@ public enum Application_Properties {
 	 */
 	CAPTION_BANK_NAME ("caption.bank.name"),
 	/**
-	 * label.preview = "Vorschau"
-	 */
-	LABEL_PREVIEW ("label.preview"),
-	/**
 	 * label.addarticle = "Neuer Artikel"
 	 */
 	LABEL_ADDARTICLE ("label.addarticle"),
+	/**
+	 * label.preview = "Vorschau"
+	 */
+	LABEL_PREVIEW ("label.preview"),
 	/**
 	 * message.invoiceitem.startbeforeend = "Ende darf nicht vor Start liegen."
 	 */

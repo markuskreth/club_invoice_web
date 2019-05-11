@@ -12,6 +12,7 @@ import static de.kreth.clubinvoice.Application_Properties.MESSAGE_DELETE_TITLE;
 
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -21,7 +22,10 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.vaadin.server.AbstractErrorMessage.ContentMode;
+import com.vaadin.server.UserError;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.shared.ui.ErrorLevel;
 import com.vaadin.ui.AbstractLayout;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -77,6 +81,10 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 
 	private Button addItem;
 
+	private Button userDetail;
+
+	private Button addArticle;
+
 	public OverviewUi(PropertyStore store, OverviewBusiness business) {
 		super();
 		this.business = business;
@@ -130,9 +138,41 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 		boolean noArticles = business.getArticles(user).isEmpty();
 		if (noArticles) {
 			addItem.setEnabled(false);
+			addArticle.setComponentError(new UserError(getString(Application_Properties.ERROR_ARTICLE_UNDEFINED)));
 		}
 		else {
 			addItem.setEnabled(true);
+			addArticle.setComponentError(null);
+		}
+		List<String> errors = new ArrayList<>();
+		if (user.getAdress() == null) {
+			errors.add(getString(Application_Properties.ERROR_USERDETAILS_ADRESS_EMPTY));
+		}
+		if (user.getBank() == null) {
+			errors.add(getString(Application_Properties.ERROR_USERDETAILS_BANKNAME_EMPTY));
+			errors.add(getString(Application_Properties.ERROR_USERDETAILS_IBAN_EMPTY));
+		}
+		else {
+			if (user.getBank().getIban().isBlank()) {
+				errors.add(getString(Application_Properties.ERROR_USERDETAILS_IBAN_EMPTY));
+			}
+			if (user.getBank().getBankName().isBlank()) {
+				errors.add(getString(Application_Properties.ERROR_USERDETAILS_BANKNAME_EMPTY));
+			}
+		}
+
+		if (errors.isEmpty()) {
+			this.userDetail.setComponentError(null);
+		}
+		else {
+			StringBuilder msg = new StringBuilder();
+			for (String error : errors) {
+				if (msg.length() > 0) {
+					msg.append("<br>");
+				}
+				msg.append(error);
+			}
+			this.userDetail.setComponentError(new UserError(msg.toString(), ContentMode.HTML, ErrorLevel.ERROR));
 		}
 	}
 
@@ -272,7 +312,7 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 		Label l1 = new Label(getString(LABEL_LOGGEDIN));
 		Label l2 = new Label(String.format("%s %s", user.getPrename(), user.getSurname()));
 
-		Button addArticle = new Button(getString(CAPTION_ARTICLES));
+		addArticle = new Button(getString(CAPTION_ARTICLES));
 		addArticle.addClickListener(ev -> {
 			final ArticleDialog dlg = new ArticleDialog(resBundle);
 			dlg.setUser(user);
@@ -288,7 +328,7 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 			logout(ui, vaadinRequest);
 		});
 
-		Button userDetail = new Button(getString(CAPTION_USER_DETAILS), ev -> {
+		userDetail = new Button(getString(CAPTION_USER_DETAILS), ev -> {
 			showUserDetailDialog(ui);
 		});
 

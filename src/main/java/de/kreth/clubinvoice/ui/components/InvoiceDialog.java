@@ -72,6 +72,14 @@ public class InvoiceDialog extends Window {
 
 	private final transient ResourceBundle resBundle;
 
+	/**
+	 * Initializes the Dialog with an empty {@link Invoice}.
+	 * <p>
+	 * Be sure to set an {@link Invoice} with at least 1 Item with {@link #setInvoice(Invoice)}.
+	 * <p>
+	 * @param resBundle
+	 * @param pdfOpenLabel
+	 */
 	public InvoiceDialog(ResourceBundle resBundle, InvoiceMode pdfOpenLabel) {
 		this.resBundle = resBundle;
 		setWidth(200, Unit.EM);
@@ -188,7 +196,7 @@ public class InvoiceDialog extends Window {
 		return layout;
 	}
 
-	public JasperPrint createJasperPrint() throws JRException {
+	private JasperPrint createJasperPrint() throws JRException {
 		InvoiceReportSource source = new InvoiceReportSource();
 		source.setInvoice(invoice);
 		JasperReport report = JasperCompileManager
