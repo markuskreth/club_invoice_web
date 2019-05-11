@@ -135,6 +135,10 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 		else {
 			createInvoice.setEnabled(true);
 		}
+		checkSettings();
+	}
+
+	public void checkSettings() {
 		boolean noArticles = business.getArticles(user).isEmpty();
 		if (noArticles) {
 			addItem.setEnabled(false);
@@ -165,15 +169,19 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 			this.userDetail.setComponentError(null);
 		}
 		else {
-			StringBuilder msg = new StringBuilder();
-			for (String error : errors) {
-				if (msg.length() > 0) {
-					msg.append("<br>");
-				}
-				msg.append(error);
-			}
-			this.userDetail.setComponentError(new UserError(msg.toString(), ContentMode.HTML, ErrorLevel.ERROR));
+			buildErrorMessage(errors);
 		}
+	}
+
+	public void buildErrorMessage(List<String> errors) {
+		StringBuilder msg = new StringBuilder();
+		for (String error : errors) {
+			if (msg.length() > 0) {
+				msg.append("<br>");
+			}
+			msg.append(error);
+		}
+		this.userDetail.setComponentError(new UserError(msg.toString(), ContentMode.HTML, ErrorLevel.ERROR));
 	}
 
 	private Layout createFooter() {
