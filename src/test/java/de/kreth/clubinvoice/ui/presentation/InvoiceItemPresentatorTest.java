@@ -21,9 +21,13 @@ import de.kreth.clubinvoice.data.User;
 class InvoiceItemPresentatorTest {
 
 	private static Locale defaultLocale;
+
 	private InvoiceItem item;
+
 	private Article article;
+
 	private Invoice invoice;
+
 	private User user;
 
 	@BeforeAll

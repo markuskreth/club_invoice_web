@@ -1,9 +1,9 @@
 package de.kreth.clubinvoice.ui.components;
 
-import static de.kreth.clubinvoice.ui.Constants.CAPTION_ARTICLES;
-import static de.kreth.clubinvoice.ui.Constants.CAPTION_ARTICLE_DESCRIPTION;
-import static de.kreth.clubinvoice.ui.Constants.CAPTION_ARTICLE_PRICE;
-import static de.kreth.clubinvoice.ui.Constants.CAPTION_ARTICLE_TITLE;
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_ARTICLES;
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_ARTICLE_DESCRIPTION;
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_ARTICLE_PRICE;
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_ARTICLE_TITLE;
 
 import java.text.NumberFormat;
 import java.util.ResourceBundle;
@@ -19,18 +19,18 @@ public class ArticleGrid extends Grid<Article> {
 
 	public ArticleGrid(ResourceBundle resBundle) {
 
-		setCaption(resBundle.getString(CAPTION_ARTICLES));
+		setCaption(CAPTION_ARTICLES.getString(resBundle::getString));
 		setStyleName("bordered");
 
 		addColumn(Article::getTitle)
-				.setCaption(resBundle.getString(CAPTION_ARTICLE_TITLE));
+				.setCaption(CAPTION_ARTICLE_TITLE.getString(resBundle::getString));
 
 		addColumn(Article::getPricePerHour)
 				.setRenderer(
 						new NumberRenderer(NumberFormat.getCurrencyInstance()))
-				.setCaption(resBundle.getString(CAPTION_ARTICLE_PRICE));
+				.setCaption(CAPTION_ARTICLE_PRICE.getString(resBundle::getString));
 		addColumn(Article::getDescription)
-				.setCaption(resBundle.getString(CAPTION_ARTICLE_DESCRIPTION));
+				.setCaption(CAPTION_ARTICLE_DESCRIPTION.getString(resBundle::getString));
 
 	}
 

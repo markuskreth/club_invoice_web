@@ -1,16 +1,18 @@
 package de.kreth.clubinvoice.ui;
 
-import static de.kreth.clubinvoice.ui.Constants.CAPTION_ARTICLES;
-import static de.kreth.clubinvoice.ui.Constants.CAPTION_INVOICEITEM_ADD;
-import static de.kreth.clubinvoice.ui.Constants.CAPTION_INVOICE_CREATE;
-import static de.kreth.clubinvoice.ui.Constants.CAPTION_INVOICE_PATTERN;
-import static de.kreth.clubinvoice.ui.Constants.CAPTION_USER_DETAILS;
-import static de.kreth.clubinvoice.ui.Constants.LABEL_LOGGEDIN;
-import static de.kreth.clubinvoice.ui.Constants.LABEL_LOGOUT;
-import static de.kreth.clubinvoice.ui.Constants.STYLE_BORDERED;
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_ARTICLES;
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICEITEM_ADD;
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICE_CREATE;
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICE_PATTERN;
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_USER_DETAILS;
+import static de.kreth.clubinvoice.Application_Properties.LABEL_LOGGEDIN;
+import static de.kreth.clubinvoice.Application_Properties.LABEL_LOGOUT;
+import static de.kreth.clubinvoice.Application_Properties.MESSAGE_DELETE_TEXT;
+import static de.kreth.clubinvoice.Application_Properties.MESSAGE_DELETE_TITLE;
 
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -19,9 +21,12 @@ import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.vaadin.addon.borderlayout.BorderLayout;
 
+import com.vaadin.server.AbstractErrorMessage.ContentMode;
+import com.vaadin.server.UserError;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.shared.ui.ErrorLevel;
+import com.vaadin.ui.AbstractLayout;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Grid;
@@ -32,6 +37,7 @@ import com.vaadin.ui.Layout;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
+import de.kreth.clubinvoice.Application_Properties;
 import de.kreth.clubinvoice.business.ArticleBusiness;
 import de.kreth.clubinvoice.business.OverviewBusiness;
 import de.kreth.clubinvoice.business.PropertyStore;
@@ -51,19 +57,33 @@ import de.kreth.clubinvoice.utils.ResourceBundleProvider;
 import de.steinwedel.messagebox.ButtonOption;
 import de.steinwedel.messagebox.MessageBox;
 
-public class OverviewUi extends BorderLayout implements InvoiceUi {
+public class OverviewUi extends VerticalLayout implements InvoiceUi {
 
 	private static final long serialVersionUID = 318645298331660865L;
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(OverviewUi.class);
 
+	public static final String STYLE_BORDERED = "bordered";
+
 	private final User user;
+
 	private final transient OverviewBusiness business;
+
 	private final transient ResourceBundle resBundle;
+
 	private final transient PropertyStore store;
+
 	private Grid<InvoiceItem> gridItems;
+
 	private InvoiceGrid gridInvoices;
+
 	private Button createInvoice;
+
 	private Button addItem;
+
+	private Button userDetail;
+
+	private Button addArticle;
 
 	public OverviewUi(PropertyStore store, OverviewBusiness business) {
 		super();
@@ -84,17 +104,19 @@ public class OverviewUi extends BorderLayout implements InvoiceUi {
 		VerticalLayout right = createInvoicesView(ui);
 		right.setSizeFull();
 
-		HorizontalLayout main = new HorizontalLayout();
+		AbstractLayout main;
+		if (ui.getPage().getBrowserWindowWidth() > 1000) {
+			main = new HorizontalLayout();
+		}
+		else {
+			main = new VerticalLayout();
+		}
 		main.setSizeFull();
 		main.addComponents(left, right);
 
 		Layout footer = createFooter();
 
-		addComponent(head, BorderLayout.Constraint.PAGE_START);
-
-		addComponent(main, BorderLayout.Constraint.CENTER);
-
-		addComponent(footer, BorderLayout.Constraint.PAGE_END);
+		addComponents(head, main, footer);
 
 		ui.setContent(this);
 
@@ -109,15 +131,57 @@ public class OverviewUi extends BorderLayout implements InvoiceUi {
 		boolean noItems = loadItems().isEmpty();
 		if (noItems) {
 			createInvoice.setEnabled(false);
-		} else {
+		}
+		else {
 			createInvoice.setEnabled(true);
 		}
+		checkSettings();
+	}
+
+	public void checkSettings() {
 		boolean noArticles = business.getArticles(user).isEmpty();
 		if (noArticles) {
 			addItem.setEnabled(false);
-		} else {
-			addItem.setEnabled(true);
+			addArticle.setComponentError(new UserError(getString(Application_Properties.ERROR_ARTICLE_UNDEFINED)));
 		}
+		else {
+			addItem.setEnabled(true);
+			addArticle.setComponentError(null);
+		}
+		List<String> errors = new ArrayList<>();
+		if (user.getAdress() == null) {
+			errors.add(getString(Application_Properties.ERROR_USERDETAILS_ADRESS_EMPTY));
+		}
+		if (user.getBank() == null) {
+			errors.add(getString(Application_Properties.ERROR_USERDETAILS_BANKNAME_EMPTY));
+			errors.add(getString(Application_Properties.ERROR_USERDETAILS_IBAN_EMPTY));
+		}
+		else {
+			if (user.getBank().getIban().isBlank()) {
+				errors.add(getString(Application_Properties.ERROR_USERDETAILS_IBAN_EMPTY));
+			}
+			if (user.getBank().getBankName().isBlank()) {
+				errors.add(getString(Application_Properties.ERROR_USERDETAILS_BANKNAME_EMPTY));
+			}
+		}
+
+		if (errors.isEmpty()) {
+			this.userDetail.setComponentError(null);
+		}
+		else {
+			buildErrorMessage(errors);
+		}
+	}
+
+	public void buildErrorMessage(List<String> errors) {
+		StringBuilder msg = new StringBuilder();
+		for (String error : errors) {
+			if (msg.length() > 0) {
+				msg.append("<br>");
+			}
+			msg.append(error);
+		}
+		this.userDetail.setComponentError(new UserError(msg.toString(), ContentMode.HTML, ErrorLevel.ERROR));
 	}
 
 	private Layout createFooter() {
@@ -141,10 +205,11 @@ public class OverviewUi extends BorderLayout implements InvoiceUi {
 		});
 		gridInvoices.setStyleName(STYLE_BORDERED);
 
-		createInvoice = new Button(resBundle.getString(CAPTION_INVOICE_CREATE));
+		createInvoice = new Button(getString(CAPTION_INVOICE_CREATE));
 		createInvoice.addClickListener(ev -> {
 
-			String invoiceNo = business.createNextInvoiceId(user, resBundle.getString(CAPTION_INVOICE_PATTERN));
+			String invoiceNo = business.createNextInvoiceId(user,
+					getString(CAPTION_INVOICE_PATTERN));
 
 			LOGGER.info("Creating new invoice no: {}", invoiceNo);
 
@@ -187,6 +252,10 @@ public class OverviewUi extends BorderLayout implements InvoiceUi {
 		return right;
 	}
 
+	private String getString(Application_Properties properties) {
+		return properties.getString(resBundle::getString);
+	}
+
 	public VerticalLayout createItemsView(final UI ui) {
 		gridItems = new InvoiceItemGrid<>(resBundle);
 		gridItems.setSizeFull();
@@ -205,9 +274,12 @@ public class OverviewUi extends BorderLayout implements InvoiceUi {
 
 				dlg.addDeleteClickListener(e -> {
 					InvoiceItem item = dlg.getItem();
-					LOGGER.warn("Showing delete dialog for {}" + item);
-					MessageBox.createQuestion().asModal(true).withCaption(resBundle.getString("message.delete.title"))
-							.withMessage(MessageFormat.format(resBundle.getString("message.delete.text"),
+					LOGGER.warn("Showing delete dialog for {}", item);
+
+					MessageBox.createQuestion().asModal(true)
+							.withCaption(getString(MESSAGE_DELETE_TITLE))
+							.withMessage(MessageFormat.format(
+									getString(MESSAGE_DELETE_TEXT),
 									DataPresentators.toPresentation(item)))
 							.withCancelButton(ButtonOption.closeOnClick(true)).withOkButton(() -> {
 								LOGGER.warn("Deleting {}", item);
@@ -226,7 +298,7 @@ public class OverviewUi extends BorderLayout implements InvoiceUi {
 		});
 		gridItems.setStyleName(STYLE_BORDERED);
 
-		addItem = new Button(resBundle.getString(CAPTION_INVOICEITEM_ADD));
+		addItem = new Button(getString(CAPTION_INVOICEITEM_ADD));
 		addItem.addClickListener(ev -> {
 			final InvoiceItemDialog dlg = new InvoiceItemDialog(resBundle);
 			LOGGER.info("Creating new Item.");
@@ -245,10 +317,10 @@ public class OverviewUi extends BorderLayout implements InvoiceUi {
 	}
 
 	public HorizontalLayout createHeadView(final UI ui, VaadinRequest vaadinRequest) {
-		Label l1 = new Label(resBundle.getString(LABEL_LOGGEDIN));
+		Label l1 = new Label(getString(LABEL_LOGGEDIN));
 		Label l2 = new Label(String.format("%s %s", user.getPrename(), user.getSurname()));
 
-		Button addArticle = new Button(resBundle.getString(CAPTION_ARTICLES));
+		addArticle = new Button(getString(CAPTION_ARTICLES));
 		addArticle.addClickListener(ev -> {
 			final ArticleDialog dlg = new ArticleDialog(resBundle);
 			dlg.setUser(user);
@@ -258,13 +330,13 @@ public class OverviewUi extends BorderLayout implements InvoiceUi {
 			dlg.addCloseListener((evt) -> checkButtonStates());
 		});
 
-		Button logoutButton = new Button(resBundle.getString(LABEL_LOGOUT));
+		Button logoutButton = new Button(getString(LABEL_LOGOUT));
 		logoutButton.addClickListener(ev -> {
 			LOGGER.warn("Logging out.");
 			logout(ui, vaadinRequest);
 		});
 
-		Button userDetail = new Button(resBundle.getString(CAPTION_USER_DETAILS), ev -> {
+		userDetail = new Button(getString(CAPTION_USER_DETAILS), ev -> {
 			showUserDetailDialog(ui);
 		});
 
