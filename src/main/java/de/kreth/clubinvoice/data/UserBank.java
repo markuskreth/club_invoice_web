@@ -5,52 +5,41 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 @Entity
-public class UserBank extends BankingConnection<UserBank> {
+@EqualsAndHashCode(callSuper = true)
+@Data
+public class UserBank extends BankingConnection {
 
 	private static final long serialVersionUID = -7356424394007978241L;
+
 	@OneToOne(fetch = FetchType.LAZY)
 	@PrimaryKeyJoinColumn
+	@ToString.Exclude
+	@EqualsAndHashCode.Exclude
 	private User user;
-
-	public User getUser() {
-		return user;
-	}
 
 	public void setUser(User user) {
 		this.user = user;
 		if (user.getBank() == null) {
 			user.setBank(this);
-		} else {
+		}
+		else {
 			if (user.getBank().equals(this) == false) {
 				throw new IllegalArgumentException("User already set, but other than this.");
 			}
 		}
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((user == null) ? 0 : user.hashCode());
-		return result;
+	public UserBank() {
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		UserBank other = (UserBank) obj;
-		if (user == null) {
-			if (other.user != null)
-				return false;
-		} else if (!user.equals(other.user))
-			return false;
-		return true;
+	public UserBank(UserBank bank) {
+		super(bank);
+		this.user = bank.user;
 	}
 
 }

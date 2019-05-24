@@ -12,12 +12,14 @@ import org.slf4j.LoggerFactory;
 
 import de.kreth.clubinvoice.data.BaseEntity;
 
-public abstract class AbstractBusiness<T extends BaseEntity<T>> implements Business<T> {
+public abstract class AbstractBusiness<T extends BaseEntity> implements Business<T> {
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
+
 	private final Class<T> itemClass;
 
 	protected final Session sessionObj;
+
 	protected final PropertyStore propStore;
 
 	public AbstractBusiness(Session sessionObj, PropertyStore propStore, Class<T> itemClass) {

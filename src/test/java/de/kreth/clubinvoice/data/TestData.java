@@ -7,10 +7,15 @@ import java.util.Arrays;
 public class TestData {
 
 	public final UserAdress adress;
+
 	public final UserBank bank;
+
 	public final User user;
+
 	public final Invoice invoice;
+
 	public final InvoiceItem item;
+
 	public final Article article;
 
 	public TestData() {
@@ -28,6 +33,7 @@ public class TestData {
 
 		user = new User();
 		user.setLoginName("loginName");
+		user.setPassword("password");
 		user.setPrename("prename");
 		user.setSurname("surname");
 		user.setAdress(adress);

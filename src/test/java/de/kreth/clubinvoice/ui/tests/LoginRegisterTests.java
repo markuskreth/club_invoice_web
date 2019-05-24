@@ -15,12 +15,9 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -28,20 +25,15 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.osjava.sj.memory.MemoryContextFactory;
-import org.wildfly.swarm.Swarm;
-import org.wildfly.swarm.jaxrs.JAXRSArchive;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 
-import de.kreth.clubinvoice.InvoiceMainUI;
 import de.kreth.clubinvoice.utils.PropertiesResourceBundle;
 
-@Disabled
 class LoginRegisterTests {
 
 	private static ChromeOptions options;
 
-	private static Swarm swarm;
 	private static final int PORT = 8080;
 
 	@BeforeAll
@@ -56,7 +48,6 @@ class LoginRegisterTests {
 
 		createJndiDatasource();
 		PropertiesResourceBundle.install();
-		startUndertow();
 	}
 
 	public static void createJndiDatasource() throws NamingException, SQLException {
@@ -76,18 +67,6 @@ class LoginRegisterTests {
 
 		// Put datasource in JNDI context
 		ic.bind("java:comp/env/jdbc/clubinvoice", myDs);
-	}
-
-	public static void startUndertow() throws Exception {
-		swarm = new Swarm();
-		JAXRSArchive deployment = ShrinkWrap.create(JAXRSArchive.class);
-		deployment.addClass(InvoiceMainUI.InvoiceUIServlet.class);
-		swarm.start().deploy(deployment);
-	}
-
-	@AfterAll
-	static void stopUndertow() throws Exception {
-//		swarm.stop();
 	}
 
 	private WebDriver driver;
