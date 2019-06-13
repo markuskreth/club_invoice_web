@@ -16,6 +16,8 @@ import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 
+import de.kreth.clubinvoice.Version_Properties;
+
 public class FooterComponent extends HorizontalLayout {
 
 	private static final long serialVersionUID = 4845822203421115202L;
@@ -23,12 +25,13 @@ public class FooterComponent extends HorizontalLayout {
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(FooterComponent.class);
 
-	private final static Properties version = new Properties();
+	private static final Properties VERSION = new Properties();
 	static {
 		String path = "/../version.properties";
 		try {
 			recursivelyLoadPropFromPath(FooterComponent.class, path, 0);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			LOGGER.error("Error loading version properties file = " + path
 					+ ", cause: " + e.getMessage());
 		}
@@ -40,15 +43,18 @@ public class FooterComponent extends HorizontalLayout {
 
 		URL resource = thisClass.getResource(path);
 		if (resource != null) {
-			version.load(resource.openStream());
+			VERSION.load(resource.openStream());
 			LOGGER.info("Successfully loaded version info from " + resource);
-		} else if (level < 4) {
+		}
+		else if (level < 4) {
 			recursivelyLoadPropFromPath(thisClass, "/.." + path, level + 1);
-		} else {
+		}
+		else {
 			throw new IOException("File not Found in any subdir of " + path);
 		}
 
 	}
+
 	public FooterComponent() {
 
 		Label copyright = new Label("&copy; Markus Kreth", ContentMode.HTML);
@@ -56,7 +62,7 @@ public class FooterComponent extends HorizontalLayout {
 
 		if (propertiesLoaded()) {
 
-			String dateTimeProperty = version.getProperty("build.dateTime");
+			String dateTimeProperty = Version_Properties.BUILD_DATETIME.getString(VERSION::getProperty);
 			SimpleDateFormat sourceFormat = new SimpleDateFormat(
 					"yyyy-MM-dd HH:mm:ss");
 			sourceFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -64,20 +70,21 @@ public class FooterComponent extends HorizontalLayout {
 				Date date = sourceFormat.parse(dateTimeProperty);
 				dateTimeProperty = DateFormat.getDateTimeInstance(
 						DateFormat.MEDIUM, DateFormat.SHORT).format(date);
-			} catch (ParseException e) {
+			}
+			catch (ParseException e) {
 				LOGGER.warn(
 						"Unable to parse dateTimeProperty=" + dateTimeProperty,
 						e);
 			}
 			Label vers = new Label(
-					"Version: " + version.getProperty("project.version"));
+					"Version: " + Version_Properties.PROJECT_VERSION.getString(VERSION::getProperty));
 			Label buildTime = new Label("Build: " + dateTimeProperty);
 			addComponents(vers, buildTime);
 		}
 	}
 
 	private boolean propertiesLoaded() {
-		return version.getProperty("build.dateTime") != null && version
-				.getProperty("build.dateTime").trim().isEmpty() == false;
+		return Version_Properties.BUILD_DATETIME.getString(VERSION::getProperty) != null
+				&& Version_Properties.BUILD_DATETIME.getString(VERSION::getProperty).trim().isEmpty() == false;
 	}
 }

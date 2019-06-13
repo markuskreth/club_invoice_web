@@ -9,7 +9,7 @@ import javax.annotation.processing.Generated;
 /**
  * Property keys from application_de_DE.properties
  */
-@Generated(date = "11.05.2019, 02:36:33", value = "de.kreth.property2java.Generator")
+@Generated(date = "24.05.2019, 20:49:49", value = "de.kreth.property2java.Generator")
 public enum Application_Properties {
 
 	/**
@@ -57,11 +57,11 @@ public enum Application_Properties {
 	 */
 	CAPTION_INVOICEITEMS ("caption.invoiceitems"),
 	/**
-	 * message.user.passwordmissmatch = "Passworter stimmen nicht überein!"
+	 * message.user.passwordmissmatch = "Passworter stimmen nicht Ã¼berein!"
 	 */
 	MESSAGE_USER_PASSWORDMISSMATCH ("message.user.passwordmissmatch"),
 	/**
-	 * label.delete = "Löschen"
+	 * label.delete = "LÃ¶schen"
 	 */
 	LABEL_DELETE ("label.delete"),
 	/**
@@ -77,7 +77,7 @@ public enum Application_Properties {
 	 */
 	CAPTION_INVOICEITEM_SUMPRICE ("caption.invoiceitem.sumprice"),
 	/**
-	 * message.delete.text = "{0} löschen?"
+	 * message.delete.text = "{0} lÃ¶schen?"
 	 */
 	MESSAGE_DELETE_TEXT ("message.delete.text"),
 	/**
@@ -93,7 +93,7 @@ public enum Application_Properties {
 	 */
 	LABEL_OK ("label.ok"),
 	/**
-	 * label.open = "Öffnen"
+	 * label.open = "Ã–ffnen"
 	 */
 	LABEL_OPEN ("label.open"),
 	/**
@@ -121,7 +121,7 @@ public enum Application_Properties {
 	 */
 	ERROR_USERDETAILS_PRENAME_EMPTY ("error.userdetails.prename_empty"),
 	/**
-	 * error.invoice.text.noitems = "Bitte Posten für Rechnung auswählen."
+	 * error.invoice.text.noitems = "Bitte Posten fÃ¼r Rechnung auswÃ¤hlen."
 	 */
 	ERROR_INVOICE_TEXT_NOITEMS ("error.invoice.text.noitems"),
 	/**
@@ -145,7 +145,7 @@ public enum Application_Properties {
 	 */
 	CAPTION_INVOICEITEM_NAME ("caption.invoiceitem.name"),
 	/**
-	 * message.delete.title = "Wirklich löschen?"
+	 * message.delete.title = "Wirklich lÃ¶schen?"
 	 */
 	MESSAGE_DELETE_TITLE ("message.delete.title"),
 	/**
@@ -153,7 +153,7 @@ public enum Application_Properties {
 	 */
 	ERROR_USERDETAILS_ZIP_EMPTY ("error.userdetails.zip_empty"),
 	/**
-	 * message.invoiceitem.allfieldsmustbeset = "Start, Ende und Artikel müssen gesetzt sein!"
+	 * message.invoiceitem.allfieldsmustbeset = "Start, Ende und Artikel mÃ¼ssen gesetzt sein!"
 	 */
 	MESSAGE_INVOICEITEM_ALLFIELDSMUSTBESET ("message.invoiceitem.allfieldsmustbeset"),
 	/**
@@ -161,7 +161,7 @@ public enum Application_Properties {
 	 */
 	CAPTION_INVOICES ("caption.invoices"),
 	/**
-	 * caption.user.passwordconfirmation = "Password bestätigen:"
+	 * caption.user.passwordconfirmation = "Password bestÃ¤tigen:"
 	 */
 	CAPTION_USER_PASSWORDCONFIRMATION ("caption.user.passwordconfirmation"),
 	/**
@@ -197,7 +197,7 @@ public enum Application_Properties {
 	 */
 	CAPTION_BANK_BIC ("caption.bank.bic"),
 	/**
-	 * caption.article.type.assistant = "Übungsleiter"
+	 * caption.article.type.assistant = "Ãœbungsleiter"
 	 */
 	CAPTION_ARTICLE_TYPE_ASSISTANT ("caption.article.type.assistant"),
 	/**
@@ -209,7 +209,7 @@ public enum Application_Properties {
 	 */
 	LABEL_CANCEL ("label.cancel"),
 	/**
-	 * message.user.create.failure = "Fehler beim Erstellen von Benutzer {0}! Ändern Sie den Benutzernamen oder fragen Sie nach dem Passwort. Detail: {1}"
+	 * message.user.create.failure = "Fehler beim Erstellen von Benutzer {0}! Ã„ndern Sie den Benutzernamen oder fragen Sie nach dem Passwort. Detail: {1}"
 	 */
 	MESSAGE_USER_CREATE_FAILURE ("message.user.create.failure"),
 	/**
@@ -221,7 +221,7 @@ public enum Application_Properties {
 	 */
 	CAPTION_USER_LOGINNAME ("caption.user.loginname"),
 	/**
-	 * message.article.error.invoiceexists = "Kann nicht geändert werden, da bereits Rechnungen bestehen. Bitte neuen Artikel anlegen."
+	 * message.article.error.invoiceexists = "Kann nicht geÃ¤ndert werden, da bereits Rechnungen bestehen. Bitte neuen Artikel anlegen."
 	 */
 	MESSAGE_ARTICLE_ERROR_INVOICEEXISTS ("message.article.error.invoiceexists"),
 	/**
@@ -229,7 +229,7 @@ public enum Application_Properties {
 	 */
 	ERROR_USERDETAILS_SURNAME_EMPTY ("error.userdetails.surname_empty"),
 	/**
-	 * label.close = "Schließen"
+	 * label.close = "SchlieÃŸen"
 	 */
 	LABEL_CLOSE ("label.close"),
 	/**
