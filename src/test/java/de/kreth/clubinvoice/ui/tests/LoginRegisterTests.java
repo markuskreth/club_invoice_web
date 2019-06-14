@@ -45,6 +45,8 @@ class LoginRegisterTests {
 
 		options = new ChromeOptions();
 		options.setHeadless(false);
+		options.addArguments("--no-sandbox");
+		options.addArguments("--disable-dev-shm-usage");
 
 		createJndiDatasource();
 		PropertiesResourceBundle.install();
