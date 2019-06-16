@@ -1,6 +1,5 @@
 package de.kreth.clubinvoice.ui.tests;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.sql.SQLException;
@@ -18,6 +17,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 public class WebClientTests {
 
 	private static ChromeOptions options;
+
 	private WebDriver driver;
 
 	@BeforeAll
@@ -42,12 +42,6 @@ public class WebClientTests {
 		if (driver != null) {
 			driver.close();
 		}
-	}
-
-	@Test
-	public void testSetPropertyNull() {
-		assertThrows(NullPointerException.class, () -> System.setProperty("test.key.setting", null));
-
 	}
 
 	@Test

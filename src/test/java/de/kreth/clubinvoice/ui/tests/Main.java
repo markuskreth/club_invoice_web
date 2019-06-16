@@ -14,8 +14,6 @@ import io.undertow.servlet.api.DeploymentManager;
 
 public class Main {
 
-	public static final String DATA = "Hello World";
-
 	private static final String CONTEXT_PATH = "/";
 
 	private static Optional<Undertow> instance = Optional.empty();
