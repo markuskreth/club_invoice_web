@@ -26,6 +26,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import org.h2.jdbcx.JdbcDataSource;
+import org.h2.store.fs.FileUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -93,8 +94,13 @@ class LoginRegisterTests {
 
 	private static DataSource createH2Datasource() throws SQLException, IOException {
 
+		File databaseDir = new File("testdatabase");
+		FileUtils.deleteRecursive(databaseDir.getAbsolutePath(), true);
+		File database = new File(databaseDir, "database");
+
 		JdbcDataSource ds = new JdbcDataSource();
-		ds.setURL("jdbc:h2:mem:test;MODE=MYSQL");
+		String url = "jdbc:h2:" + database.getAbsolutePath() + ";MODE=MYSQL";
+		ds.setURL(url);
 		ds.setUser("sa");
 
 		List<String> tablenames = new ArrayList<String>();
@@ -148,7 +154,8 @@ class LoginRegisterTests {
 		MysqlDataSource myDs = new MysqlDataSource();
 		myDs.setURL(
 				"jdbc:mysql://localhost:3306/clubinvoice?useUnicode=yes&characterEncoding=utf8&serverTimezone=Europe/Berlin&useSSL=false");
-
+		myDs.setUser("root");
+		myDs.setPassword("07!73");
 		return myDs;
 	}
 
@@ -188,12 +195,14 @@ class LoginRegisterTests {
 				}
 			}
 		}
+
 		assertFalse(tablenames.isEmpty());
 
 		try (Connection conn = ds.getConnection();
 				Statement stm = conn.createStatement()) {
-			ResultSet rs = stm.executeQuery("SELECT * FROM login_user");
-			assertTrue(rs.next());
+			try (ResultSet rs = stm.executeQuery("SELECT * FROM login_user")) {
+				assertTrue(rs.next());
+			}
 		}
 	}
 
