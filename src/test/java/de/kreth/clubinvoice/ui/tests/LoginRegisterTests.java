@@ -36,7 +36,7 @@ class LoginRegisterTests {
 
 	private static ChromeOptions options;
 
-	private static final int PORT = 8080;
+	private static final int PORT = Integer.parseInt(System.getProperty("testport", "8080"));
 
 	@BeforeAll
 	public static void setDriverPaths() throws Exception {
@@ -139,5 +139,6 @@ class LoginRegisterTests {
 		WebDriverWait wait = new WebDriverWait(driver, 30);
 		assertTrue(wait.until(loginFound));
 
+		driver.get("http://localhost:" + PORT);
 	}
 }
