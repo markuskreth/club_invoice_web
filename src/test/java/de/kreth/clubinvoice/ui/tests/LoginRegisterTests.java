@@ -24,6 +24,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.osjava.sj.memory.MemoryContextFactory;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
@@ -75,14 +77,18 @@ class LoginRegisterTests {
 
 	@BeforeEach
 	void setUp() throws Exception {
+		Main.main();
 		driver = new ChromeDriver(options);
+		driver.manage().deleteAllCookies();
 	}
 
 	@AfterEach
 	void shutdown() {
 		if (driver != null) {
+			driver.manage().deleteAllCookies();
 			driver.close();
 		}
+		Main.shutdown();
 	}
 
 	@Test
@@ -101,21 +107,37 @@ class LoginRegisterTests {
 	@Test
 	public void testLogin() {
 		driver.get("http://localhost:" + PORT);
+
+		waitForJStoLoad();
 		WebElement loginname = driver.findElement(By.id("user.loginname"));
 		loginname.sendKeys("test");
 		driver.findElement(By.id("user.password")).sendKeys("test");
 		driver.findElement(By.id("user.login")).click();
 		List<WebElement> buttons = driver.findElements(By.className("v-button"));
-		assertEquals(5, buttons.size());
+		assertEquals(7, buttons.size());
 	}
 
 	@Test
 	public void testRegister() {
 		driver.get("http://localhost:" + PORT);
+		waitForJStoLoad();
 		WebElement btnRegister = driver.findElement(By.id("user.register"));
 		btnRegister.click();
 		List<WebElement> buttons = driver.findElements(By.className("v-button"));
-		assertEquals(5, buttons.size());
+		assertEquals(1, buttons.size());
 	}
 
+	public void waitForJStoLoad() {
+
+		ExpectedCondition<Boolean> loginFound = new ExpectedCondition<Boolean>() {
+			@Override
+			public Boolean apply(WebDriver driver) {
+				return driver.findElements(By.id("user.loginname")).size() > 0;
+			}
+		};
+
+		WebDriverWait wait = new WebDriverWait(driver, 30);
+		assertTrue(wait.until(loginFound));
+
+	}
 }
