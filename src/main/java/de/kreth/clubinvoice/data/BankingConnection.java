@@ -12,7 +12,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Entity
-@Table(name = "BANKING_CONNECTION")
+@Table(name = "banking_connection")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "owner_type", discriminatorType = DiscriminatorType.STRING)
 @EqualsAndHashCode(callSuper = true)

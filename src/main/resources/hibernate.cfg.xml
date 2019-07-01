@@ -6,7 +6,7 @@
 <hibernate-configuration>
 	<session-factory>
 		<!-- SQL Dialect -->
-		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+		<property name="hibernate.dialect">org.hibernate.dialect.MariaDB103Dialect</property>
 
 		<!-- Database Connection Settings -->
 		<property name="hibernate.connection.datasource">java:comp/env/jdbc/clubinvoice</property>

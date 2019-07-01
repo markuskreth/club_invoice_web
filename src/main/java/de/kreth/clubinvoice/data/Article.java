@@ -10,7 +10,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Entity
-@Table(name = "ARTICLE")
+@Table(name = "article")
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class Article extends BaseEntity {

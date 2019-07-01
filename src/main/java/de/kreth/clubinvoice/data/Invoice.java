@@ -18,9 +18,10 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Entity
-@Table(name = "INVOICE")
+@Table(name = "invoice")
+@Data
 @EqualsAndHashCode(callSuper = true)
-public @Data class Invoice extends BaseEntity {
+public class Invoice extends BaseEntity {
 
 	private static final long serialVersionUID = 736651954892271409L;
 

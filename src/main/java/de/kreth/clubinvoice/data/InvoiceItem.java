@@ -15,7 +15,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Entity
-@Table(name = "INVOICE_ITEM")
+@Table(name = "invoice_item")
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class InvoiceItem extends BaseEntity {

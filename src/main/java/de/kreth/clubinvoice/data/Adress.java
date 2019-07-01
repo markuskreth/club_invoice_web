@@ -12,7 +12,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Entity
-@Table(name = "ADRESS")
+@Table(name = "adress")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "adress_type", discriminatorType = DiscriminatorType.STRING)
 @EqualsAndHashCode(callSuper = true)

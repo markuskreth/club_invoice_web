@@ -12,7 +12,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 @Entity
-@Table(name = "LOGIN_USER")
+@Table(name = "login_user")
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class User extends BaseEntity {
