@@ -22,10 +22,10 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.vaadin.server.AbstractErrorMessage.ContentMode;
+import com.vaadin.server.AbstractErrorMessage;
+import com.vaadin.server.CompositeErrorMessage;
 import com.vaadin.server.UserError;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.shared.ui.ErrorLevel;
 import com.vaadin.ui.AbstractLayout;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -139,29 +139,21 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 	}
 
 	public void checkSettings() {
-		boolean noArticles = business.getArticles(user).isEmpty();
-		if (noArticles) {
-			addItem.setEnabled(false);
-			addArticle.setComponentError(new UserError(getString(Application_Properties.ERROR_ARTICLE_UNDEFINED)));
-		}
-		else {
-			addItem.setEnabled(true);
-			addArticle.setComponentError(null);
-		}
-		List<String> errors = new ArrayList<>();
+		updateArticleError();
+		List<AbstractErrorMessage> errors = new ArrayList<>();
 		if (user.getAdress() == null) {
-			errors.add(getString(Application_Properties.ERROR_USERDETAILS_ADRESS_EMPTY));
+			errors.add(new UserError(getString(Application_Properties.ERROR_USERDETAILS_ADRESS_EMPTY)));
 		}
 		if (user.getBank() == null) {
-			errors.add(getString(Application_Properties.ERROR_USERDETAILS_BANKNAME_EMPTY));
-			errors.add(getString(Application_Properties.ERROR_USERDETAILS_IBAN_EMPTY));
+			errors.add(new UserError(getString(Application_Properties.ERROR_USERDETAILS_BANKNAME_EMPTY)));
+			errors.add(new UserError(getString(Application_Properties.ERROR_USERDETAILS_IBAN_EMPTY)));
 		}
 		else {
 			if (user.getBank().getIban().isBlank()) {
-				errors.add(getString(Application_Properties.ERROR_USERDETAILS_IBAN_EMPTY));
+				errors.add(new UserError(getString(Application_Properties.ERROR_USERDETAILS_IBAN_EMPTY)));
 			}
 			if (user.getBank().getBankName().isBlank()) {
-				errors.add(getString(Application_Properties.ERROR_USERDETAILS_BANKNAME_EMPTY));
+				errors.add(new UserError(getString(Application_Properties.ERROR_USERDETAILS_BANKNAME_EMPTY)));
 			}
 		}
 
@@ -173,15 +165,20 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 		}
 	}
 
-	public void buildErrorMessage(List<String> errors) {
-		StringBuilder msg = new StringBuilder();
-		for (String error : errors) {
-			if (msg.length() > 0) {
-				msg.append("<br>");
-			}
-			msg.append(error);
+	private void updateArticleError() {
+		boolean noArticles = business.getArticles(user).isEmpty();
+		if (noArticles) {
+			addItem.setEnabled(false);
+			addArticle.setComponentError(new UserError(getString(Application_Properties.ERROR_ARTICLE_UNDEFINED)));
 		}
-		this.userDetail.setComponentError(new UserError(msg.toString(), ContentMode.HTML, ErrorLevel.ERROR));
+		else {
+			addItem.setEnabled(true);
+			addArticle.setComponentError(null);
+		}
+	}
+
+	public void buildErrorMessage(List<AbstractErrorMessage> errors) {
+		this.userDetail.setComponentError(new CompositeErrorMessage(errors));
 	}
 
 	private Layout createFooter() {
@@ -359,6 +356,7 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 		dlg.addOkClickListener(evOkClicked -> {
 			LOGGER.info("Updating User: {}", dlg.getUser());
 			business.save(dlg.getUser());
+			checkButtonStates();
 		});
 
 		dlg.center();
