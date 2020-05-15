@@ -12,7 +12,7 @@ public class ArticleBusiness extends AbstractBusiness<Article> {
 		super(sessionObj, propStore, Article.class);
 	}
 
-	public boolean hasInvoice(Article current) {
+	public boolean hasInvoiceItem(Article current) {
 		Query<InvoiceItem> query = sessionObj.createQuery("from InvoiceItem where article_id = :articleId",
 				InvoiceItem.class);
 		query.setParameter("articleId", current.getId());

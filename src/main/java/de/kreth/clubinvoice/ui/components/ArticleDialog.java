@@ -41,6 +41,10 @@ public class ArticleDialog extends Window {
 
 	private static final long serialVersionUID = 2516636187686436452L;
 
+	private final transient ResourceBundle resBundle;
+
+	private final ArticleBusiness business;
+
 	private TextField title;
 
 	private TextField pricePerHour;
@@ -48,8 +52,6 @@ public class ArticleDialog extends Window {
 	private TextField description;
 
 	private Grid<Article> articleGrid;
-
-	private ArticleBusiness business;
 
 	private User user;
 
@@ -63,10 +65,11 @@ public class ArticleDialog extends Window {
 
 	private CheckBox isTrainer;
 
-	private final transient ResourceBundle resBundle;
+	private Button deleteButton;
 
-	public ArticleDialog(ResourceBundle resBundle) {
+	public ArticleDialog(ResourceBundle resBundle, ArticleBusiness articleBusiness) {
 		this.resBundle = resBundle;
+		this.business = articleBusiness;
 		title = new TextField();
 		title.setCaption(getString(CAPTION_ARTICLE));
 		pricePerHour = new TextField();
@@ -83,12 +86,7 @@ public class ArticleDialog extends Window {
 		Button addArticle = new Button(getString(LABEL_ADDARTICLE));
 
 		addArticle.addClickListener(ev -> {
-			current = new Article();
-			current.setTitle("");
-			current.setDescription("");
-			current.setUserId(user.getId());
-			current.setPricePerHour(BigDecimal.ZERO);
-			current.setReport(ReportLicense.ASSISTANT.getRessource());
+			current = createNewArticle();
 			binder.setBean(current);
 		});
 
@@ -112,7 +110,7 @@ public class ArticleDialog extends Window {
 		Button closeButton = new Button(getString(LABEL_CLOSE),
 				ev -> close());
 
-		Button deleteButton = new Button(getString(LABEL_DELETE), ev -> {
+		deleteButton = new Button(getString(LABEL_DELETE), ev -> {
 			business.delete(current);
 			reloadItems();
 		});
@@ -130,6 +128,21 @@ public class ArticleDialog extends Window {
 		center();
 		setWidth(75.0f, Unit.PERCENTAGE);
 		setModal(true);
+	}
+
+	private Article createNewArticle() {
+		Article article = new Article();
+		article.setTitle("");
+		article.setDescription("");
+		article.setPricePerHour(BigDecimal.ZERO);
+		article.setReport(ReportLicense.ASSISTANT.getRessource());
+		if (user != null) {
+			article.setUserId(user.getId());
+		}
+		else {
+			article.setUserId(-1);
+		}
+		return article;
 	}
 
 	private List<Article> reloadItems() {
@@ -216,13 +229,24 @@ public class ArticleDialog extends Window {
 				if (selected.isPresent()) {
 					current = selected.get();
 					binder.setBean(current);
-					boolean hasInvoice = business.hasInvoice(current);
+
+					boolean hasInvoice = business.hasInvoiceItem(current);
 					binder.setReadOnly(hasInvoice);
+					deleteButton.setEnabled(!hasInvoice);
+					if (hasInvoice) {
+						deleteButton.setDescription("");
+					}
+					else {
+						deleteButton.setDescription(
+								"Es existieren Einträge zu diesem Artikel. Er kann nicht gelöscht werden.");
+					}
+
 					if (hasInvoice) {
 						String errorMessage = getString(MESSAGE_ARTICLE_ERROR_INVOICEEXISTS);
 						title.setDescription(errorMessage);
 						pricePerHour.setDescription(errorMessage);
 						description.setDescription(errorMessage);
+
 					}
 					else {
 						title.setDescription("");
@@ -238,26 +262,23 @@ public class ArticleDialog extends Window {
 		return properties.getString(resBundle::getString);
 	}
 
-	public void setBusiness(ArticleBusiness articleBusiness) {
-		this.business = articleBusiness;
-
-		List<Article> loadAll = reloadItems();
-
-		if (loadAll.isEmpty()) {
-			current = new Article();
-			if (user != null) {
-				current.setUserId(user.getId());
-			}
-		}
-		else {
-			current = loadAll.get(0);
-			articleGrid.select(current);
-		}
-
-		binder.setBean(current);
-	}
-
 	public void setUser(User user) {
 		this.user = user;
+		if (user != null) {
+			List<Article> loadAll = reloadItems();
+
+			if (loadAll.isEmpty()) {
+				current = createNewArticle();
+			}
+			else {
+				current = loadAll.get(0);
+				articleGrid.select(current);
+			}
+
+			binder.setBean(current);
+		}
+		else {
+			close();
+		}
 	}
 }

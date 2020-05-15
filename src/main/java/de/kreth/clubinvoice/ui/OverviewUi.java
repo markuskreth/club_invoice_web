@@ -322,9 +322,10 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 
 		addArticle = new Button(getString(CAPTION_ARTICLES));
 		addArticle.addClickListener(ev -> {
-			final ArticleDialog dlg = new ArticleDialog(resBundle);
+
+			final ArticleDialog dlg = new ArticleDialog(resBundle,
+					new ArticleBusiness(business.getSessionObj(), store));
 			dlg.setUser(user);
-			dlg.setBusiness(new ArticleBusiness(business.getSessionObj(), store));
 
 			ui.addWindow(dlg);
 			dlg.addCloseListener((evt) -> checkButtonStates());
