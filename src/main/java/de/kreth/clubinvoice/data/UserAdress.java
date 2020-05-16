@@ -27,7 +27,13 @@ public class UserAdress extends Adress {
 
 	public UserAdress(UserAdress adress) {
 		super(adress);
-		this.user = adress.user;
+		setUser(adress.user);
 	}
 
+	public void setUser(User user) {
+		this.user = user;
+		if (user != null) {
+			this.setId(user.getId());
+		}
+	}
 }

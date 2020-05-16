@@ -32,6 +32,8 @@ public class UserBank extends BankingConnection {
 				throw new IllegalArgumentException("User already set, but other than this.");
 			}
 		}
+
+		this.setId(user.getId());
 	}
 
 	public UserBank() {
@@ -39,7 +41,7 @@ public class UserBank extends BankingConnection {
 
 	public UserBank(UserBank bank) {
 		super(bank);
-		this.user = bank.user;
+		setUser(bank.user);
 	}
 
 }
