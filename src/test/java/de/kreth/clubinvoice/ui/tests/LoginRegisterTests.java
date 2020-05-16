@@ -30,6 +30,7 @@ import org.h2.store.fs.FileUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -44,6 +45,7 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 
 import de.kreth.clubinvoice.utils.PropertiesResourceBundle;
 
+@Disabled("Chrome driver not valid")
 class LoginRegisterTests {
 
 	private static ChromeOptions options;
