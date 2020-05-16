@@ -15,8 +15,8 @@
 	</prerequisites>
 
 	<properties>
-		<vaadin.version>8.6.2</vaadin.version>
-		<vaadin.plugin.version>8.6.2</vaadin.plugin.version>
+		<vaadin.version>8.10.5</vaadin.version>
+		<vaadin.plugin.version>8.10.5</vaadin.plugin.version>
 		<jsp.version>2.1.v20100127</jsp.version>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
