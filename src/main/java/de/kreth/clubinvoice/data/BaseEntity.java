@@ -15,7 +15,7 @@ import lombok.Data;
 
 @MappedSuperclass
 @Data
-public abstract class BaseEntity implements Serializable {
+public abstract class BaseEntity implements Serializable, InvoiceEntity {
 
 	private static final long serialVersionUID = 6953593432069408729L;
 

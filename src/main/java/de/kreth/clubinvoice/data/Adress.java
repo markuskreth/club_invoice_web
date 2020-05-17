@@ -23,7 +23,7 @@ import lombok.EqualsAndHashCode;
 @DiscriminatorColumn(name = "adress_type", discriminatorType = DiscriminatorType.STRING)
 @EqualsAndHashCode
 @Data
-public class Adress implements Serializable {
+public class Adress implements Serializable, InvoiceEntity {
 
 	private static final long serialVersionUID = 8331249424121577387L;
 

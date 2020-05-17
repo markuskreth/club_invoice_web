@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-class UserTest<T extends BaseEntity> {
+class UserTest<T extends InvoiceEntity> {
 
 	@ParameterizedTest
 	@MethodSource("createEntities")
@@ -46,7 +46,7 @@ class UserTest<T extends BaseEntity> {
 	}
 
 	@SuppressWarnings({ "unchecked" })
-	private static <T extends BaseEntity> Stream<T> createEntities() {
+	private static <T extends InvoiceEntity> Stream<T> createEntities() {
 		TestData data = new TestData();
 		return (Stream<T>) Stream.of(data.user, data.adress, data.bank, data.article, data.invoice, data.item);
 	}
@@ -57,7 +57,7 @@ class UserTest<T extends BaseEntity> {
 	}
 
 	@SuppressWarnings("unchecked")
-	<O extends BaseEntity> O makeClone(O obj) {
+	<O extends InvoiceEntity> O makeClone(O obj) {
 		if (obj instanceof User) {
 			return (O) new User((User) obj);
 		}
