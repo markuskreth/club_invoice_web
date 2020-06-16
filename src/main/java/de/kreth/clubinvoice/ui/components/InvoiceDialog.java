@@ -27,6 +27,7 @@ import com.vaadin.server.FileResource;
 import com.vaadin.server.StreamResource;
 import com.vaadin.shared.Registration;
 import com.vaadin.ui.AbstractComponent;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.BrowserFrame;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -115,8 +116,11 @@ public class InvoiceDialog extends Window {
 		btnLayout.addComponents(okButton, cancel, previewButton);
 
 		VerticalLayout vLayout = new VerticalLayout();
-		vLayout.addComponents(invoiceNo, invoiceDate, itemGrid, btnLayout);
-		vLayout.setSizeFull();
+
+		vLayout.addComponents(invoiceNo, invoiceDate, itemGrid);
+
+		vLayout.addComponent(btnLayout);
+		vLayout.setComponentAlignment(btnLayout, Alignment.BOTTOM_LEFT);
 
 		setContent(vLayout);
 		Invoice invoice = new Invoice();
