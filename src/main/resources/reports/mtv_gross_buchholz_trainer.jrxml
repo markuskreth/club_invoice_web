@@ -51,6 +51,9 @@
 	<field name="BANK_BIC" class="java.lang.String"/>
 	<field name="BANK_IBAN" class="java.lang.String"/>
 	<field name="FIELD_ITEM_PARTICIPANTS" class="java.lang.String"/>
+	<field name="FIELD_SIGNATURE_PATH" class="java.nio.file.Path">
+		<fieldDescription><![CDATA[Signature Image Path]]></fieldDescription>
+	</field>
 	<variable name="ITEM_SUM1" class="java.lang.Integer" calculation="Count">
 		<variableExpression><![CDATA[$F{ITEM_SUM}]]></variableExpression>
 	</variable>
@@ -564,7 +567,7 @@ des Unterrichts]]></text>
 		</band>
 	</columnFooter>
 	<pageFooter>
-		<band height="180" splitType="Stretch">
+		<band height="184" splitType="Stretch">
 			<staticText>
 				<reportElement x="14" y="10" width="384" height="12" uuid="71d9d40c-d319-43bf-a244-e2c0aabacd15"/>
 				<text><![CDATA[Die Richtigkeit der vorstehenden Angaben wird hiermit bestätigt.
@@ -768,6 +771,12 @@ Freibetrages §3 Nr. 26 EStG)
 				</textElement>
 				<text><![CDATA[Abzüge]]></text>
 			</staticText>
+			<image scaleImage="RealHeight" vAlign="Bottom" onErrorType="Blank">
+				<reportElement x="20" y="99" width="192" height="62" uuid="0fee9023-e15d-445f-8478-6f5a0d15d5ba">
+					<printWhenExpression><![CDATA[$F{FIELD_SIGNATURE_PATH}!=null]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA[$F{FIELD_SIGNATURE_PATH}.toString()]]></imageExpression>
+			</image>
 		</band>
 	</pageFooter>
 </jasperReport>

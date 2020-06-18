@@ -1,6 +1,7 @@
 package de.kreth.clubinvoice.data;
 
 import java.math.BigDecimal;
+import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,6 +30,8 @@ public class Invoice extends BaseEntity {
 	private String invoiceId;
 
 	private LocalDateTime invoiceDate;
+
+	private Path signImagePath;
 
 	@OneToMany(mappedBy = "invoice")
 	private List<InvoiceItem> items;

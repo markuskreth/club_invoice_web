@@ -51,6 +51,9 @@
 	<field name="BANK_BIC" class="java.lang.String"/>
 	<field name="BANK_IBAN" class="java.lang.String"/>
 	<field name="FIELD_ITEM_PARTICIPANTS" class="java.lang.String"/>
+	<field name="FIELD_SIGNATURE_PATH" class="java.nio.file.Path">
+		<fieldDescription><![CDATA[Signature Image Path]]></fieldDescription>
+	</field>
 	<variable name="ITEM_SUM1" class="java.lang.Integer" calculation="Count">
 		<variableExpression><![CDATA[$F{ITEM_SUM}]]></variableExpression>
 	</variable>
@@ -515,7 +518,7 @@ des Unterrichts]]></text>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="49" splitType="Stretch">
+		<band height="32" splitType="Stretch">
 			<textField pattern="#,##0.00¤;#,##0.00- ¤">
 				<reportElement x="495" y="4" width="60" height="14" uuid="97cc81ab-b30d-4bec-ac00-894f07714615"/>
 				<textElement textAlignment="Center"/>
@@ -555,9 +558,9 @@ des Unterrichts]]></text>
 		</band>
 	</columnFooter>
 	<pageFooter>
-		<band height="60" splitType="Stretch">
+		<band height="83" splitType="Stretch">
 			<staticText>
-				<reportElement x="7" y="30" width="161" height="20" uuid="8deca167-570b-4feb-b3bb-23af38af502f"/>
+				<reportElement x="7" y="55" width="161" height="20" uuid="8deca167-570b-4feb-b3bb-23af38af502f"/>
 				<box>
 					<topPen lineWidth="1.25"/>
 				</box>
@@ -565,13 +568,19 @@ des Unterrichts]]></text>
 ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="359" y="30" width="185" height="20" uuid="eaea1eea-e4b7-438b-ba8f-37875ecd30e6"/>
+				<reportElement x="359" y="55" width="185" height="20" uuid="eaea1eea-e4b7-438b-ba8f-37875ecd30e6"/>
 				<box>
 					<topPen lineWidth="1.25"/>
 				</box>
 				<text><![CDATA[Unterschrift Übungsleiter/In
 ]]></text>
 			</staticText>
+			<image>
+				<reportElement x="353" y="0" width="197" height="55" printWhenGroupChanges="ITEM_DURATION_MINUTES" uuid="dd399aee-21eb-498a-bf73-8347ca5f97f6">
+					<printWhenExpression><![CDATA[$F{FIELD_SIGNATURE_PATH}!=null]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA[$F{FIELD_SIGNATURE_PATH}.toString()]]></imageExpression>
+			</image>
 		</band>
 	</pageFooter>
 </jasperReport>

@@ -1,6 +1,7 @@
 package de.kreth.clubinvoice.report;
 
 import java.math.BigDecimal;
+import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.List;
@@ -39,6 +40,8 @@ public class InvoiceReportSource implements JRDataSource, JRDataSourceProvider {
 	public static final String FIELD_BANK_IBAN = "BANK_IBAN";
 
 	public static final String FIELD_BANK_BIC = "BANK_BIC";
+
+	public static final String FIELD_SIGNATURE_PATH = "FIELD_SIGNATURE_PATH";
 
 	public static final String FIELD_ARTICLE_TITLE = "ARTICLE_TITLE";
 
@@ -114,6 +117,9 @@ public class InvoiceReportSource implements JRDataSource, JRDataSourceProvider {
 			return invoice.getUser().getAdress().getZip();
 		case FIELD_USER_CITY:
 			return invoice.getUser().getAdress().getCity();
+
+		case FIELD_SIGNATURE_PATH:
+			return invoice.getSignImagePath();
 		default:
 			break;
 		}
@@ -195,7 +201,9 @@ public class InvoiceReportSource implements JRDataSource, JRDataSourceProvider {
 				new InternalField(FIELD_ITEM_PARTICIPANTS, "Item Participants",
 						String.class),
 				new InternalField(FIELD_ITEM_SUM, "Item Sum",
-						BigDecimal.class) };
+						BigDecimal.class),
+				new InternalField(FIELD_SIGNATURE_PATH, "Signature Image Path",
+						Path.class) };
 		return fields;
 	}
 
