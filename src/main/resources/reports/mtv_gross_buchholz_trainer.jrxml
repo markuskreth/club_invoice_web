@@ -771,7 +771,7 @@ Freibetrages §3 Nr. 26 EStG)
 				</textElement>
 				<text><![CDATA[Abzüge]]></text>
 			</staticText>
-			<image scaleImage="RealHeight" vAlign="Bottom" onErrorType="Blank">
+			<image scaleImage="RetainShape" vAlign="Bottom" onErrorType="Blank">
 				<reportElement x="20" y="99" width="192" height="62" uuid="0fee9023-e15d-445f-8478-6f5a0d15d5ba">
 					<printWhenExpression><![CDATA[$F{FIELD_SIGNATURE_PATH}!=null]]></printWhenExpression>
 				</reportElement>

@@ -9,12 +9,14 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import de.kreth.clubinvoice.utils.PathConverter;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -31,6 +33,7 @@ public class Invoice extends BaseEntity {
 
 	private LocalDateTime invoiceDate;
 
+	@Convert(converter = PathConverter.class)
 	private Path signImagePath;
 
 	@OneToMany(mappedBy = "invoice")
