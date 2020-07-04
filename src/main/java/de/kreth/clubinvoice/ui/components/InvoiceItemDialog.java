@@ -19,6 +19,7 @@ import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -27,6 +28,7 @@ import com.vaadin.data.Binder;
 import com.vaadin.data.Binder.Binding;
 import com.vaadin.data.Binder.BindingBuilder;
 import com.vaadin.data.ValueProvider;
+import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.server.Setter;
 import com.vaadin.server.UserError;
 import com.vaadin.ui.Button;
@@ -95,10 +97,14 @@ public class InvoiceItemDialog extends Window {
 				getString(CAPTION_INVOICEITEM_PARTICIPANTS));
 
 		articleBox = new ComboBox<>();
+		articleBox.setDataProvider(new ListDataProvider<>(new ArrayList<>()));
 		articleBox.setCaption(getString(CAPTION_ARTICLES));
 		articleBox.setItemCaptionGenerator(Article::getTitle);
 		articleBox.addSelectionListener(ev -> {
-			item.setArticle(ev.getSelectedItem().orElse(item.getArticle()));
+			Optional<Article> selectedItem = ev.getSelectedItem();
+			if (selectedItem.isPresent()) {
+				item.setArticle(selectedItem.get());
+			}
 		});
 
 		bindItemFields();
@@ -139,7 +145,7 @@ public class InvoiceItemDialog extends Window {
 
 	private boolean isValid() {
 		binder.writeBeanIfValid(item);
-		if (item.getArticle() == null || item.getStart() == null
+		if (item.getPricePerHour() == null || item.getStart() == null
 				|| item.getEnd() == null) {
 			Notification.show(
 					getString(MESSAGE_INVOICEITEM_ALLFIELDSMUSTBESET),
@@ -215,13 +221,46 @@ public class InvoiceItemDialog extends Window {
 		createBinding(endTimeField, item::getEnd, item::setEnd,
 				DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT));
 
-		binder.forField(articleBox).bind(InvoiceItem::getArticle,
+		binder.forField(articleBox).bind(this::findArticleFor,
 				InvoiceItem::setArticle);
 
 		binder.forField(participants).bind(InvoiceItem::getParticipants,
 				InvoiceItem::setParticipants);
 
 		binder.readBean(item);
+	}
+
+	private Article findArticleFor(InvoiceItem item) {
+		articleBox.setDescription(null);
+		Article article = null;
+		Optional<Article> found = selectableArticles.stream()
+				.filter(a -> a.getId() == item.getArticleId())
+				.findFirst();
+
+		if (found.isPresent()) {
+			article = found.get();
+
+			if (!item.getPricePerHour().equals(article.getPricePerHour())
+					|| item.getUserId() != article.getUserId()
+					|| !item.getReport().equals(article.getReport())) {
+
+				articleBox.setDescription(
+						"Der ursprünglich gewählte Artikel wurde nachträglich geändert. Der Eintrag ist somit nicht mehr änderbar. Ggf. muss er gelöscht und neu erstellt werden.");
+				article = null;
+			}
+		}
+		else {
+			articleBox.setDescription(
+					"Der ursprünglich gewählte Artikel existiert nicht mehr. Er wurde vermutlich gelöscht. Der Eintrag ist somit nicht mehr änderbar.");
+		}
+
+		if (article == null) {
+			articleBox.setEnabled(false);
+		}
+		else {
+			articleBox.setEnabled(true);
+		}
+		return article;
 	}
 
 	private Binding<InvoiceItem, String> createBinding(TextField field,

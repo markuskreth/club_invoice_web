@@ -29,9 +29,23 @@ public class InvoiceItem extends BaseEntity {
 	@Column(nullable = true, length = 15)
 	private String participants;
 
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "article_id", nullable = false, updatable = false)
-	private Article article;
+	@Column(name = "pricePerHour")
+	private BigDecimal pricePerHour;
+
+	@Column(nullable = false, length = 50)
+	private String title;
+
+	@Column(nullable = true, length = 255)
+	private String description;
+
+	@Column(name = "user_id")
+	private int userId;
+
+	@Column(name = "article_id")
+	private int articleId;
+
+	@Column
+	private String report;
 
 	@ManyToOne(optional = true)
 	@JoinColumn(name = "invoice_id", nullable = true, updatable = true)
@@ -52,18 +66,30 @@ public class InvoiceItem extends BaseEntity {
 	}
 
 	public void setArticle(Article article) {
-		this.article = article;
+		if (article != null) {
+			this.articleId = article.getId();
+			this.pricePerHour = article.getPricePerHour();
+			this.title = article.getTitle();
+			this.description = article.getDescription();
+			this.userId = article.getUserId();
+			this.report = article.getReport();
+		}
+		else {
+			this.pricePerHour = null;
+			this.title = null;
+			this.description = null;
+		}
 		getSumPrice();
 	}
 
 	public BigDecimal getSumPrice() {
-		if (article == null || start == null || end == null) {
+		if (pricePerHour == null || start == null || end == null) {
 			sumPrice = null;
 			return null;
 		}
 
 		sumPrice = BigDecimal.valueOf(getDurationInMinutes()).setScale(2, RoundingMode.HALF_UP)
-				.divide(BigDecimal.valueOf(60), RoundingMode.HALF_UP).multiply(article.getPricePerHour())
+				.divide(BigDecimal.valueOf(60), RoundingMode.HALF_UP).multiply(pricePerHour)
 				.setScale(2, RoundingMode.HALF_UP);
 		return sumPrice;
 	}
@@ -80,7 +106,11 @@ public class InvoiceItem extends BaseEntity {
 
 	public InvoiceItem(InvoiceItem obj) {
 		super(obj);
-		this.article = obj.article;
+		this.pricePerHour = obj.pricePerHour;
+		this.title = obj.title;
+		this.description = obj.description;
+		this.userId = obj.userId;
+		this.report = obj.report;
 		this.end = obj.end;
 		this.invoice = obj.invoice;
 		this.participants = obj.participants;

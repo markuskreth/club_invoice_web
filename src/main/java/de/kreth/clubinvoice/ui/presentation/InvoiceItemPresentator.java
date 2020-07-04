@@ -33,7 +33,7 @@ class InvoiceItemPresentator implements DataPresentator<InvoiceItem> {
 		text.append(", ").append(getString(CAPTION_INVOICEITEM_END)).append("=");
 		text.append(timeFormat.format(obj.getEnd()));
 		text.append(", ").append(getString(CAPTION_ARTICLE)).append("=");
-		text.append(obj.getArticle().getTitle());
+		text.append(obj.getTitle());
 		text.append("]");
 		return text.toString();
 	}

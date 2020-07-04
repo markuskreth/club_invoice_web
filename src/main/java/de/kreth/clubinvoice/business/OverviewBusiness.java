@@ -12,8 +12,11 @@ import de.kreth.clubinvoice.data.User;
 public class OverviewBusiness {
 
 	private final ArticleBusiness articleBusiness;
+
 	private final InvoiceItemBusiness itemBusiness;
+
 	private final InvoiceBusiness invoiceBusiness;
+
 	private final UserRegister userBusiness;
 
 	public OverviewBusiness(Session sessionObj, PropertyStore propStore, CookieStore cookieStore) {
@@ -32,7 +35,7 @@ public class OverviewBusiness {
 	}
 
 	public List<InvoiceItem> getInvoiceItems(User user) {
-		return itemBusiness.loadAll(i -> i.getArticle().getUserId() == user.getId() && i.getInvoice() == null);
+		return itemBusiness.loadAll(i -> i.getUserId() == user.getId() && i.getInvoice() == null);
 	}
 
 	public List<Invoice> getInvoices(User user) {

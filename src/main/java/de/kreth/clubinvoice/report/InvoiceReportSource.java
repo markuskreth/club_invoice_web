@@ -128,11 +128,11 @@ public class InvoiceReportSource implements JRDataSource, JRDataSourceProvider {
 
 			switch (jrField.getName()) {
 			case FIELD_ARTICLE_TITLE:
-				return currentItem.getArticle().getTitle();
+				return currentItem.getTitle();
 			case FIELD_ARTICLE_DESCRIPTION:
-				return currentItem.getArticle().getDescription();
+				return currentItem.getDescription();
 			case FIELD_ARTICLE_PRICE_PER_HOUR:
-				return currentItem.getArticle().getPricePerHour();
+				return currentItem.getPricePerHour();
 			case FIELD_ITEM_START:
 				return currentItem.getStart();
 			case FIELD_ITEM_END:

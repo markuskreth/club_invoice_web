@@ -10,6 +10,7 @@ import static de.kreth.clubinvoice.Application_Properties.LABEL_LOGOUT;
 import static de.kreth.clubinvoice.Application_Properties.MESSAGE_DELETE_TEXT;
 import static de.kreth.clubinvoice.Application_Properties.MESSAGE_DELETE_TITLE;
 
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -218,9 +219,16 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 				return;
 			}
 			Iterator<InvoiceItem> iter = selectedItems.iterator();
-			Article article = iter.next().getArticle();
+			InvoiceItem current = iter.next();
+			BigDecimal pricePerHour = current.getPricePerHour();
+			String title = current.getTitle();
+			String report = current.getReport();
+
 			while (iter.hasNext()) {
-				if (iter.next().getArticle().equals(article) == false) {
+				current = iter.next();
+				if (!current.getPricePerHour().equals(pricePerHour)
+						|| !current.getTitle().equals(title)
+						|| !current.getReport().equals(report)) {
 					iter.remove();
 				}
 			}

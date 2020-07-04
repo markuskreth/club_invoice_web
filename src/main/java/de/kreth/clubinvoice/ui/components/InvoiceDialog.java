@@ -204,7 +204,7 @@ public class InvoiceDialog extends Window {
 		InvoiceReportSource source = new InvoiceReportSource();
 		source.setInvoice(invoice);
 		JasperReport report = JasperCompileManager
-				.compileReport(getClass().getResourceAsStream(invoice.getItems().get(0).getArticle().getReport()));
+				.compileReport(getClass().getResourceAsStream(invoice.getItems().get(0).getReport()));
 		return JasperFillManager.fillReport(report, new HashMap<>(), source);
 	}
 

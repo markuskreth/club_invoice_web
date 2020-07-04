@@ -52,7 +52,7 @@ public class InvoiceItemGrid<T extends InvoiceItem> extends Grid<T> {
 		this.resBundle = resBundle;
 		setCaption(getString(CAPTION_INVOICEITEMS));
 
-		addColumn(InvoiceItem::getArticle, Article::getTitle)
+		addColumn(InvoiceItem::getTitle)
 				.setId("Article")
 				.setCaption(getString(CAPTION_ARTICLE));
 
