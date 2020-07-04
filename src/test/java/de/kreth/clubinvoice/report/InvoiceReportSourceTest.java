@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
+import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
@@ -24,8 +25,10 @@ import net.sf.jasperreports.engine.JasperReport;
 class InvoiceReportSourceTest {
 
 	private InvoiceReportSource source;
+
 	@Mock
 	private JasperReport report;
+
 	private TestData testData;
 
 	@BeforeEach
@@ -51,6 +54,7 @@ class InvoiceReportSourceTest {
 		invoice.setItems(Arrays.asList(item));
 		invoice.setInvoiceId("invoiceId");
 		invoice.setInvoiceDate(start.plusDays(45));
+		invoice.setSignImagePath(Path.of("."));
 
 		source = new InvoiceReportSource();
 		source.setInvoice(invoice);
@@ -65,7 +69,7 @@ class InvoiceReportSourceTest {
 		assertTrue(source.next());
 		for (JRField f : fields) {
 			Object value = source.getFieldValue(f);
-			assertNotNull(value, "No value found for Field: " + f);
+			assertNotNull(value, "No value found for Field: " + f.getName() + ", " + f.getDescription());
 		}
 		assertFalse(source.next());
 	}
