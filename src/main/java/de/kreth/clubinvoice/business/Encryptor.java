@@ -1,6 +1,5 @@
 package de.kreth.clubinvoice.business;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
@@ -33,13 +32,12 @@ public class Encryptor {
 	public Encryptor() {
 		try {
 			ivParameterSpec = new IvParameterSpec(
-					SECRET_KEY_1.getBytes("UTF-8"));
+					SECRET_KEY_1.getBytes(StandardCharsets.UTF_8));
 			secretKeySpec = new SecretKeySpec(SECRET_KEY_2.getBytes(CHARSET),
 					"AES");
 			cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
 		}
-		catch (UnsupportedEncodingException | NoSuchAlgorithmException
-				| NoSuchPaddingException e) {
+		catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
 			throw new EncryptionException("Error initializing Encryptor", e);
 		}
 	}
@@ -56,11 +54,20 @@ public class Encryptor {
 	 * @throws BadPaddingException
 	 * @throws IllegalBlockSizeException
 	 */
-	public String encrypt(String toBeEncrypt)
-			throws InvalidAlgorithmParameterException, InvalidKeyException,
-			BadPaddingException, IllegalBlockSizeException {
-		cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, ivParameterSpec);
-		byte[] encrypted = cipher.doFinal(toBeEncrypt.getBytes(CHARSET));
+	public String encrypt(String toBeEncrypt) {
+		try {
+			cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, ivParameterSpec);
+		}
+		catch (InvalidKeyException | InvalidAlgorithmParameterException e) {
+			throw new EncryptionException("Error initializing ecnryption", e);
+		}
+		byte[] encrypted;
+		try {
+			encrypted = cipher.doFinal(toBeEncrypt.getBytes(CHARSET));
+		}
+		catch (IllegalBlockSizeException | BadPaddingException e) {
+			throw new EncryptionException("Error encrypting input", e);
+		}
 		return Base64.encodeBase64String(encrypted);
 	}
 
@@ -75,11 +82,20 @@ public class Encryptor {
 	 * @throws BadPaddingException
 	 * @throws IllegalBlockSizeException
 	 */
-	public String decrypt(String encrypted)
-			throws InvalidAlgorithmParameterException, InvalidKeyException,
-			BadPaddingException, IllegalBlockSizeException {
-		cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivParameterSpec);
-		byte[] decryptedBytes = cipher.doFinal(Base64.decodeBase64(encrypted));
+	public String decrypt(String encrypted) {
+		try {
+			cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivParameterSpec);
+		}
+		catch (InvalidKeyException | InvalidAlgorithmParameterException e) {
+			throw new EncryptionException("Error initializing ecnryption", e);
+		}
+		byte[] decryptedBytes;
+		try {
+			decryptedBytes = cipher.doFinal(Base64.decodeBase64(encrypted));
+		}
+		catch (IllegalBlockSizeException | BadPaddingException e) {
+			throw new EncryptionException("Error decrypting input", e);
+		}
 		return new String(decryptedBytes, CHARSET);
 	}
 
