@@ -29,6 +29,10 @@ public enum Application_Properties {
 	 */
 	CAPTION_INVOICE_SUM ("caption.invoice.sum"),
 	/**
+	 * caption.invoice.printsignature = Unterschrift drucken
+	 */
+	CAPTION_INVOICE_PRINTSIGNATURE("caption.invoice.printsignature"),
+	/**
 	 * caption.invoiceitem.participants = "Teilnehmer"
 	 */
 	CAPTION_INVOICEITEM_PARTICIPANTS ("caption.invoiceitem.participants"),

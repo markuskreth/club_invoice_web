@@ -21,19 +21,32 @@ import static de.kreth.clubinvoice.Application_Properties.ERROR_USERDETAILS_ZIP_
 import static de.kreth.clubinvoice.Application_Properties.LABEL_CANCEL;
 import static de.kreth.clubinvoice.Application_Properties.LABEL_OK;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.UncheckedIOException;
+import java.net.URL;
 import java.util.ResourceBundle;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.vaadin.data.Binder;
 import com.vaadin.data.BinderValidationStatus;
 import com.vaadin.data.ValueProvider;
+import com.vaadin.server.FileResource;
+import com.vaadin.server.Page;
+import com.vaadin.server.Page.Styles;
 import com.vaadin.server.Setter;
 import com.vaadin.shared.Registration;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.Upload;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
@@ -41,10 +54,13 @@ import de.kreth.clubinvoice.Application_Properties;
 import de.kreth.clubinvoice.data.User;
 import de.kreth.clubinvoice.data.UserAdress;
 import de.kreth.clubinvoice.data.UserBank;
+import de.kreth.clubinvoice.report.Signature;
 
 public class UserDetailsDialog extends Window {
 
 	private static final long serialVersionUID = -6255487997073609068L;
+
+	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	private final Binder<User> beanBinder = new Binder<>();
 
@@ -69,6 +85,8 @@ public class UserDetailsDialog extends Window {
 	private final TextField city;
 
 	private final Button okButton;
+
+	private final Image signatureImage;
 
 	private final ResourceBundle resBundle;
 
@@ -132,6 +150,12 @@ public class UserDetailsDialog extends Window {
 				.asRequired(getString(ERROR_USERDETAILS_CITY_EMPTY))
 				.bind(new CityProvider(), new CitySetter());
 
+		signatureImage = new Image("Unterschrift");
+		signatureImage.setAlternateText("Keine Unterschrift konfiguriert");
+		
+		Upload upload = new Upload("Unterschrift Bild hochladen", this::receiveUpload);
+		upload.addFinishedListener(ev -> updateSignatureImage());
+
 		VerticalLayout layout = new VerticalLayout();
 		layout.addComponents(loginName, prename, surname);
 		layout.addComponent(new Label("<hr />", ContentMode.HTML));
@@ -140,7 +164,7 @@ public class UserDetailsDialog extends Window {
 		HorizontalLayout cityLayout = new HorizontalLayout();
 		cityLayout.addComponents(zipCode, city);
 
-		layout.addComponents(adress1, adress2, cityLayout);
+		layout.addComponents(adress1, adress2, cityLayout, new HorizontalLayout(signatureImage, upload));
 
 		okButton = new Button((getString(LABEL_OK)), ev -> {
 			BinderValidationStatus<User> validation = beanBinder.validate();
@@ -158,6 +182,16 @@ public class UserDetailsDialog extends Window {
 		setContent(layout);
 	}
 
+	private OutputStream receiveUpload(String filename, String mimeType) {
+		User user = beanBinder.getBean();
+		Signature signature = new Signature(user);
+		try {
+			return signature.createOutputStream(filename);
+		} catch (IOException e) {
+			throw new UncheckedIOException(e);
+		}
+	}
+
 	private String getString(Application_Properties property) {
 		return property.getString(resBundle::getString);
 	}
@@ -168,6 +202,23 @@ public class UserDetailsDialog extends Window {
 
 	public void setUser(User user) {
 		beanBinder.setBean(user);
+		updateSignatureImage();
+	}
+
+	private void updateSignatureImage() {
+		User user = beanBinder.getBean();
+		if (user != null) {
+			Signature signature = new Signature(user);
+			if (signature.isSignatureImageExists()) {
+				File signatureUrl = signature.getSignatureUrl();
+				logger.info("Showing signature: {}", signatureUrl);
+				FileResource resource = new FileResource(signatureUrl);
+				signatureImage.setSource(resource);
+			}
+			else {
+				signatureImage.setSource(null);
+			}
+		}
 	}
 
 	public User getUser() {

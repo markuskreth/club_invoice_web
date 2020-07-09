@@ -1,5 +1,7 @@
 package de.kreth.clubinvoice.data;
 
+import java.nio.file.Path;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;

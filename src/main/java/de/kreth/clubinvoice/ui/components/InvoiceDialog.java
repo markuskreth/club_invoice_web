@@ -2,6 +2,7 @@ package de.kreth.clubinvoice.ui.components;
 
 import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICE_INVOICEDATE;
 import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICE_INVOICENO;
+import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICE_PRINTSIGNATURE;
 import static de.kreth.clubinvoice.Application_Properties.LABEL_CANCEL;
 import static de.kreth.clubinvoice.Application_Properties.LABEL_OPEN;
 import static de.kreth.clubinvoice.Application_Properties.LABEL_PREVIEW;
@@ -12,8 +13,8 @@ import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.nio.file.Files;
-import java.time.LocalDateTime;
-import java.util.Collections;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
@@ -32,6 +33,7 @@ import com.vaadin.ui.BrowserFrame;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.DateTimeField;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Link;
@@ -43,6 +45,7 @@ import de.kreth.clubinvoice.Application_Properties;
 import de.kreth.clubinvoice.data.Invoice;
 import de.kreth.clubinvoice.data.InvoiceItem;
 import de.kreth.clubinvoice.report.InvoiceReportSource;
+import de.kreth.clubinvoice.report.Signature;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -71,7 +74,12 @@ public class InvoiceDialog extends Window {
 
 	private Invoice invoice;
 
+	private Signature signature;
+	
 	private final transient ResourceBundle resBundle;
+
+	private CheckBox printSignature;
+
 
 	/**
 	 * Initializes the Dialog with an empty {@link Invoice}.
@@ -101,6 +109,18 @@ public class InvoiceDialog extends Window {
 		itemGrid = new InvoiceItemGrid<>(resBundle);
 		itemGrid.setSizeFull();
 
+		printSignature = new CheckBox(getString(CAPTION_INVOICE_PRINTSIGNATURE));
+		if (InvoiceMode.VIEW_ONLY == pdfOpenLabel) {
+			printSignature.setEnabled(false);
+		}
+		
+		printSignature.addValueChangeListener(ev -> {
+			if (printSignature.getValue() == Boolean.TRUE) {
+				invoice.setSignImagePath(Path.of(signature.getSignatureUrl().getAbsolutePath()));
+			} else {
+				invoice.setSignImagePath(null);
+			}
+		});
 		okButton = new Button(getString(LABEL_STORE), ev -> close());
 		Button cancel = new Button(getString(LABEL_CANCEL), ev -> close());
 
@@ -117,17 +137,12 @@ public class InvoiceDialog extends Window {
 
 		VerticalLayout vLayout = new VerticalLayout();
 
-		vLayout.addComponents(invoiceNo, invoiceDate, itemGrid);
+		vLayout.addComponents(invoiceNo, invoiceDate, itemGrid, printSignature);
 
 		vLayout.addComponent(btnLayout);
 		vLayout.setComponentAlignment(btnLayout, Alignment.BOTTOM_LEFT);
 
 		setContent(vLayout);
-		Invoice invoice = new Invoice();
-		invoice.setInvoiceId("");
-		invoice.setInvoiceDate(LocalDateTime.now());
-		invoice.setItems(Collections.emptyList());
-		setInvoice(invoice);
 	}
 
 	private String getString(Application_Properties property) {
@@ -163,6 +178,7 @@ public class InvoiceDialog extends Window {
 
 		ev.getButton().getUI().addWindow(window);
 	}
+
 
 	private AbstractComponent createEmbedded(JasperPrint print) throws IOException, JRException {
 
@@ -214,9 +230,16 @@ public class InvoiceDialog extends Window {
 
 	public void setInvoice(Invoice invoice) {
 		this.invoice = invoice;
+		signature = new Signature(invoice.getUser());
 		invoiceNo.setValue(invoice.getInvoiceId());
 		invoiceDate.setValue(invoice.getInvoiceDate());
 		itemGrid.setItems(invoice.getItems());
+		printSignature.setVisible(signature.isSignatureImageExists());
+		if (printSignature.isEnabled()) {
+			printSignature.setValue(signature.isSignatureImageExists());
+		} else {
+			printSignature.setValue(invoice.getSignImagePath() != null);
+		}
 	}
 
 	public void setOkVisible(boolean visible) {
