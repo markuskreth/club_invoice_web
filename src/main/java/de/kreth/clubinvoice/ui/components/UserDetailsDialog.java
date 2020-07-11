@@ -151,6 +151,8 @@ public class UserDetailsDialog extends Window {
 				.bind(new CityProvider(), new CitySetter());
 
 		signatureImage = new Image("Unterschrift");
+		signatureImage.setWidth("192px");
+		signatureImage.setHeight("62px");
 		signatureImage.setAlternateText("Keine Unterschrift konfiguriert");
 		
 		Upload upload = new Upload("Unterschrift Bild hochladen", this::receiveUpload);
