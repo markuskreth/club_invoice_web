@@ -31,7 +31,6 @@ import com.vaadin.ui.renderers.LocalDateTimeRenderer;
 import com.vaadin.ui.renderers.NumberRenderer;
 
 import de.kreth.clubinvoice.Application_Properties;
-import de.kreth.clubinvoice.data.Article;
 import de.kreth.clubinvoice.data.InvoiceItem;
 
 public class InvoiceItemGrid<T extends InvoiceItem> extends Grid<T> {
@@ -165,6 +164,8 @@ public class InvoiceItemGrid<T extends InvoiceItem> extends Grid<T> {
 	}
 
 	private class InnerDataProviderListener implements DataProviderListener<T> {
+
+		private static final long serialVersionUID = -6094992880488082586L;
 
 		@Override
 		public void onDataChange(DataChangeEvent<T> event) {

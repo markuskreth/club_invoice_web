@@ -25,7 +25,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
-import java.net.URL;
 import java.util.ResourceBundle;
 
 import org.slf4j.Logger;
@@ -35,8 +34,6 @@ import com.vaadin.data.Binder;
 import com.vaadin.data.BinderValidationStatus;
 import com.vaadin.data.ValueProvider;
 import com.vaadin.server.FileResource;
-import com.vaadin.server.Page;
-import com.vaadin.server.Page.Styles;
 import com.vaadin.server.Setter;
 import com.vaadin.shared.Registration;
 import com.vaadin.shared.ui.ContentMode;
