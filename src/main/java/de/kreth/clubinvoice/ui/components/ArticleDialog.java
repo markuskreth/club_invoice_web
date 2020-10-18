@@ -1,18 +1,18 @@
 package de.kreth.clubinvoice.ui.components;
 
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_ARTICLE;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_ARTICLES;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_ARTICLE_DESCRIPTION;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_ARTICLE_PRICE;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_ARTICLE_REPORT;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_ARTICLE_TITLE;
-import static de.kreth.clubinvoice.Application_Properties.LABEL_ADDARTICLE;
-import static de.kreth.clubinvoice.Application_Properties.LABEL_CLOSE;
-import static de.kreth.clubinvoice.Application_Properties.LABEL_DELETE;
-import static de.kreth.clubinvoice.Application_Properties.LABEL_DISCART;
-import static de.kreth.clubinvoice.Application_Properties.LABEL_STORE;
-import static de.kreth.clubinvoice.Application_Properties.MESSAGE_ARTICLE_ERROR_INVOICEEXISTS;
-import static de.kreth.clubinvoice.Application_Properties.MESSAGE_ARTICLE_PRICEERROR;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_ARTICLE;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_ARTICLES;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_ARTICLE_DESCRIPTION;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_ARTICLE_PRICE;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_ARTICLE_REPORT;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_ARTICLE_TITLE;
+import static de.kreth.clubinvoice.Localization_Properties.LABEL_ADDARTICLE;
+import static de.kreth.clubinvoice.Localization_Properties.LABEL_CLOSE;
+import static de.kreth.clubinvoice.Localization_Properties.LABEL_DELETE;
+import static de.kreth.clubinvoice.Localization_Properties.LABEL_DISCART;
+import static de.kreth.clubinvoice.Localization_Properties.LABEL_STORE;
+import static de.kreth.clubinvoice.Localization_Properties.MESSAGE_ARTICLE_ERROR_INVOICEEXISTS;
+import static de.kreth.clubinvoice.Localization_Properties.MESSAGE_ARTICLE_PRICEERROR;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
@@ -30,7 +30,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
-import de.kreth.clubinvoice.Application_Properties;
+import de.kreth.clubinvoice.Localization_Properties;
 import de.kreth.clubinvoice.business.ArticleBusiness;
 import de.kreth.clubinvoice.data.Article;
 import de.kreth.clubinvoice.data.ReportLicense;
@@ -258,7 +258,7 @@ public class ArticleDialog extends Window {
 		});
 	}
 
-	private String getString(Application_Properties properties) {
+	private String getString(Localization_Properties properties) {
 		return properties.getString(resBundle::getString);
 	}
 

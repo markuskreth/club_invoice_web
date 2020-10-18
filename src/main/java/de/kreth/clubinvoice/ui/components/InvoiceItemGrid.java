@@ -1,12 +1,12 @@
 package de.kreth.clubinvoice.ui.components;
 
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_ARTICLE;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICEITEMS;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICEITEM_DATE;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICEITEM_END;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICEITEM_PARTICIPANTS;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICEITEM_START;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICEITEM_SUMPRICE;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_ARTICLE;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_INVOICEITEMS;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_INVOICEITEM_DATE;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_INVOICEITEM_END;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_INVOICEITEM_PARTICIPANTS;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_INVOICEITEM_START;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_INVOICEITEM_SUMPRICE;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
@@ -30,7 +30,7 @@ import com.vaadin.ui.components.grid.GridSelectionModel;
 import com.vaadin.ui.renderers.LocalDateTimeRenderer;
 import com.vaadin.ui.renderers.NumberRenderer;
 
-import de.kreth.clubinvoice.Application_Properties;
+import de.kreth.clubinvoice.Localization_Properties;
 import de.kreth.clubinvoice.data.InvoiceItem;
 
 public class InvoiceItemGrid<T extends InvoiceItem> extends Grid<T> {
@@ -159,7 +159,7 @@ public class InvoiceItemGrid<T extends InvoiceItem> extends Grid<T> {
 		return min;
 	}
 
-	private String getString(Application_Properties property) {
+	private String getString(Localization_Properties property) {
 		return property.getString(resBundle::getString);
 	}
 

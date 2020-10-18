@@ -1,15 +1,15 @@
 package de.kreth.clubinvoice.ui.components;
 
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_ARTICLES;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICEITEM_DATE;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICEITEM_END;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICEITEM_PARTICIPANTS;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICEITEM_START;
-import static de.kreth.clubinvoice.Application_Properties.LABEL_CANCEL;
-import static de.kreth.clubinvoice.Application_Properties.LABEL_DELETE;
-import static de.kreth.clubinvoice.Application_Properties.LABEL_OK;
-import static de.kreth.clubinvoice.Application_Properties.MESSAGE_INVOICEITEM_ALLFIELDSMUSTBESET;
-import static de.kreth.clubinvoice.Application_Properties.MESSAGE_INVOICEITEM_STARTBEFOREEND;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_ARTICLES;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_INVOICEITEM_DATE;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_INVOICEITEM_END;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_INVOICEITEM_PARTICIPANTS;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_INVOICEITEM_START;
+import static de.kreth.clubinvoice.Localization_Properties.LABEL_CANCEL;
+import static de.kreth.clubinvoice.Localization_Properties.LABEL_DELETE;
+import static de.kreth.clubinvoice.Localization_Properties.LABEL_OK;
+import static de.kreth.clubinvoice.Localization_Properties.MESSAGE_INVOICEITEM_ALLFIELDSMUSTBESET;
+import static de.kreth.clubinvoice.Localization_Properties.MESSAGE_INVOICEITEM_STARTBEFOREEND;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -41,7 +41,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
-import de.kreth.clubinvoice.Application_Properties;
+import de.kreth.clubinvoice.Localization_Properties;
 import de.kreth.clubinvoice.data.Article;
 import de.kreth.clubinvoice.data.InvoiceItem;
 import de.kreth.clubinvoice.utils.DateTimeBinder;
@@ -139,7 +139,7 @@ public class InvoiceItemDialog extends Window {
 		center();
 	}
 
-	private String getString(Application_Properties propertie) {
+	private String getString(Localization_Properties propertie) {
 		return propertie.getString(resBundle::getString);
 	}
 

@@ -1,9 +1,9 @@
 package de.kreth.clubinvoice.ui.components;
 
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICES;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICE_INVOICEDATE;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICE_INVOICENO;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICE_SUM;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_INVOICES;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_INVOICE_INVOICEDATE;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_INVOICE_INVOICENO;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_INVOICE_SUM;
 
 import java.text.NumberFormat;
 import java.util.ResourceBundle;

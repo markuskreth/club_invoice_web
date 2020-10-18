@@ -1,7 +1,7 @@
 package de.kreth.clubinvoice.data;
 
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_ARTICLE_TYPE_ASSISTANT;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_ARTICLE_TYPE_TRAINER;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_ARTICLE_TYPE_ASSISTANT;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_ARTICLE_TYPE_TRAINER;
 
 import java.util.ResourceBundle;
 

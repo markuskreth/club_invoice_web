@@ -1,15 +1,15 @@
 package de.kreth.clubinvoice.ui.presentation;
 
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_ARTICLE;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICEITEM_DATE;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICEITEM_END;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICEITEM_NAME;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICEITEM_START;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_ARTICLE;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_INVOICEITEM_DATE;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_INVOICEITEM_END;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_INVOICEITEM_NAME;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_INVOICEITEM_START;
 
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 
-import de.kreth.clubinvoice.Application_Properties;
+import de.kreth.clubinvoice.Localization_Properties;
 import de.kreth.clubinvoice.data.InvoiceItem;
 import de.kreth.clubinvoice.utils.ResourceBundleProvider;
 
@@ -38,7 +38,7 @@ class InvoiceItemPresentator implements DataPresentator<InvoiceItem> {
 		return text.toString();
 	}
 
-	private String getString(Application_Properties properties) {
+	private String getString(Localization_Properties properties) {
 		return properties.getString(ResourceBundleProvider.getBundle()::getString);
 	}
 

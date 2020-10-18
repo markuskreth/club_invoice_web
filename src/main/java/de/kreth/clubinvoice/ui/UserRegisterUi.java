@@ -1,14 +1,14 @@
 package de.kreth.clubinvoice.ui;
 
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_USER_LOGINNAME;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_USER_PASSWORD;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_USER_PASSWORDCONFIRMATION;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_USER_PRENAME;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_USER_SURNAME;
-import static de.kreth.clubinvoice.Application_Properties.LABEL_USER_REGISTER;
-import static de.kreth.clubinvoice.Application_Properties.MESSAGE_USER_CREATE_FAILURE;
-import static de.kreth.clubinvoice.Application_Properties.MESSAGE_USER_CREATE_SUCCESS;
-import static de.kreth.clubinvoice.Application_Properties.MESSAGE_USER_PASSWORDMISSMATCH;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_USER_LOGINNAME;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_USER_PASSWORD;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_USER_PASSWORDCONFIRMATION;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_USER_PRENAME;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_USER_SURNAME;
+import static de.kreth.clubinvoice.Localization_Properties.LABEL_USER_REGISTER;
+import static de.kreth.clubinvoice.Localization_Properties.MESSAGE_USER_CREATE_FAILURE;
+import static de.kreth.clubinvoice.Localization_Properties.MESSAGE_USER_CREATE_SUCCESS;
+import static de.kreth.clubinvoice.Localization_Properties.MESSAGE_USER_PASSWORDMISSMATCH;
 
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
@@ -25,7 +25,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
-import de.kreth.clubinvoice.Application_Properties;
+import de.kreth.clubinvoice.Localization_Properties;
 import de.kreth.clubinvoice.business.OverviewBusiness;
 import de.kreth.clubinvoice.business.UserRegister;
 import de.kreth.clubinvoice.data.User;
@@ -150,7 +150,7 @@ public class UserRegisterUi extends VerticalLayout implements InvoiceUi {
 
 	}
 
-	private String getString(Application_Properties properties) {
+	private String getString(Localization_Properties properties) {
 		return properties.getString(resBundle::getString);
 	}
 

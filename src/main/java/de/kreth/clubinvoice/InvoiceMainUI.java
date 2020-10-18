@@ -1,5 +1,6 @@
 package de.kreth.clubinvoice;
 
+import java.util.Locale;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -52,6 +53,7 @@ public class InvoiceMainUI extends UI {
 	@Override
 	protected void init(VaadinRequest vaadinRequest) {
 
+		Locale.setDefault(Locale.GERMANY);
 		LOGGER.trace("Starting Vaadin webapp");
 		try {
 			sessionObj = buildSessionFactory().openSession();

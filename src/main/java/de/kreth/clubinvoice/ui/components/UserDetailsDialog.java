@@ -1,25 +1,25 @@
 package de.kreth.clubinvoice.ui.components;
 
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_ADRESS_CITY;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_ADRESS_STREET1;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_ADRESS_STREET2;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_ADRESS_ZIPCODE;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_BANK_BIC;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_BANK_IBAN;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_BANK_NAME;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_USER_LOGINNAME;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_USER_PRENAME;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_USER_SURNAME;
-import static de.kreth.clubinvoice.Application_Properties.ERROR_USERDETAILS_ADRESS_EMPTY;
-import static de.kreth.clubinvoice.Application_Properties.ERROR_USERDETAILS_BANKNAME_EMPTY;
-import static de.kreth.clubinvoice.Application_Properties.ERROR_USERDETAILS_CITY_EMPTY;
-import static de.kreth.clubinvoice.Application_Properties.ERROR_USERDETAILS_IBAN_EMPTY;
-import static de.kreth.clubinvoice.Application_Properties.ERROR_USERDETAILS_PRENAME_EMPTY;
-import static de.kreth.clubinvoice.Application_Properties.ERROR_USERDETAILS_SURNAME_EMPTY;
-import static de.kreth.clubinvoice.Application_Properties.ERROR_USERDETAILS_USERNAME_EMPTY;
-import static de.kreth.clubinvoice.Application_Properties.ERROR_USERDETAILS_ZIP_EMPTY;
-import static de.kreth.clubinvoice.Application_Properties.LABEL_CANCEL;
-import static de.kreth.clubinvoice.Application_Properties.LABEL_OK;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_ADRESS_CITY;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_ADRESS_STREET1;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_ADRESS_STREET2;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_ADRESS_ZIPCODE;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_BANK_BIC;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_BANK_IBAN;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_BANK_NAME;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_USER_LOGINNAME;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_USER_PRENAME;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_USER_SURNAME;
+import static de.kreth.clubinvoice.Localization_Properties.ERROR_USERDETAILS_ADRESS_EMPTY;
+import static de.kreth.clubinvoice.Localization_Properties.ERROR_USERDETAILS_BANKNAME_EMPTY;
+import static de.kreth.clubinvoice.Localization_Properties.ERROR_USERDETAILS_CITY_EMPTY;
+import static de.kreth.clubinvoice.Localization_Properties.ERROR_USERDETAILS_IBAN_EMPTY;
+import static de.kreth.clubinvoice.Localization_Properties.ERROR_USERDETAILS_PRENAME_EMPTY;
+import static de.kreth.clubinvoice.Localization_Properties.ERROR_USERDETAILS_SURNAME_EMPTY;
+import static de.kreth.clubinvoice.Localization_Properties.ERROR_USERDETAILS_USERNAME_EMPTY;
+import static de.kreth.clubinvoice.Localization_Properties.ERROR_USERDETAILS_ZIP_EMPTY;
+import static de.kreth.clubinvoice.Localization_Properties.LABEL_CANCEL;
+import static de.kreth.clubinvoice.Localization_Properties.LABEL_OK;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,7 +47,7 @@ import com.vaadin.ui.Upload;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
-import de.kreth.clubinvoice.Application_Properties;
+import de.kreth.clubinvoice.Localization_Properties;
 import de.kreth.clubinvoice.data.User;
 import de.kreth.clubinvoice.data.UserAdress;
 import de.kreth.clubinvoice.data.UserBank;
@@ -191,7 +191,7 @@ public class UserDetailsDialog extends Window {
 		}
 	}
 
-	private String getString(Application_Properties property) {
+	private String getString(Localization_Properties property) {
 		return property.getString(resBundle::getString);
 	}
 

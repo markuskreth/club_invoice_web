@@ -1,14 +1,14 @@
 package de.kreth.clubinvoice.ui;
 
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_ARTICLES;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICEITEM_ADD;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICE_CREATE;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICE_PATTERN;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_USER_DETAILS;
-import static de.kreth.clubinvoice.Application_Properties.LABEL_LOGGEDIN;
-import static de.kreth.clubinvoice.Application_Properties.LABEL_LOGOUT;
-import static de.kreth.clubinvoice.Application_Properties.MESSAGE_DELETE_TEXT;
-import static de.kreth.clubinvoice.Application_Properties.MESSAGE_DELETE_TITLE;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_ARTICLES;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_INVOICEITEM_ADD;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_INVOICE_CREATE;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_INVOICE_PATTERN;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_USER_DETAILS;
+import static de.kreth.clubinvoice.Localization_Properties.LABEL_LOGGEDIN;
+import static de.kreth.clubinvoice.Localization_Properties.LABEL_LOGOUT;
+import static de.kreth.clubinvoice.Localization_Properties.MESSAGE_DELETE_TEXT;
+import static de.kreth.clubinvoice.Localization_Properties.MESSAGE_DELETE_TITLE;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
@@ -38,7 +38,7 @@ import com.vaadin.ui.Layout;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
-import de.kreth.clubinvoice.Application_Properties;
+import de.kreth.clubinvoice.Localization_Properties;
 import de.kreth.clubinvoice.business.ArticleBusiness;
 import de.kreth.clubinvoice.business.OverviewBusiness;
 import de.kreth.clubinvoice.business.PropertyStore;
@@ -143,18 +143,18 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 		updateArticleError();
 		List<AbstractErrorMessage> errors = new ArrayList<>();
 		if (user.getAdress() == null) {
-			errors.add(new UserError(getString(Application_Properties.ERROR_USERDETAILS_ADRESS_EMPTY)));
+			errors.add(new UserError(getString(Localization_Properties.ERROR_USERDETAILS_ADRESS_EMPTY)));
 		}
 		if (user.getBank() == null) {
-			errors.add(new UserError(getString(Application_Properties.ERROR_USERDETAILS_BANKNAME_EMPTY)));
-			errors.add(new UserError(getString(Application_Properties.ERROR_USERDETAILS_IBAN_EMPTY)));
+			errors.add(new UserError(getString(Localization_Properties.ERROR_USERDETAILS_BANKNAME_EMPTY)));
+			errors.add(new UserError(getString(Localization_Properties.ERROR_USERDETAILS_IBAN_EMPTY)));
 		}
 		else {
 			if (user.getBank().getIban().isBlank()) {
-				errors.add(new UserError(getString(Application_Properties.ERROR_USERDETAILS_IBAN_EMPTY)));
+				errors.add(new UserError(getString(Localization_Properties.ERROR_USERDETAILS_IBAN_EMPTY)));
 			}
 			if (user.getBank().getBankName().isBlank()) {
-				errors.add(new UserError(getString(Application_Properties.ERROR_USERDETAILS_BANKNAME_EMPTY)));
+				errors.add(new UserError(getString(Localization_Properties.ERROR_USERDETAILS_BANKNAME_EMPTY)));
 			}
 		}
 
@@ -170,7 +170,7 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 		boolean noArticles = business.getArticles(user).isEmpty();
 		if (noArticles) {
 			addItem.setEnabled(false);
-			addArticle.setComponentError(new UserError(getString(Application_Properties.ERROR_ARTICLE_UNDEFINED)));
+			addArticle.setComponentError(new UserError(getString(Localization_Properties.ERROR_ARTICLE_UNDEFINED)));
 		}
 		else {
 			addItem.setEnabled(true);
@@ -257,7 +257,7 @@ public class OverviewUi extends VerticalLayout implements InvoiceUi {
 		return right;
 	}
 
-	private String getString(Application_Properties properties) {
+	private String getString(Localization_Properties properties) {
 		return properties.getString(resBundle::getString);
 	}
 

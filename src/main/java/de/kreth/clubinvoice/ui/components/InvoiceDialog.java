@@ -1,12 +1,12 @@
 package de.kreth.clubinvoice.ui.components;
 
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICE_INVOICEDATE;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICE_INVOICENO;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_INVOICE_PRINTSIGNATURE;
-import static de.kreth.clubinvoice.Application_Properties.LABEL_CANCEL;
-import static de.kreth.clubinvoice.Application_Properties.LABEL_OPEN;
-import static de.kreth.clubinvoice.Application_Properties.LABEL_PREVIEW;
-import static de.kreth.clubinvoice.Application_Properties.LABEL_STORE;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_INVOICE_INVOICEDATE;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_INVOICE_INVOICENO;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_INVOICE_PRINTSIGNATURE;
+import static de.kreth.clubinvoice.Localization_Properties.LABEL_CANCEL;
+import static de.kreth.clubinvoice.Localization_Properties.LABEL_OPEN;
+import static de.kreth.clubinvoice.Localization_Properties.LABEL_PREVIEW;
+import static de.kreth.clubinvoice.Localization_Properties.LABEL_STORE;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,7 +40,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
-import de.kreth.clubinvoice.Application_Properties;
+import de.kreth.clubinvoice.Localization_Properties;
 import de.kreth.clubinvoice.data.Invoice;
 import de.kreth.clubinvoice.data.InvoiceItem;
 import de.kreth.clubinvoice.report.InvoiceReportSource;
@@ -144,7 +144,7 @@ public class InvoiceDialog extends Window {
 		setContent(vLayout);
 	}
 
-	private String getString(Application_Properties property) {
+	private String getString(Localization_Properties property) {
 		return property.getString(resBundle::getString);
 	}
 

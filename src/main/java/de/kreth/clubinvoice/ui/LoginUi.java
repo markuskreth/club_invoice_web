@@ -1,9 +1,9 @@
 package de.kreth.clubinvoice.ui;
 
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_USER_LOGIN;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_USER_LOGINNAME;
-import static de.kreth.clubinvoice.Application_Properties.CAPTION_USER_PASSWORD;
-import static de.kreth.clubinvoice.Application_Properties.MESSAGE_USER_LOGINFAILURE;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_USER_LOGIN;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_USER_LOGINNAME;
+import static de.kreth.clubinvoice.Localization_Properties.CAPTION_USER_PASSWORD;
+import static de.kreth.clubinvoice.Localization_Properties.MESSAGE_USER_LOGINFAILURE;
 
 import java.util.ResourceBundle;
 
@@ -19,7 +19,7 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
-import de.kreth.clubinvoice.Application_Properties;
+import de.kreth.clubinvoice.Localization_Properties;
 import de.kreth.clubinvoice.business.OverviewBusiness;
 import de.kreth.clubinvoice.business.UserRegister;
 import de.kreth.clubinvoice.utils.ResourceBundleProvider;
@@ -97,7 +97,7 @@ public class LoginUi extends VerticalLayout implements InvoiceUi {
 		ui.setContent(this);
 	}
 
-	private String getString(Application_Properties property) {
+	private String getString(Localization_Properties property) {
 		return property.getString(resBundle::getString);
 	}
 
