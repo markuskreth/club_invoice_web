@@ -15,7 +15,7 @@
 	</prerequisites>
 
 	<properties>
-		<vaadin.version>8.11.1</vaadin.version>
+		<vaadin.version>8.12.3</vaadin.version>
 		<vaadin.plugin.version>8.11.1</vaadin.plugin.version>
 		<jsp.version>2.1.v20100127</jsp.version>
 
